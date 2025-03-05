@@ -1,7 +1,6 @@
 package com.mock.taka.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,42 +8,36 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "transports")
 @Getter
 @Setter
-@RequiredArgsConstructor
-@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class User {
-
+public class Transport {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    String id;
 
-    @NotNull
-    String email;
+    @Column(name = "name")
+    String name;
 
-    @NotNull
-    String password;
-
-    @NotNull
-    String fullname;
-
+    @Column(name = "address")
     String address;
 
+    @Column(name = "phone")
     String phone;
 
-    String avatar;
+    @Column(name = "email")
+    String email;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role;
-
-    @OneToOne(mappedBy = "user")
-    Store store;
+    @OneToMany(mappedBy = "transport")
+    List<Shipper> shippers;
 
     @CreatedDate
     @Column(name = "created_date")
@@ -59,4 +52,7 @@ public class User {
 
     @Column(name = "status")
     String status;
+
+    @OneToMany(mappedBy = "transport")
+    List<Order> orders;
 }

@@ -1,50 +1,43 @@
 package com.mock.taka.domain;
+import java.sql.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Date;
-
 @Entity
-@Table(name = "users")
+@Table(name = "product_prices")
 @Getter
 @Setter
-@RequiredArgsConstructor
-@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class User {
-
+public class ProductPrice {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "price_id")
+    String priceId;
 
-    @NotNull
-    String email;
+    @Column(name = "value")
+    double value;
 
-    @NotNull
-    String password;
+    @Column(name = "discount")
+    double discount;
 
-    @NotNull
-    String fullname;
+    @Column(name = "description")
+    String description;
 
-    String address;
-
-    String phone;
-
-    String avatar;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role;
-
-    @OneToOne(mappedBy = "user")
-    Store store;
+    @Column(name = "effective_date")
+    Date effectiveDate;
+    
+    @Column(name = "expiration_date")
+    Date expirationDate;
 
     @CreatedDate
     @Column(name = "created_date")
@@ -59,4 +52,7 @@ public class User {
 
     @Column(name = "status")
     String status;
+
+    @OneToMany(mappedBy="price")
+    List<Product> products;
 }

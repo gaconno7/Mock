@@ -1,50 +1,32 @@
 package com.mock.taka.domain;
 
+import java.util.Date;
+import java.util.List;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Date;
-
 @Entity
-@Table(name = "users")
-@Getter
+@Table(name = "roles")
 @Setter
+@Getter
 @RequiredArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
-public class User {
-
+public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
+    String name;
+    String description;
 
-    @NotNull
-    String email;
-
-    @NotNull
-    String password;
-
-    @NotNull
-    String fullname;
-
-    String address;
-
-    String phone;
-
-    String avatar;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role;
-
-    @OneToOne(mappedBy = "user")
-    Store store;
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
 
     @CreatedDate
     @Column(name = "created_date")

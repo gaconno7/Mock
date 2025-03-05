@@ -1,7 +1,6 @@
 package com.mock.taka.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,40 +10,29 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.Date;
 
 @Entity
-@Table(name = "users")
+@Table(name = "product_images")
 @Getter
 @Setter
-@RequiredArgsConstructor
-@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "image_id")
+    String imageId; 
 
-    @NotNull
-    String email;
+    @Column(name = "image_url")
+    String imageName;
 
-    @NotNull
-    String password;
-
-    @NotNull
-    String fullname;
-
-    String address;
-
-    String phone;
-
-    String avatar;
+    @Column(name = "url")
+    String url;
 
     @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role;
-
-    @OneToOne(mappedBy = "user")
-    Store store;
+    @JoinColumn(name = "product_id")
+    Product product;
 
     @CreatedDate
     @Column(name = "created_date")
