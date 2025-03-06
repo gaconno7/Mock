@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "carts")
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Cart {

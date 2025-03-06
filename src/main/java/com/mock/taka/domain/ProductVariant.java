@@ -16,7 +16,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ProductVariant {
     
     @Id
