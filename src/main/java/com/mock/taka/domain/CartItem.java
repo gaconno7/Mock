@@ -8,19 +8,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
 
 
 @Entity
 @Table(name = "cart_items")
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
-public class CartItem {
+@Builder
+public class CartItem  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

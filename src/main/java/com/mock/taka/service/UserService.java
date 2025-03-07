@@ -1,18 +1,15 @@
 package com.mock.taka.service;
 
+import com.mock.taka.domain.User;
 import org.springframework.stereotype.Service;
 
 import com.mock.taka.repository.UserRepository;
 
-@Service
-public class UserService {
-    private UserRepository userRepository;
+public interface UserService {
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    long getCountUser();
+    boolean existsByEmail(String email);
+    User save(User user);
 
-    public long getCountUser() {
-        return this.userRepository.count();
-    }
+    User findByEmail(String email);
 }

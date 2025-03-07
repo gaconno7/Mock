@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -16,8 +17,9 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
-@RequiredArgsConstructor
-public class ProductVariant {
+@AllArgsConstructor
+@Builder
+public class ProductVariant implements Serializable {
     
     @Id
     @GeneratedValue(strategy=GenerationType.UUID)
@@ -46,5 +48,5 @@ public class ProductVariant {
     Date deletedDate;
 
     @Column(name = "status")
-    String status;
+    boolean status;
 }

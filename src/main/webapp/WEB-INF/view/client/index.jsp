@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -80,6 +79,13 @@
     .breadcrumb span {
       margin: 0 5px;
     }
+    .ellipsis {
+      white-space: nowrap;      /* Không xuống dòng */
+      overflow: hidden;         /* Ẩn phần văn bản vượt quá kích thước */
+      text-overflow: ellipsis;  /* Hiển thị dấu "..." khi quá dài */
+      width: 150px;             /* Đặt kích thước cố định */
+    }
+
   </style>
 </head>
 
@@ -154,66 +160,18 @@
       <h2 class="title border-start">Category</h2>
     </div>
     <div class="row mt-5">
+      <c:forEach items="${categories}" var="item">
       <div class="col-2 mt-2">
         <div class="card" style="overflow: hidden;">
           <img
-                  src="https://stoneandtileshoppe.com/cdn/shop/products/TG3_Iron_Mountain_59e55c45-00d2-4c43-adad-bee54043709d_350x300.jpg?v=1692666739"
+                  src="${item.image}"
                   class="rounded" alt="...">
           <div class="card-body">
-            <a href="" class="card-title text-center">Category Name</a>
+            <a href="" class="card-title text-center ellipsis">${item.name}</a>
           </div>
         </div>
       </div>
-      <div class="col-2 mt-2">
-        <div class="card" style="overflow: hidden;">
-          <img
-                  src="https://stoneandtileshoppe.com/cdn/shop/products/TG3_Iron_Mountain_59e55c45-00d2-4c43-adad-bee54043709d_350x300.jpg?v=1692666739"
-                  class="rounded" alt="...">
-          <div class="card-body">
-            <a href="" class="card-title text-center">Category Name</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-2 mt-2">
-        <div class="card" style="overflow: hidden;">
-          <img
-                  src="https://stoneandtileshoppe.com/cdn/shop/products/TG3_Iron_Mountain_59e55c45-00d2-4c43-adad-bee54043709d_350x300.jpg?v=1692666739"
-                  class="rounded" alt="...">
-          <div class="card-body">
-            <a href="" class="card-title text-center">Category Name</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-2 mt-2">
-        <div class="card" style="overflow: hidden;">
-          <img
-                  src="https://stoneandtileshoppe.com/cdn/shop/products/TG3_Iron_Mountain_59e55c45-00d2-4c43-adad-bee54043709d_350x300.jpg?v=1692666739"
-                  class="rounded" alt="...">
-          <div class="card-body">
-            <a href="" class="card-title text-center">Category Name</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-2 mt-2">
-        <div class="card" style="overflow: hidden;">
-          <img
-                  src="https://stoneandtileshoppe.com/cdn/shop/products/TG3_Iron_Mountain_59e55c45-00d2-4c43-adad-bee54043709d_350x300.jpg?v=1692666739"
-                  class="rounded" alt="...">
-          <div class="card-body">
-            <a href="" class="card-title text-center">Category Name</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-2 mt-2">
-        <div class="card" style="overflow: hidden;">
-          <img
-                  src="https://stoneandtileshoppe.com/cdn/shop/products/TG3_Iron_Mountain_59e55c45-00d2-4c43-adad-bee54043709d_350x300.jpg?v=1692666739"
-                  class="rounded" alt="...">
-          <div class="card-body">
-            <a href="" class="card-title text-center">Category Name</a>
-          </div>
-        </div>
-      </div>
+      </c:forEach>
     </div>
 
     <div class="container mt-5">
@@ -228,56 +186,26 @@
       <!-- Danh sách sản phẩm -->
       <div class="scroll-container" id="scrollContainer">
         <div class="row flex-nowrap">
+          <c:forEach var="item" items="${listTopProductByCreatedDate}">
           <div class="col-md-3">
             <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
-              <div class="action-buttons">
-                <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
-                <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
-                </div>
-                <div><i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                </div>
-                <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ</a>
-                </div>
-              </div>
-            </div>
-          </div>
+              <c:if test="${not empty item.productImages}">
+                <img src="${item.productImages[0].url}" class="card-img-top" alt="Sản phẩm 1">
+              </c:if>
 
-          <div class="col-md-3">
-            <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
               <div class="action-buttons">
                 <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
+                  <i class="bi bi-heart"></i>
+                </button>
+                <button class="action-button">
+                  <a href="<c:url value="/product/${item.id}"/>"><i class="bi bi-eye"></i></a>
                 </button>
               </div>
               <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
+                <h5 class="card-title">${item.name}</h5>
                 <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
+                  <h4 class="card-text text-warning">${item.price}</h4>
+                  <h5 class="card-text text-danger" style="text-decoration: line-through;">${item.discountPrice}</h5>
                 </div>
                 <div><i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-fill"></i>
@@ -291,99 +219,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
-              <div class="action-buttons">
-                <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
-                <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
-                </div>
-                <div><i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                </div>
-                <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
-              <div class="action-buttons">
-                <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
-                <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
-                </div>
-                <div><i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                </div>
-                <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
-              <div class="action-buttons">
-                <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
-                <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
-                </div>
-                <div><i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                </div>
-                <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          </c:forEach>
         </div>
       </div>
 
@@ -458,24 +294,25 @@
       <!-- Danh sách sản phẩm -->
       <div class="scroll-container" id="scrollContainer">
         <div class="row flex-nowrap">
+          <c:forEach var="item" items="${listSellingProducts}">
           <div class="col-md-3">
             <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
+              <c:if test="${not empty item.productImages}">
+                <img src="${item.productImages[0].url}" class="card-img-top" alt="Sản phẩm 1">
+              </c:if>
               <div class="action-buttons">
                 <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
+                  <i class="bi bi-heart"></i>
+                </button>
+                <button class="action-button">
+                  <a href="<c:url value="/product/${item.id}"/> "><i class="bi bi-eye"></i></a>
                 </button>
               </div>
               <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
+                <h5 class="card-title">${item.name}</h5>
                 <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
+                  <h4 class="card-text text-warning">${item.price}</h4>
+                  <h5 class="card-text text-danger" style="text-decoration: line-through;">${item.discountPrice}</h5>
                 </div>
                 <div><i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-fill"></i>
@@ -489,131 +326,7 @@
               </div>
             </div>
           </div>
-
-          <div class="col-md-3">
-            <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
-              <div class="action-buttons">
-                <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
-                <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
-                </div>
-                <div><i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                </div>
-                <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
-              <div class="action-buttons">
-                <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
-                <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
-                </div>
-                <div><i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                </div>
-                <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
-              <div class="action-buttons">
-                <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
-                <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
-                </div>
-                <div><i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                </div>
-                <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card">
-              <img src="<c:url value = "/images/client/new1.jpg" />" class="card-img-top" alt="Sản phẩm 1">
-              <div class="action-buttons">
-                <button class="action-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                  </svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Sản phẩm 1</h5>
-                <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">$220</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">$220</h5>
-                </div>
-                <div><i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                </div>
-                <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          </c:forEach>
         </div>
       </div>
 

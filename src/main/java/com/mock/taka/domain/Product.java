@@ -1,5 +1,7 @@
 package com.mock.taka.domain;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -13,13 +15,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "products")
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+@Getter
+@Setter
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@EntityListeners(AuditingEntityListener.class)
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.UUID)
@@ -29,9 +32,11 @@ public class Product {
     @Column(name = "product_name")
     String name;
 
-    @ManyToOne
-    @JoinColumn(name = "price_id")
-    ProductPrice price;
+    @Column(name = "price")
+    double price;
+
+    @Column(name = "discount-price")
+    double discountPrice;
     
     @Column(name = "quantity")
     int quantity;
@@ -53,22 +58,53 @@ public class Product {
     @Column(name = "deleted_date")
     Date deletedDate;
 
-    @Column(name = "status")
-    String status;
 
-    @ManyToOne
+    @Column(name = "is_deleted")
+    private boolean deleted = false;
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+        // Cập nhật deletedDate khi soft delete
+        if (deleted) {
+            this.deletedDate = new Date();
+        }
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     Category category;
 
-    @OneToMany(mappedBy = "product")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "store_id")
+    Store store;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     List<ProductVariant> productVariants;
 
-    @OneToMany(mappedBy = "product")
-    List<ProductImage> productImage;
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    List<ProductImage> productImages;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     List<OrderDetail> orderDetails;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     List<Evaluation> evaluations;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", image='" + image + '\'' +
+                ", description='" + description + '\'' +
+                ", deleted=" + deleted +
+                ", category=" + category +
+                ", productVariants=" + productVariants +
+                ", productImage=" + productImages +
+                ", orderDetails=" + orderDetails +
+                ", evaluations=" + evaluations +
+                '}';
+    }
 }

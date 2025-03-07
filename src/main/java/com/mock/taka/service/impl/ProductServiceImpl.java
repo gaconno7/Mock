@@ -18,8 +18,13 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
 
     @Override
-    public List<Product> findTopProductByCreatedDate() {
+    public List<Product> findTopProductsByCreatedDate() {
         return productRepository.findTopProductsByCreatedDate();
+    }
+
+    @Override
+    public List<Product> findTopSellingProducts() {
+        return productRepository.findTopSellingProducts();
     }
 
     @Override

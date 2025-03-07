@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,11 +15,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "roles")
 @Setter
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
-public class Role {
+public class Role  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
@@ -40,5 +42,5 @@ public class Role {
     Date deletedDate;
 
     @Column(name = "status")
-    String status;
+    boolean status;
 }
