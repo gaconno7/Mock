@@ -22,7 +22,7 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
-    long id;
+    String id;
 
     @Column(name = "store_name")
     String name;

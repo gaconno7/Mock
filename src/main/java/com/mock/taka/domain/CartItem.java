@@ -1,5 +1,9 @@
 package com.mock.taka.domain;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,5 +40,14 @@ public class CartItem {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    public double getTotalPrice() {
+        return product.getPrice() * quantity;
+    }
+
+    public String getTotalPriceFormat() {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###.##");
+        return decimalFormat.format(getTotalPrice());
+    }
 }
 

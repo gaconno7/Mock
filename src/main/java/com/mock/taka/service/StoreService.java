@@ -17,7 +17,7 @@ public class StoreService {
         this.storeRepository = storeRepository;
     }
     
-    public Optional<Store> findStoreById(long id) {
+    public Optional<Store> findStoreById(String id) {
         return this.storeRepository.findById(id);
     }
 }

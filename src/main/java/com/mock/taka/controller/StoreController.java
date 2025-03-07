@@ -21,7 +21,7 @@ public class StoreController {
     }
 
     @GetMapping("/{id}")
-    public String getStorePage(@PathVariable("id") long storeId, Model model) {
+    public String getStorePage(@PathVariable("id") String storeId, Model model) {
         Store store = this.storeService.findStoreById(storeId).get();
         model.addAttribute("store", store);
         model.addAttribute("id", storeId);

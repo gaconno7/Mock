@@ -23,6 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, String>{
     List<Product> findTopSellingProducts();
 
     @Query("SELECT p FROM Product p WHERE p.name LIKE CONCAT('%', :keyword, '%') AND p.id <> :productId")
-    List<Product> findRelatedProductsByName(@Param("keyword") String keyword, @Param("productId") String productId);
+    List<Product> findRelatedProductsByName(@Param("keyword") String keyword, @Param("productId") long productId);
 
 }

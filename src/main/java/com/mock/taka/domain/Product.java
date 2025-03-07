@@ -29,9 +29,8 @@ public class Product {
     @Column(name = "product_name")
     String name;
 
-    @ManyToOne
-    @JoinColumn(name = "price_id")
-    ProductPrice price;
+    @Column(name = "price")
+    double price;
     
     @Column(name = "quantity")
     int quantity;
