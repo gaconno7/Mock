@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -60,7 +62,7 @@ public class Product implements Serializable {
 
 
     @Column(name = "is_deleted")
-    private boolean deleted = false;
+    boolean deleted = false;
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
@@ -70,24 +72,30 @@ public class Product implements Serializable {
         }
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     Category category;
 
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id")
     Store store;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     List<ProductVariant> productVariants;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     List<ProductImage> productImages;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     List<OrderDetail> orderDetails;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     List<Evaluation> evaluations;
 
     @Override

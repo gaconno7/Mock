@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -25,7 +26,8 @@ public class WishlistItem implements Serializable {
     @Column(name = "id")
     String id;
 
-    @ManyToOne
+    @JsonBackReference(value = "user_wishlist")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;
 

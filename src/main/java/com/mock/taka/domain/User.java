@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -61,4 +63,8 @@ public class User  implements Serializable {
 
     @Column(name = "status")
     boolean status;
+
+    @JsonManagedReference(value = "user_wishlist")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<WishlistItem> wishlistItems;
 }

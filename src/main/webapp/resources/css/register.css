@@ -1,0 +1,170 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    min-height: 100vh; /* Đảm bảo nội dung luôn căn giữa */
+    padding: 20px;
+}
+
+.main-content {
+    display: flex;
+    max-width: 900px; /* Giới hạn chiều rộng */
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-section {
+    flex: 1;
+    background-color: #e6f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-section {
+    flex: 1;
+    padding: 50px 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-title {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.form-subtitle {
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.form-control {
+    margin-bottom: 20px;
+}
+
+.form-control input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    outline: none;
+    font-size: 16px;
+}
+
+.btn-primary {
+    background-color: #e63946;
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px 0 20px;
+}
+
+.btn-primary:hover {
+    background-color: #d62839;
+}
+
+.login-link {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.login-link a {
+    color: #e63946;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #000;
+    color: white;
+    padding: 40px 10%;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.subscribe-form {
+    display: flex;
+    border: 1px solid white;
+    width: fit-content;
+}
+
+.subscribe-form input {
+    background: transparent;
+    border: none;
+    padding: 10px;
+    color: white;
+    outline: none;
+}
+
+.subscribe-form button {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.social-icon {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #333;
+    margin-top: 20px;
+}

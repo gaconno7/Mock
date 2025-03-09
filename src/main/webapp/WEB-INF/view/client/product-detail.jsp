@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:url var="urlEvaluation" value="/api/evaluations"/>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,807 +8,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Havic HV G-92 Gamepad | Exclusive</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            color: #333;
-        }
-
-        .announcement-bar {
-            background-color: #000;
-            color: white;
-            text-align: center;
-            padding: 10px;
-        }
-
-        .announcement-bar a {
-            color: white;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 5%;
-            border-bottom: 1px solid #eee;
-        }
-
-        .logo {
-            font-weight: bold;
-            font-size: 24px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-        }
-
-        .search-container {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            padding: 5px 15px;
-        }
-
-        .search-container input {
-            border: none;
-            outline: none;
-            padding: 5px;
-            width: 200px;
-        }
-
-        .icons {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .breadcrumb {
-            padding: 20px 5%;
-            color: #777;
-        }
-
-        .breadcrumb a {
-            color: #777;
-            text-decoration: none;
-        }
-
-        .breadcrumb span {
-            margin: 0 5px;
-        }
-
-        .product-container {
-            display: flex;
-            padding: 0 5% 50px;
-            gap: 40px;
-        }
-
-        .product-images {
-            flex: 1;
-            display: flex;
-            gap: 20px;
-        }
-
-        .thumbnails {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .thumbnail {
-            width: 80px;
-            height: 80px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .thumbnail img {
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        .main-image {
-            flex: 1;
-            border: 1px solid #f5f5f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .main-image img {
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        .product-details {
-            flex: 1;
-        }
-
-        .product-title {
-            font-size: 24px;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-
-        .rating {
-            color: #FFD700;
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .rating span {
-            color: #777;
-            margin-left: 10px;
-        }
-
-        .stock {
-            color: #4CAF50;
-            margin-left: 15px;
-        }
-
-        .price {
-            font-size: 26px;
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
-
-        .description {
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .divider {
-            height: 1px;
-            background-color: #eee;
-            margin: 20px 0;
-        }
-
-        .options-label {
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-
-        .color-options {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .color-option {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .color-option.selected {
-            border-color: #777;
-        }
-
-        .white {
-            background-color: white;
-            border: 1px solid #ddd;
-        }
-
-        .pink {
-            background-color: #FF6B6B;
-        }
-
-        .size-options {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .size-option {
-            padding: 5px 15px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-        }
-
-        .size-option.selected {
-            background-color: #e74c3c;
-            color: white;
-            border-color: #e74c3c;
-        }
-
-        .quantity {
-            display: flex;
-            margin-bottom: 20px;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .quantity-input {
-            display: flex;
-            align-items: center;
-        }
-
-        .quantity-input button {
-            width: 30px;
-            height: 30px;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .quantity-input input {
-            width: 50px;
-            height: 30px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-left: none;
-            border-right: none;
-        }
-
-        .buy-now {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 40px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .wishlist {
-            padding: 10px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            background-color: white;
-        }
-
-        .shipping-info {
-            border: 1px solid #ddd;
-            margin-top: 30px;
-            border-radius: 5px;
-        }
-
-        .shipping-row {
-            display: flex;
-            padding: 15px;
-            align-items: center;
-            gap: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .shipping-row:last-child {
-            border-bottom: none;
-        }
-
-        .shipping-icon {
-            font-size: 24px;
-            color: #333;
-        }
-
-        .shipping-text strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .shipping-text span {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .shipping-text a {
-            color: #333;
-            text-decoration: underline;
-        }
-
-        .section-heading {
-            padding: 20px;
-            text-align: center;
-            background-color: #f5f5f5;
-            margin-bottom: 30px;
-        }
-
-        .related-products {
-            padding: 0 5% 50px;
-        }
-
-        .related-title {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .related-title::before {
-            content: '';
-            width: 5px;
-            height: 20px;
-            background-color: #e74c3c;
-            margin-right: 10px;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .product-card {
-            border: 1px solid #f5f5f5;
-            padding: 10px;
-            position: relative;
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: contain;
-        }
-
-        .discount-tag {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: #e74c3c;
-            color: white;
-            padding: 2px 8px;
-            font-size: 12px;
-        }
-
-        .card-actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .card-action-btn {
-            background-color: white;
-            border: 1px solid #ddd;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .product-card-title {
-            margin-top: 10px;
-            font-weight: 500;
-        }
-
-        .product-card-price {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 5px;
-        }
-
-        .current-price {
-            font-weight: 500;
-        }
-
-        .original-price {
-            color: #777;
-            text-decoration: line-through;
-            font-size: 14px;
-        }
-
-        .product-card-rating {
-            color: #FFD700;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        .product-card-rating span {
-            color: #777;
-            margin-left: 5px;
-        }
-
-        .add-to-cart {
-            background-color: black;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        footer {
-            background-color: black;
-            color: white;
-            padding: 50px 5%;
-        }
-
-        .footer-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            opacity: 0.8;
-        }
-
-        .footer-address {
-            line-height: 1.6;
-            opacity: 0.8;
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .app-download {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .qr-code {
-            width: 100px;
-            height: 100px;
-            background-color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: black;
-            font-size: 10px;
-            text-align: center;
-        }
-
-        .app-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .app-button {
-            border: 1px solid white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .copyright {
-            text-align: center;
-            padding: 20px;
-            background-color: black;
-            color: white;
-            opacity: 0.7;
-            font-size: 14px;
-            border-top: 1px solid #333;
-        }
-
-        /* Customer Reviews Section */
-        .reviews-section {
-            padding: 0 5% 50px;
-        }
-
-        .review-summary {
-            display: flex;
-            justify-content: space-between;
-            padding: 30px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .average-rating {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .big-rating {
-            font-size: 48px;
-            font-weight: bold;
-        }
-
-        .star-breakdown {
-            width: 300px;
-        }
-
-        .star-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-
-        .star-label {
-            width: 50px;
-        }
-
-        .star-bar-container {
-            flex: 1;
-            height: 8px;
-            background-color: #eee;
-            margin: 0 10px;
-        }
-
-        .star-bar {
-            height: 100%;
-            background-color: #FFD700;
-        }
-
-        .star-count {
-            width: 30px;
-            text-align: right;
-            color: #777;
-            font-size: 14px;
-        }
-
-        .review-filters {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .review-filter {
-            padding: 5px 15px;
-            background-color: #f5f5f5;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .review-filter.active {
-            background-color: #333;
-            color: white;
-        }
-
-        .review-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .review-item {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-        }
-
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .reviewer-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .reviewer-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #777;
-        }
-
-        .reviewer-name {
-            font-weight: 500;
-        }
-
-        .verified-badge {
-            background-color: #4CAF50;
-            color: white;
-            font-size: 12px;
-            padding: 2px 5px;
-            border-radius: 3px;
-            margin-left: 10px;
-        }
-
-        .review-date {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .review-content {
-            line-height: 1.6;
-        }
-
-        .review-images {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .review-image {
-            width: 80px;
-            height: 80px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-        }
-
-        .review-feedback {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            color: #777;
-            font-size: 14px;
-        }
-
-        .review-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-
-        .load-more {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .load-more-btn {
-            background-color: white;
-            border: 1px solid #ddd;
-            padding: 10px 30px;
-            cursor: pointer;
-        }
-
-        /* Write Review Form */
-        .review-form-container {
-            margin: 30px 0;
-            padding: 30px;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-
-        .review-form-title {
-            font-size: 20px;
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-family: inherit;
-        }
-
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .star-rating-input {
-            display: flex;
-            gap: 10px;
-        }
-
-        .star-rating-input label {
-            font-size: 24px;
-            color: #ddd;
-            cursor: pointer;
-        }
-
-        .star-rating-input label.active {
-            color: #FFD700;
-        }
-
-        .file-upload {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .file-upload-btn {
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            padding: 8px 15px;
-            cursor: pointer;
-        }
-
-        .file-upload-text {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .form-submit-btn {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="<c:url value="/css/product-detail.css"/> ">
 </head>
 
 <body>
-<!-- Announcement Bar -->
-<div class="announcement-bar">
-    Summer Sale For All Swim Suits And Free Express Delivery - Off 50%! <a href="#">ShopNow</a>
-</div>
 
 <!-- Header -->
 <header>
-    <div class="logo">Exclusive</div>
+    <div class="logo">Taka</div>
     <div class="nav-links">
-        <a href="#">Home</a>
-        <a href="#">Contact</a>
-        <a href="#">About</a>
-        <a href="#">Sign Up</a>
-    </div>
-    <div class="search-container">
-        <input type="text" placeholder="What are you looking for?">
-        <span>🔍</span>
+        <a href="<c:url value="/home"/> ">Trang chủ</a>
+        <a href="<c:url value="/product/all"/> ">Của hàng</a>
+        <a href="#">Thông tin</a>
     </div>
     <div class="icons">
-        <span>❤️</span>
-        <span>🛒</span>
-        <span>👤</span>
+        <span><a class="btn btn-outline-info" href="<c:url value="/user/wishlist"/> "><i class="bi bi-bag-heart"></i></a></span>
+        <span><a class="btn btn-outline-info" href="<c:url value="/user/cart"/> "><i class="bi bi-cart"></i></a></span>
+        <div class="dropdown">
+            <div class="btn btn-outline-info dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <c:if test="${not empty sessionScope.user}" >
+                    <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                </c:if>
+                <c:if test="${empty sessionScope.user}" >
+                    <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
+                    <li><a class="dropdown-item" href="<c:url value="/register"/> ">Đăng ký</a></li>
+                </c:if>
+            </ul>
+        </div>
     </div>
 </header>
 
 <!-- Breadcrumb -->
 <div class="breadcrumb">
-    <a href="#">Account</a> <span>/</span> <a href="#">Gaming</a> <span>/</span> Havic HV G-92 Gamepad
+    <a href="<c:url value="/home"/>">Trang chủ</a> <span>/</span> <a href="<c:url value="/product/all"/> ">Sản phẩm</a> <span>/</span>
+    <a href="<c:url value="/product/all?category-id=${product.category.id}"/>">${product.category.name}</a>
 </div>
 
 <!-- Product Section -->
@@ -815,26 +56,22 @@
     <div class="product-images">
         <div class="thumbnails">
             <c:forEach var="image" items="${product.productImages}" >
-            <div class="thumbnail"><img src="${image.url}" alt="Gamepad view 4"></div>
+            <div class="thumbnail"><img src="${image.url}" class="object-fit" onclick="changeImage(`${image.url}`)" width="70vh" height="70vh" alt="Image"></div>
             </c:forEach>
         </div>
         <div class="main-image">
-            <img src="${product.productImages[0].url}" alt="Havic HV G-92 Gamepad">
+            <img id="main-product-image" class="object-fit" width="550vh" height="550vh" src="${product.productImages[0].url}" alt="Havic HV G-92 Gamepad">
         </div>
     </div>
     <div class="product-details">
         <h1 class="product-title">${product.name}</h1>
-        <div class="rating">
-            ★★★★☆ <span>(150 Reviews)</span> <span class="stock">In Stock</span>
-        </div>
         <div class="price">${product.price}</div>
         <div class="description">
             ${product.description}
         </div>
         <div class="divider"></div>
-        <div class="options-label">Colours:</div>
 
-        <div class="options-label">Variant:</div>
+        <div class="options-label">Đặc điểm:</div>
         <div class="size-options">
             <c:forEach var="item" items="${product.productVariants}">
                 <div class="size-option selected">${item.attribute} - ${item.value}</div>
@@ -846,8 +83,8 @@
                 <input type="text" value="0">
                 <button>+</button>
             </div>
-            <button class="buy-now">Buy Now</button>
-            <button class="wishlist">❤️</button>
+            <button class="buy-now">Mua ngay</button>
+            <button class="wishlist"><i class="bi bi-heart"></i></button>
         </div>
 
     </div>
@@ -856,263 +93,243 @@
 <!-- Customer Reviews Section -->
 <div class="reviews-section">
     <div class="section-heading">
-        <h2>Customer Reviews</h2>
+        <h2>Đánh giá của khách hàng</h2>
     </div>
 
     <div class="review-summary">
         <div class="average-rating">
-            <div class="big-rating">4.5</div>
-            <div class="rating">★★★★☆</div>
-            <div>Based on 150 reviews</div>
+            <div class="big-rating">${averageRate} ★</div>
+            <div>${countEvaluation} lượt đánh giá</div>
         </div>
 
         <div class="star-breakdown">
             <div class="star-row">
                 <div class="star-label">5 ★</div>
                 <div class="star-bar-container">
-                    <div class="star-bar" style="width: 65%"></div>
+                    <div class="star-bar" style="width: ${countRate5/evaluations.size()}%"></div>
                 </div>
-                <div class="star-count">98</div>
+                <div class="star-count">${countRate5}</div>
             </div>
             <div class="star-row">
                 <div class="star-label">4 ★</div>
                 <div class="star-bar-container">
-                    <div class="star-bar" style="width: 25%"></div>
+                    <div class="star-bar" style="width: ${countRate4/evaluations.size()}%"></div>
                 </div>
-                <div class="star-count">37</div>
+                <div class="star-count">${countRate4}</div>
             </div>
             <div class="star-row">
                 <div class="star-label">3 ★</div>
                 <div class="star-bar-container">
-                    <div class="star-bar" style="width: 7%"></div>
+                    <div class="star-bar" style="width: ${countRate3/evaluations.size()}%"></div>
                 </div>
-                <div class="star-count">10</div>
+                <div class="star-count">${countRate3}</div>
             </div>
             <div class="star-row">
                 <div class="star-label">2 ★</div>
                 <div class="star-bar-container">
-                    <div class="star-bar" style="width: 2%"></div>
+                    <div class="star-bar" style="width: ${countRate2/evaluations.size()}%"></div>
                 </div>
-                <div class="star-count">3</div>
+                <div class="star-count">${countRate2}</div>
             </div>
             <div class="star-row">
                 <div class="star-label">1 ★</div>
                 <div class="star-bar-container">
-                    <div class="star-bar" style="width: 1%"></div>
+                    <div class="star-bar" style="width: ${countRate1/evaluations.size()}%"></div>
                 </div>
-                <div class="star-count">2</div>
+                <div class="star-count">${countRate1}</div>
             </div>
         </div>
     </div>
 
     <!-- Write Review Form -->
     <div class="review-form-container">
-        <h3 class="review-form-title">Write Your Review</h3>
-        <form>
+        <h3 class="review-form-title">Đánh giá</h3>
+        <form id="evaluation-form" enctype="multipart/form-data" >
             <div class="form-group">
-                <label>Your Rating</label>
+                <label>Bình chọn</label>
                 <div class="star-rating-input">
-                    <label class="active">★</label>
-                    <label class="active">★</label>
-                    <label class="active">★</label>
-                    <label class="active">★</label>
-                    <label>★</label>
+                    <input type="hidden" name="rating" id="rating-value" value="4">
+                    <label class="active" data-value="1">★</label>
+                    <label class="active" data-value="2">★</label>
+                    <label class="active" data-value="3">★</label>
+                    <label class="active" data-value="4">★</label>
+                    <label data-value="5">★</label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="review-title">Review Title</label>
-                <input type="text" id="review-title" class="form-control" placeholder="Give your review a title">
+                <input type="hidden" name="product-id" class="form-control" value="${product.id}">
             </div>
 
             <div class="form-group">
-                <label for="review-content">Your Review</label>
-                <textarea id="review-content" class="form-control"
-                          placeholder="Write your comments here"></textarea>
+                <label for="review-title">Tiêu đề</label>
+                <input type="text" id="review-title" name="review-title" class="form-control">
             </div>
 
             <div class="form-group">
-                <label>Add Photos (optional)</label>
+                <label for="review-content">Nội dung</label>
+                <textarea id="review-content" name="review-content" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Ảnh minh hoạ (nếu có)</label>
                 <div class="file-upload">
-                    <button type="button" class="file-upload-btn">Choose Files</button>
-                    <span class="file-upload-text">No files selected</span>
+                    <input type="file" id="file" name="files">
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="reviewer-name">Your Name</label>
-                <input type="text" id="reviewer-name" class="form-control" placeholder="Enter your name">
-            </div>
-
-            <div class="form-group">
-                <label for="reviewer-email">Email Address</label>
-                <input type="email" id="reviewer-email" class="form-control" placeholder="Enter your email address">
-            </div>
-
-            <button type="submit" class="form-submit-btn">Submit Review</button>
+            <button type="button" id="btn-submit" class="form-submit-btn">Lưu</button>
         </form>
+
     </div>
 
     <div class="review-filters">
         <div class="review-filter active">All</div>
-        <div class="review-filter">5 Star</div>
-        <div class="review-filter">4 Star</div>
-        <div class="review-filter">3 Star</div>
-        <div class="review-filter">2 Star</div>
-        <div class="review-filter">1 Star</div>
-        <div class="review-filter">With Photos</div>
+        <div class="review-filter">5 ★</div>
+        <div class="review-filter">4 ★</div>
+        <div class="review-filter">3 ★</div>
+        <div class="review-filter">2 ★</div>
+        <div class="review-filter">1 ★</div>
     </div>
 
     <div class="review-list">
+        <c:forEach var="item" items="${evaluations}">
         <div class="review-item">
             <div class="review-header">
                 <div class="reviewer-info">
-                    <div class="reviewer-avatar">JD</div>
+                    <img src="${item.user.avatar}" class="reviewer-avatar" />
                     <div>
-                        <div class="reviewer-name">John Doe <span class="verified-badge">Verified Purchase</span>
+                        <div class="reviewer-name">${item.user.fullname}
                         </div>
-                        <div class="rating">★★★★★</div>
+                        <div class="rating">
+                        <c:forEach var="i" begin="1" end="${item.rate}" step="1" >
+                            ★
+                        </c:forEach>
+                        </div>
                     </div>
                 </div>
-                <div class="review-date">March 1, 2025</div>
+                <div class="review-date">${item.createdDate.toString().substring(0,10)}</div>
             </div>
             <div class="review-content">
-                <strong>Amazing quality and responsiveness!</strong>
-                <p>I've been using this gamepad for about two weeks now, and I'm extremely impressed with the build
-                    quality. The buttons have a satisfying feel, and the triggers are perfectly responsive. I
-                    particularly love the grip texture which prevents slipping during intense gaming sessions.
-                    Battery life is outstanding - I've played for 8+ hours on a single charge.</p>
+                <strong>${item.title}</strong>
+                <p>${item.review}</p>
             </div>
-            <div class="review-images">
-                <div class="review-image"></div>
-                <div class="review-image"></div>
-            </div>
+            <c:if test="${not empty item.image}">
+                <div class="review-images">
+                    <img class="review-image" src="${item.image}"/>
+                </div>
+            </c:if>
             <div class="review-feedback">
-                <div class="review-btn">👍 Helpful (24)</div>
-                <div class="review-btn">🔄 Report</div>
+<%--                <div class="review-btn">🔄 Report</div>--%>
             </div>
         </div>
-
-        <div class="review-item">
-            <div class="review-header">
-                <div class="reviewer-info">
-                    <div class="reviewer-avatar">AS</div>
-                    <div>
-                        <div class="reviewer-name">Amanda Smith <span class="verified-badge">Verified
-                                    Purchase</span></div>
-                        <div class="rating">★★★★☆</div>
-                    </div>
-                </div>
-                <div class="review-date">February 25, 2025</div>
-            </div>
-            <div class="review-content">
-                <strong>Great gamepad with minor issues</strong>
-                <p>The Havic HV G-92 Gamepad feels premium and works great with my PS5. Button placement is perfect
-                    and the triggers have just the right amount of resistance. The only reason I'm giving it 4 stars
-                    instead of 5 is because the D-pad feels a bit stiff for my taste, especially when playing
-                    fighting games. Otherwise, this is an excellent controller for the price!</p>
-            </div>
-            <div class="review-feedback">
-                <div class="review-btn">👍 Helpful (17)</div>
-                <div class="review-btn">🔄 Report</div>
-            </div>
+        </c:forEach>
+    </div>
+    <div class="related-products" style="border-top: 1px solid #eee;">
+        <div class="related-title">
+            <h3>Sản phẩm tương tự</h3>
         </div>
-
-        <div class="related-products">
-            <div class="related-title">
-                <h3>Related Item</h3>
-            </div>
-            <div class="products-grid">
-                <div class="product-card">
-                    <span class="discount-tag">-40%</span>
-                    <div class="card-actions">
-                        <button class="card-action-btn">❤️</button>
-                        <button class="card-action-btn">👁️</button>
+        <div class="products-grid">
+            <c:if test="${not empty relatedProducts}">
+                <c:forEach items="${relatedProducts}" var="item">
+                    <div class="product-card">
+                        <div class="card-actions">
+                            <button class="card-action-btn"><i class="bi bi-heart"></i></button>
+                            <button class="card-action-btn"><a href="<c:url value="/product/${item.id}"/> "><i class="bi bi-eye"></i></a>
+                            </button>
+                        </div>
+                        <c:if test="${not empty item.productImages}">
+                            <img src="${item.productImages[0].url}" alt="${item.name}">
+                        </c:if>
+                        <h4 class="product-card-title">${item.name}</h4>
+                        <div class="product-card-price">
+                            <span class="current-price">${item.discountPrice}</span>
+                            <span class="original-price">${item.price}</span>
+                        </div>
+                        <c:set var="totalRate" value="0" />
+                        <c:forEach var="evaluation" items="${item.evaluations}">
+                            <c:set var="totalRate" value="${totalRate + evaluation.rate}" />
+                        </c:forEach>
+                        <div class="product-card-rating">
+                            <c:forEach var="i" begin="1" end="${item.evaluations.size() > 0 ? totalRate / item.evaluations.size() : 0}" step="1">
+                                ★
+                            </c:forEach>
+                            <span>(${item.evaluations.size()} lượt đánh giá)</span>
+                        </div>
+                        <div class="product-card-rating">
+                            <button type="button" class="btn-add-cart">Thêm giỏ hàng</button>
+                        </div>
                     </div>
-                    <img src="/new1.jpg" alt="HAVIT HV-G92 Gamepad">
-                    <h4 class="product-card-title">HAVIT HV-G92 Gamepad</h4>
-                    <div class="product-card-price">
-                        <span class="current-price">$120</span>
-                        <span class="original-price">$160</span>
-                    </div>
-                    <div class="product-card-rating">
-                        ★★★★★ <span>(88)</span>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <span class="discount-tag">-35%</span>
-                    <div class="card-actions">
-                        <button class="card-action-btn">❤️</button>
-                        <button class="card-action-btn">👁️</button>
-                    </div>
-                    <img src="/new1.jpg" alt="AK-900 Wired Keyboard">
-                    <button class="add-to-cart">Add To Cart</button>
-                    <h4 class="product-card-title">AK-900 Wired Keyboard</h4>
-                    <div class="product-card-price">
-                        <span class="current-price">$960</span>
-                        <span class="original-price">$1160</span>
-                    </div>
-                    <div class="product-card-rating">
-                        ★★★★☆ <span>(75)</span>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <span class="discount-tag">-35%</span>
-                    <div class="card-actions">
-                        <button class="card-action-btn">❤️</button>
-                        <button class="card-action-btn">👁️</button>
-                    </div>
-                    <img src="/new1.jpg" alt="AK-900 Wired Keyboard">
-                    <button class="add-to-cart">Add To Cart</button>
-                    <h4 class="product-card-title">AK-900 Wired Keyboard</h4>
-                    <div class="product-card-price">
-                        <span class="current-price">$960</span>
-                        <span class="original-price">$1160</span>
-                    </div>
-                    <div class="product-card-rating">
-                        ★★★★☆ <span>(75)</span>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <span class="discount-tag">-35%</span>
-                    <div class="card-actions">
-                        <button class="card-action-btn">❤️</button>
-                        <button class="card-action-btn">👁️</button>
-                    </div>
-                    <img src="/new1.jpg" alt="AK-900 Wired Keyboard">
-                    <button class="add-to-cart">Add To Cart</button>
-                    <h4 class="product-card-title">AK-900 Wired Keyboard</h4>
-                    <div class="product-card-price">
-                        <span class="current-price">$960</span>
-                        <span class="original-price">$1160</span>
-                    </div>
-                    <div class="product-card-rating">
-                        ★★★★☆ <span>(75)</span>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <span class="discount-tag">-35%</span>
-                    <div class="card-actions">
-                        <button class="card-action-btn">❤️</button>
-                        <button class="card-action-btn">👁️</button>
-                    </div>
-                    <img src="/new1.jpg" alt="AK-900 Wired Keyboard">
-                    <button class="add-to-cart">Add To Cart</button>
-                    <h4 class="product-card-title">AK-900 Wired Keyboard</h4>
-                    <div class="product-card-price">
-                        <span class="current-price">$960</span>
-                        <span class="original-price">$1160</span>
-                    </div>
-                    <div class="product-card-rating">
-                        ★★★★☆ <span>(75)</span>
-                    </div>
-                </div>
-            </div>
+                </c:forEach>
+            </c:if>
         </div>
     </div>
+    <script>
+
+        $(document).ready(function() {
+
+            $('.star-rating-input label').on('click', function() {
+                var value = $(this).data('value');
+                $('#rating-value').val(value);
+
+                // Cập nhật giao diện
+                $('.star-rating-input label').removeClass('active');
+                $('.star-rating-input label').each(function() {
+                    if ($(this).data('value') <= value) {
+                        $(this).addClass('active');
+                    }
+                });
+            });
+
+            $("#btn-submit").click(function(event) {
+                event.preventDefault();
+                addEvaluation();
+            });
+        });
+
+        function getStarRating() {
+            return $('.star-rating-input label.active').length;
+        }
+
+        function addEvaluation() {
+
+            var formData = new FormData($("#evaluation-form")[0]);
+
+            var files = $('#file')[0].files;
+
+            if (files.length > 0) {
+                formData.append('files', files[0]);
+            }
+            formData.append("rate", getStarRating());
+            $.ajax({
+                url: `${urlEvaluation}`,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log('Upload thành công:', response);
+                    alert("Lưu đánh giá thành công!");
+                },
+                error: function(xhr, status, error) {
+                    console.error('Lỗi khi upload:', error);
+                    alert("Có lỗi xảy ra, vui lòng thử lại!");
+                }
+            });
+        }
+
+        function changeImage(url) {
+            $("#main-product-image").attr("src", url);
+        }
+
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</body>
 </div>
 </body>
 

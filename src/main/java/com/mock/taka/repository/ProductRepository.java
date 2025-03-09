@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String>{
 
-    @Query("SELECT p FROM Product p order by p.createdDate desc limit 5")
+    @Query("select distinct p from Product  p left join Evaluation e on e.product = p order by p.createdDate desc limit 5")
     List<Product> findTopProductsByCreatedDate();
 
     @Query("SELECT p FROM Product p " +
@@ -22,7 +22,9 @@ public interface ProductRepository extends JpaRepository<Product, String>{
             "ORDER BY SUM(od.amount) DESC")
     List<Product> findTopSellingProducts();
 
-    @Query("SELECT p FROM Product p WHERE p.name LIKE CONCAT('%', :keyword, '%') AND p.id <> :productId")
+    @Query("SELECT p FROM Product p JOIN Evaluation e on e.product = p WHERE p.name LIKE CONCAT('%', :keyword, '%') AND p.id <> :productId")
     List<Product> findRelatedProductsByName(@Param("keyword") String keyword, @Param("productId") String productId);
 
+    @Query("SELECT p FROM Product p JOIN Evaluation e on e.product = p WHERE p.id = :productId")
+    Product findProductById(@Param("productId") String productId);
 }

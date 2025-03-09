@@ -1,18 +1,18 @@
 package com.mock.taka.repository.dao;
 
+import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Evaluation;
 import com.mock.taka.domain.OrderDetail;
 import com.mock.taka.domain.Product;
-import com.mock.taka.domain.ProductPrice;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -20,12 +20,12 @@ import java.util.List;
 
 @Repository
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class EvaluationDAO {
+public class ProductDAO {
 
     @PersistenceContext
     EntityManager em;
 
-    public EvaluationDAO(EntityManager em) {
+    public ProductDAO(EntityManager em) {
         this.em = em;
     }
 
@@ -83,72 +83,85 @@ public class EvaluationDAO {
 //        return query.getResultList();
 //    }
 
-    // Phương thức đơn giản để kiểm tra dữ liệu có tồn tại không
-    public List<Product> findProductByFilter(int pageSize, int pageNum, String categoryId, double minPrice, double maxPrice, String sortBy, String searchValue) {
+    public Page<Product> findProductByFilter(int pageSize, int pageNum, String categoryId,
+                                             double minPrice, double maxPrice, String sortBy,
+                                             String searchValue) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        /** ========== Tạo query chính ========= */
         CriteriaQuery<Product> cq = cb.createQuery(Product.class);
         Root<Product> productRoot = cq.from(Product.class);
-
-        // Eager fetch related entities to avoid lazy loading issues
-        productRoot.fetch("category", JoinType.LEFT);
-        productRoot.fetch("price", JoinType.LEFT);
+        Join<Product, Category> categoryJoin = productRoot.join("category", JoinType.LEFT);
 
         List<Predicate> predicates = new ArrayList<>();
-
-        // Add predicate for non-deleted products
         predicates.add(cb.equal(productRoot.get("deleted"), false));
 
         if (categoryId != null) {
-            predicates.add(cb.equal(productRoot.get("category").get("id"), categoryId));
+            predicates.add(cb.equal(categoryJoin.get("id"), categoryId));
         }
-//
-//        if (minPrice >= 0 && maxPrice > 0) {
-//            // Use path instead of join for filtering on price
-//            predicates.add(cb.greaterThanOrEqualTo(productRoot.get("price").get("value"), minPrice));
-//            predicates.add(cb.lessThanOrEqualTo(productRoot.get("price").get("value"), maxPrice));
-//        }
 
-        // Handle ordering separately from fetching to avoid cartesian products
-        if (sortBy != null) {
-            switch (sortBy) {
-                case "latest":
-                    cq.orderBy(cb.desc(productRoot.get("createdDate")));
-                    break;
-                case "popularity":
-                    Expression<Long> orderCount = cb.count(productRoot.join("orderDetails", JoinType.LEFT).get("id"));
-                    cq.groupBy(productRoot);
-                    cq.orderBy(cb.desc(orderCount));
-                    break;
-                case "best-rating":
-                    Expression<Double> avgRating = cb.avg(productRoot.join("evaluations", JoinType.LEFT).get("value"));
-                    cq.groupBy(productRoot);
-                    cq.orderBy(cb.desc(avgRating));
-                    break;
-                default:
-                    break;
-            }
+        if (minPrice >= 0 && maxPrice > 0) {
+            predicates.add(cb.between(productRoot.get("price"), minPrice, maxPrice));
         }
 
         if (searchValue != null && !searchValue.trim().isEmpty()) {
-            predicates.add(cb.like(cb.lower(productRoot.get("name")), "%%" + searchValue.toLowerCase() + "%%"));
+            predicates.add(cb.like(cb.lower(productRoot.get("name")), "%" + searchValue.toLowerCase() + "%"));
         }
 
         cq.where(predicates.toArray(new Predicate[0]));
-        cq.distinct(true); // Avoid duplicates from multiple joins
+
+        // Sắp xếp theo tiêu chí được chọn
+        if (sortBy != null) {
+            if (sortBy.equals("latest")) {
+                cq.orderBy(cb.desc(productRoot.get("createdDate")));
+            } else if (sortBy.equals("popularity")) {
+                Subquery<Long> orderCountQuery = cq.subquery(Long.class);
+                Root<Product> subRoot = orderCountQuery.from(Product.class);
+                Join<Product, OrderDetail> subJoin = subRoot.join("orderDetails", JoinType.LEFT);
+                orderCountQuery.select(cb.count(subJoin.get("id"))).where(cb.equal(subRoot, productRoot));
+
+                cq.orderBy(cb.desc(orderCountQuery.getSelection()));
+            } else if (sortBy.equals("best-rating")) {
+                Subquery<Double> avgRatingQuery = cq.subquery(Double.class);
+                Root<Product> subRoot = avgRatingQuery.from(Product.class);
+                Join<Product, Evaluation> subJoin = subRoot.join("evaluations", JoinType.LEFT);
+                avgRatingQuery.select(cb.avg(subJoin.get("value"))).where(cb.equal(subRoot, productRoot));
+
+                cq.orderBy(cb.desc(avgRatingQuery.getSelection()));
+            }
+        }
 
         TypedQuery<Product> query = em.createQuery(cq);
         query.setFirstResult((pageNum - 1) * pageSize);
         query.setMaxResults(pageSize);
-
         List<Product> results = query.getResultList();
 
-        // For debugging: Print the IDs of returned products
-        System.out.println("Found " + results.size() + " products");
-        for (Product p : results) {
-            System.out.println("Product ID: " + p.getId() + ", Name: " + p.getName());
+        /** ========== Query đếm số lượng ========= */
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        Root<Product> countRoot = countQuery.from(Product.class);
+
+        // Tạo một danh sách Predicate riêng biệt để tránh lỗi
+        List<Predicate> countPredicates = new ArrayList<>();
+        countPredicates.add(cb.equal(countRoot.get("deleted"), false));
+
+        if (categoryId != null) {
+            countPredicates.add(cb.equal(countRoot.get("category").get("id"), categoryId));
         }
 
-        return results;
+        if (minPrice >= 0 && maxPrice > 0) {
+            countPredicates.add(cb.between(countRoot.get("price"), minPrice, maxPrice));
+        }
+
+        if (searchValue != null && !searchValue.trim().isEmpty()) {
+            countPredicates.add(cb.like(cb.lower(countRoot.get("name")), "%" + searchValue.toLowerCase() + "%"));
+        }
+
+        countQuery.select(cb.count(countRoot)).where(countPredicates.toArray(new Predicate[0]));
+
+        Long totalElements = em.createQuery(countQuery).getSingleResult();
+
+        return new PageImpl<>(results, PageRequest.of(pageNum - 1, pageSize), totalElements);
     }
+
 }
 

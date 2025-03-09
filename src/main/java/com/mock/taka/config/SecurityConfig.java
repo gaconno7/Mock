@@ -43,7 +43,6 @@ public class SecurityConfig {
         return new CustomAuthenticationFailureHandler();
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {

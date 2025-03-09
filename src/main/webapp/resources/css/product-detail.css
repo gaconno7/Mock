@@ -8,20 +8,6 @@
 body {
     color: #333;
 }
-
-.announcement-bar {
-    background-color: #000;
-    color: white;
-    text-align: center;
-    padding: 10px;
-}
-
-.announcement-bar a {
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-}
-
 header {
     display: flex;
     justify-content: space-between;
@@ -45,39 +31,10 @@ header {
     color: #333;
 }
 
-.search-container {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    padding: 5px 15px;
-}
-
-.search-container input {
-    border: none;
-    outline: none;
-    padding: 5px;
-    width: 200px;
-}
-
 .icons {
     display: flex;
     gap: 15px;
     align-items: center;
-}
-
-.breadcrumb {
-    padding: 20px 5%;
-    color: #777;
-}
-
-.breadcrumb a {
-    color: #777;
-    text-decoration: none;
-}
-
-.breadcrumb span {
-    margin: 0 5px;
 }
 
 .product-container {
@@ -111,6 +68,10 @@ header {
 .thumbnail img {
     max-width: 90%;
     max-height: 90%;
+}
+
+.object-fit {
+    object-fit: cover;
 }
 
 .main-image {
@@ -312,6 +273,7 @@ header {
 }
 
 .related-products {
+    margin-top: 5vh;
     padding: 0 5% 50px;
 }
 
@@ -593,6 +555,8 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow-y: scroll;
+    height: 50vh;
 }
 
 .review-item {
@@ -679,7 +643,7 @@ footer {
     margin-top: 30px;
 }
 
-.load-more-btn {
+.btn-add-cart {
     background-color: white;
     border: 1px solid #ddd;
     padding: 10px 30px;
@@ -765,4 +729,17 @@ textarea.form-control {
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+}
+input[type="file"] {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    border: 1px solid #e6e6e6;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
 }

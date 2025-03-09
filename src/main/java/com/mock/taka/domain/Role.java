@@ -28,7 +28,7 @@ public class Role  implements Serializable {
     String description;
 
     @OneToMany(mappedBy = "role")
-    private List<User> users;
+    List<User> users;
 
     @CreatedDate
     @Column(name = "created_date")

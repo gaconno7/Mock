@@ -21,21 +21,6 @@ header {
     color: #333;
 }
 
-.search-container {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    padding: 5px 15px;
-}
-
-.search-container input {
-    border: none;
-    outline: none;
-    padding: 5px;
-    width: 200px;
-}
-
 .icons {
     display: flex;
     gap: 15px;

@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,10 +27,12 @@ public class Evaluation  implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     Product product;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
@@ -43,8 +46,8 @@ public class Evaluation  implements Serializable {
     @Column(name = "image")
     String image;
 
-    @Column(name = "name")
-    String name;
+    @Column(name = "rate")
+    int rate;
 
     @CreatedDate
     @Column(name = "created_date")
