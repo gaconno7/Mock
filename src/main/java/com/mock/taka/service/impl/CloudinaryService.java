@@ -17,11 +17,11 @@ public class CloudinaryService {
         this.cloudinary = cloudinary;
     }
 
-    public Map uploadFile(MultipartFile file, String folderName) throws IOException {
-        return cloudinary.uploader().upload(file.getBytes(),
-                ObjectUtils.asMap(
-                        "folder", folderName
-                ));
+    public String uploadFile(MultipartFile file, String folderName) throws IOException {
+        Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                ObjectUtils.asMap("folder", folderName));
+
+        return uploadResult.get("url").toString();
     }
 
     public Map uploadVideo(MultipartFile file, String folderName) throws IOException {

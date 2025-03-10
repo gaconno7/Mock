@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -7,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -17,17 +19,20 @@ import java.util.Date;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
-public class Evaluation {
+@Builder
+public class Evaluation  implements Serializable {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;;
+    String id;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     Product product;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
@@ -41,8 +46,8 @@ public class Evaluation {
     @Column(name = "image")
     String image;
 
-    @Column(name = "name")
-    String name;
+    @Column(name = "rate")
+    int rate;
 
     @CreatedDate
     @Column(name = "created_date")
@@ -56,5 +61,5 @@ public class Evaluation {
     Date deletedDate;
 
     @Column(name = "status")
-    String status;
+    boolean status;
 }

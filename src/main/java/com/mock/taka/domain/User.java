@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -8,7 +9,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -16,9 +19,10 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,5 +62,9 @@ public class User {
     Date deletedDate;
 
     @Column(name = "status")
-    String status;
+    boolean status;
+
+    @JsonManagedReference(value = "user_wishlist")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<WishlistItem> wishlistItems;
 }

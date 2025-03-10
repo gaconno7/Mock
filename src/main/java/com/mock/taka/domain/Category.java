@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -19,15 +20,16 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+@Builder
+public class Category  implements Serializable {
 
     @Id
     @Column(name = "category_id")
     @GeneratedValue(strategy=GenerationType.UUID)
-    String categoryID;
+    String id;
 
     @Column(name = "category_name")
-    String categoryName;
+    String name;
 
     @Column(name = "description")
     String description;
@@ -44,8 +46,11 @@ public class Category {
     Date deletedDate;
 
     @Column(name = "status")
-    String status;
+    boolean status;
 
-    @OneToMany(mappedBy = "category")
+    @Column(name = "image")
+    String image;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     List<Product> products;
 }

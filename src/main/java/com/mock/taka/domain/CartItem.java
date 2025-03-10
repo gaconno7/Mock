@@ -23,6 +23,7 @@ import lombok.Setter;
 @Table(name = "cart_items")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartItem {

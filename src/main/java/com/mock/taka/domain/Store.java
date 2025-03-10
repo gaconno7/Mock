@@ -7,7 +7,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "stores")
@@ -15,9 +17,10 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
-public class Store {
+public class Store  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +51,17 @@ public class Store {
     @Column(name = "deleted_date")
     Date deletedDate;
 
-    @Column(name = "status")
-    String status;
+    @Column(name = "is_deleted")
+    private boolean deleted = false;
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+        // Cập nhật deletedDate khi soft delete
+        if (deleted) {
+            this.deletedDate = new Date();
+        }
+    }
+
+    @OneToMany(mappedBy = "store")
+    List<Product> products;
 }

@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -17,8 +18,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Order {
+public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,7 +31,7 @@ public class Order {
     @JoinColumn(name = "user")
     User user;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     List<OrderDetail> orderDetails;
 
     @Column(name = "address")
@@ -46,7 +48,7 @@ public class Order {
     @LastModifiedDate
     Date updateDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "transport_id")
     Transport transport;
 }

@@ -1,0 +1,31 @@
+.expandable-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 100px; /* Hiển thị khoảng 3-4 mục */
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.expandable-list ul{
+     margin: 0;
+ }
+
+.expandable-list li {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.list-container.expanded .expandable-list {
+    max-height: 100%; /* Mở rộng danh sách đầy đủ */
+}
+
+.toggle-btn {
+    text-align: center;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: background 0.3s ease;
+    background-color: transparent;
+}

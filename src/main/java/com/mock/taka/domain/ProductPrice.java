@@ -1,4 +1,5 @@
 package com.mock.taka.domain;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
@@ -16,8 +17,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @EntityListeners(AuditingEntityListener.class)
-public class ProductPrice {
+public class ProductPrice  implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -51,7 +53,7 @@ public class ProductPrice {
     Date deletedDate;
 
     @Column(name = "status")
-    String status;
+    boolean status;
 
     @OneToMany(mappedBy="price")
     List<Product> products;

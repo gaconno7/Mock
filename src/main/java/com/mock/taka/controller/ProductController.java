@@ -2,7 +2,11 @@ package com.mock.taka.controller;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.mock.taka.domain.Evaluation;
+import com.mock.taka.domain.Product;
 import com.mock.taka.service.CategoryService;
+import com.mock.taka.service.EvaluationService;
+import com.mock.taka.service.ProductService;
 import com.mock.taka.service.UserService;
 import com.mock.taka.service.impl.CloudinaryService;
 import lombok.AccessLevel;
@@ -13,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,64 +25,42 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @RequestMapping("/product")
 public class ProductController {
 
-//    CloudinaryService cloudinaryGifService;
+    ProductService productService;
     CategoryService categoryService;
-    Cloudinary cloudinaryConfig;
+    EvaluationService evaluationService;
 
     @GetMapping("/{id}")
-    public String getDetail(ModelMap modelMap) {
-        modelMap.addAttribute("categories", categoryService.findAll());
-        return "/client/index";
-    }
-    @PostMapping("/gifs")
-    public ResponseEntity< String > uploadGif(@RequestParam("gifFile")
-                                                                   MultipartFile gifFile ) throws IOException {
-        // User currentUser =
-// userService.findUserByEmail(authentication.getName()); // Authorization
-        String url = uploadFile(gifFile);
+    public String getDetail(ModelMap modelMap, @PathVariable(name = "id") String id) {
+        Product product = productService.findById(id);
+        List<Evaluation> evaluations = evaluationService.findAllByProductId(id);
 
-
-        // LinkedHashMap<String, Object> jsonResponse = cloudinaryGifService.modifyJsonResponse("create", URL);
-        return new ResponseEntity<>(url, HttpStatus.CREATED);
-    }
-
-
-//    @PostMapping
-//    public ResponseEntity<Map> uploadImage(@RequestParam("image")MultipartFile file){
-//        Map data = this.cloudinaryGifService.upload(file);
-//        return new ResponseEntity<>(data, HttpStatus.OK);
-//    }
-
-    public String uploadFile(MultipartFile gif) {
-        try {
-            File uploadedFile = convertMultiPartToFile(gif);
-            Map uploadResult = cloudinaryConfig.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
-            boolean isDeleted = uploadedFile.delete();
-
-            if (isDeleted){
-                System.out.println("File successfully deleted");
-            }else
-                System.out.println("File doesn't exist");
-            return  uploadResult.get("url").toString();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        modelMap.addAttribute("product", product);
+        modelMap.addAttribute("relatedProducts", productService.findRelatedProductsByName(product.getName(), product.getId()));
+        modelMap.addAttribute("evaluations", evaluations);
+        modelMap.addAttribute("countEvaluation", CollectionUtils.isEmpty(evaluations) ? 0 : evaluations.size());
+        modelMap.addAttribute("averageRate", CollectionUtils.isEmpty(evaluations) ? 0 : evaluations.stream().map(Evaluation::getRate)
+                .reduce(0, Integer::sum) * 1.0 / evaluations.size());
+        modelMap.addAttribute("countRate1", evaluationService.countByRate(1, id)) ;
+        modelMap.addAttribute("countRate2", evaluationService.countByRate(2, id));
+        modelMap.addAttribute("countRate3", evaluationService.countByRate(3, id));
+        modelMap.addAttribute("countRate4", evaluationService.countByRate(4, id));
+        modelMap.addAttribute("countRate5", evaluationService.countByRate(5, id));
+        return "client/product-detail";
     }
 
-    private File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return convFile;
+    @GetMapping("/all")
+    public String getAllProduct(ModelMap modelMap) {
+        modelMap.addAttribute("categories", categoryService.findAll());;
+        return "client/product-item";
     }
 
 }

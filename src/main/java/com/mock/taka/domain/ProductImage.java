@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -16,8 +17,9 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class ProductImage {
+public class ProductImage implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,7 +32,7 @@ public class ProductImage {
     @Column(name = "url")
     String url;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     Product product;
 
@@ -46,5 +48,14 @@ public class ProductImage {
     Date deletedDate;
 
     @Column(name = "status")
-    String status;
+    boolean status;
+
+    @Override
+    public String toString() {
+        return "ProductImage{" +
+                "imageId='" + imageId + '\'' +
+                ", imageName='" + imageName + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

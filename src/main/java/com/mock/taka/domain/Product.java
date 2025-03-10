@@ -1,8 +1,12 @@
 package com.mock.taka.domain;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,13 +17,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "products")
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+@Getter
+@Setter
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@EntityListeners(AuditingEntityListener.class)
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.UUID)
@@ -52,22 +57,59 @@ public class Product {
     @Column(name = "deleted_date")
     Date deletedDate;
 
-    @Column(name = "status")
-    String status;
 
-    @ManyToOne
+    @Column(name = "is_deleted")
+    boolean deleted = false;
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+        // Cập nhật deletedDate khi soft delete
+        if (deleted) {
+            this.deletedDate = new Date();
+        }
+    }
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     Category category;
 
-    @OneToMany(mappedBy = "product")
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "store_id")
+    Store store;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     List<ProductVariant> productVariants;
 
-    @OneToMany(mappedBy = "product")
-    List<ProductImage> productImage;
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    List<ProductImage> productImages;
 
-    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     List<OrderDetail> orderDetails;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     List<Evaluation> evaluations;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", image='" + image + '\'' +
+                ", description='" + description + '\'' +
+                ", deleted=" + deleted +
+                ", category=" + category +
+                ", productVariants=" + productVariants +
+                ", productImage=" + productImages +
+                ", orderDetails=" + orderDetails +
+                ", evaluations=" + evaluations +
+                '}';
+    }
 }

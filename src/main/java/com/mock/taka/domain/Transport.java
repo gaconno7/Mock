@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -17,8 +18,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Transport {
+public class Transport implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -51,7 +53,7 @@ public class Transport {
     Date deletedDate;
 
     @Column(name = "status")
-    String status;
+    boolean status;
 
     @OneToMany(mappedBy = "transport")
     List<Order> orders;
