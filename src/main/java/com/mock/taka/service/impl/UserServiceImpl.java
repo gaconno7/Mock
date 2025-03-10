@@ -4,6 +4,7 @@ import com.mock.taka.domain.Role;
 import com.mock.taka.domain.User;
 import com.mock.taka.dto.UserUpdateInformationRequest;
 import com.mock.taka.dto.UserUpdatePasswordRequest;
+import com.mock.taka.repository.RoleRepository;
 import com.mock.taka.repository.UserRepository;
 import com.mock.taka.service.UserService;
 import lombok.AccessLevel;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
     CloudinaryService cloudinaryService;
+    RoleRepository roleRepository;
 
     @Override
     public long getCountUser() {
@@ -29,8 +31,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        var role = roleRepository.findByName("ROLE_USER").orElse(null);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setStatus(true);
+        user.setRole(role);
         user.setAvatar("https://icon-library.com/images/avatar-icon-png/avatar-icon-png-2.jpg");
         return userRepository.save(user);
     }
