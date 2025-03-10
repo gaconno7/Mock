@@ -1,28 +1,20 @@
-//package com.mock.taka.controller;
-//
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.GetMapping;
-//
-//import com.mock.taka.service.UserService;
-//
-//@Controller
-//public class UserController {
-//
-//    private final UserService userService;
-//
-//    public UserController(UserService userService) {
-//        this.userService = userService;
-//    }
-//
-//    @GetMapping("/")
-//    public String getHomePage() {
-//        return "admin/dashboard/show";
-//    }
-//
-//    @GetMapping("/admin")
-//    public String getCreateUserPage() {
-//        System.out.println(">>>>>>>>>>>>>>>>" + userService.getCountUser());
-//        return "admin/dashboard/show";
-//    }
-//
-//}
+package com.mock.taka.controller;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
+@RequestMapping("/user")
+public class UserController {
+
+    @GetMapping("/profile")
+    public String getProfile() {
+        return "client/profile";
+    }
+}

@@ -16,7 +16,6 @@ body {
 
 .main-content {
     display: flex;
-    max-width: 900px; /* Giới hạn chiều rộng */
     width: 100%;
     border-radius: 10px;
     overflow: hidden;

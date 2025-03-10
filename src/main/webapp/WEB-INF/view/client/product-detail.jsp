@@ -35,6 +35,7 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <c:if test="${not empty sessionScope.user}" >
                     <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                    <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
                 </c:if>
                 <c:if test="${empty sessionScope.user}" >
                     <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>

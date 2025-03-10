@@ -15,7 +15,7 @@
 
 <div class="main-content">
     <div class="image-section">
-        <img src="/api/placeholder/300/300" alt="Shopping cart with smartphone and shopping bags">
+        <img src="https://res.cloudinary.com/dxsbwkbnb/image/upload/v1741534290/banner/vqk8hmr5masuya5jygac.jpg" alt="Shopping cart with smartphone and shopping bags">
     </div>
     <form class="form-section" action="<c:url value="/login"/> " method="post">
         <h1 class="form-title">Đăng nhập</h1>
