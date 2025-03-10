@@ -26,15 +26,15 @@ public class ProductApiController {
 
     @GetMapping
     public ResponseEntity<Page<Product>> getProducts(
-            @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "8") int pageSize,
+            @RequestParam(name = "page",defaultValue = "1") int pageNum,
+            @RequestParam(name = "size",defaultValue = "8") int pageSize,
             @RequestParam(required = false) String categoryId,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String searchValue,
             @RequestParam(defaultValue = "0", required = false) double minPrice,
             @RequestParam(defaultValue = "100000000", required = false) double maxPrice) {
 
-        Page<Product> products = productService.findProductByFilter(pageSize, pageNum, categoryId, minPrice, maxPrice, sortBy, searchValue);
+        Page<Product> products = productService.findProductByFilter(pageSize, pageNum + 1, categoryId, minPrice, maxPrice, sortBy, searchValue);
         return ResponseEntity.ok(products);
     }
 }

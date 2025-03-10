@@ -34,6 +34,7 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <c:if test="${not empty sessionScope.user}" >
                     <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                    <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
                 </c:if>
                 <c:if test="${empty sessionScope.user}" >
                     <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
@@ -51,6 +52,7 @@
         <h3>Danh mục</h3>
         <div class="list-container">
             <ul class="expandable-list">
+                <li><a href="#" onclick="getAll()">Tất cả</a></li>
                 <c:forEach var="item" items="${categories}">
                     <li><a href="#" onclick="setCategory(`${item.id}`)" class="category" id="category-id-${item.id}">${item.name} (${item.products.size()}+)</a></li>
                 </c:forEach>
@@ -81,7 +83,7 @@
                 <span>Sắp xếp theo:</span>
                 <select onchange="setSortBy(this.value)">
                     <option value="latest">Mới nhất</option>
-                    <option value="popularity">Phổ biến</option>
+                    <option value="cheapest">Rẻ nhất</option>
                     <option value="best-rating">Đánh giá</option>
                 </select>
             </div>
@@ -139,6 +141,11 @@
         $("#search-value").val("");
     }
 
+    function getAll() {
+        removeAllValue();
+        loadProducts(0);
+    }
+
     function renderRating(evaluations) {
         let totalRate = 0;
 
@@ -178,8 +185,6 @@
             data.searchValue = searchValue;
         }
 
-
-
         console.log(data)
         $.ajax({
             url: '/api/products',  // Thay đổi URL endpoint phù hợp
@@ -203,14 +208,12 @@
                             + '  </div>'
                             + '  </div>'
                             + '  <div class="product-info">'
-                            + '     <h4 class="product-name">'+item.name+'</h4>'
+                            + '     <h4 class="product-name ellipsis">'+item.name+'</h4>'
                             + '     <div class="product-price">'
                             + '           <span class="current-price">'+item.price+'</span>'
                             + '           <span class="original-price">'+item.discountPrice+'</span>'
                             + '     </div>'
-                            + '     <div class="product-rating">'
-                            + '          ★★★★★ <span>(65)</span>'
-                            + '     </div>'
+                            + renderRating(item.evaluations)
                             + '     <button class="btn btn-primary">'
                             + '         Thêm vào giỏ hàng   <i class="bi bi-cart"></i>'
                             + '     </button>'

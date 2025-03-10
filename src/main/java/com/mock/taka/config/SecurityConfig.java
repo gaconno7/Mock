@@ -47,12 +47,20 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
         http.csrf(csrf->csrf.disable()).cors(cors->cors.disable())
-                .authorizeHttpRequests(req->req.requestMatchers("/**").permitAll())
+                .authorizeHttpRequests(req-> {
+                        req.requestMatchers("/admin/**").hasRole("ADMIN");
+                        req.requestMatchers("/user/**").hasRole("USER");
+                        req.requestMatchers("/**", "/api/**").permitAll();
+                        req.anyRequest().authenticated();})
                 .formLogin(form->form.loginPage("/login")
                         .loginProcessingUrl("/login")
                         .failureHandler(customAuthenticationFailureHandler())
                         .successHandler(successHandler))
-                .logout(logout->logout.permitAll());
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
+                );
 
         return http.build();
     }

@@ -12,11 +12,13 @@
 
 <div class="main-content">
     <div class="image-section">
-        <img src="/api/placeholder/300/300" alt="Shopping cart with smartphone and shopping bags">
+        <img src="https://res.cloudinary.com/dxsbwkbnb/image/upload/v1741534290/banner/vqk8hmr5masuya5jygac.jpg" alt="Shopping cart with smartphone and shopping bags">
     </div>
     <form class="form-section" method="post" action="<c:url value="/register"/> ">
         <h1 class="form-title">Đăng ký</h1>
-        <p class="form-subtitle">Enter your details below</p>
+        <c:if test="${not empty errorMessage}">
+            <p class="form-subtitle">${errorMessage}</p>
+        </c:if>
 
         <div class="form-control">
             <input type="text" placeholder="Họ và tên" name="full-name" required>

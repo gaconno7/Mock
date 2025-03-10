@@ -273,6 +273,12 @@ header {
     outline: none;
 }
 
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .search-btn {
     position: absolute;
     right: 10px;

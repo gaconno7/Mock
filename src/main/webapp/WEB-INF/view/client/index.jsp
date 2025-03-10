@@ -57,7 +57,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      width: 150px;
+      width: 19vh !important;
     }
 
   </style>
@@ -81,6 +81,7 @@
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <c:if test="${not empty sessionScope.user}" >
           <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+          <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
         </c:if>
         <c:if test="${empty sessionScope.user}" >
           <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
@@ -138,35 +139,38 @@
         </div>
       </div>
     </div>
-    <div class="featured mt-5">
+    <div class="d-flex justify-content-between align-items-center featured mt-5">
       <h2 class="title border-start">Category</h2>
+      <div class="d-flex">
+        <button id="scrollLeftCategory" class="btn btn-dark mr-3">←</button>
+        <button id="scrollRightCategory" class="btn btn-dark">→</button>
     </div>
-    <div class="row mt-5">
-      <c:forEach items="${categories}" var="item">
-      <div class="col-2 mt-2">
-        <div class="card" style="overflow: hidden;">
-          <img
-                  src="${item.image}"
-                  class="rounded" alt="...">
-          <div class="card-body">
-            <a href="" class="card-title text-center ellipsis">${item.name}</a>
+    </div>
+
+    <div class="row mt-5 scroll-container" id="scrollContainerCategory">
+      <div class="row flex-nowrap">
+        <c:forEach items="${categories}" var="item">
+        <div class="ml-3">
+          <div class="card" style="overflow: hidden; width: 20vh;">
+            <img src="${item.image}" class="rounded" alt="..." style="object-fit: cover">
+
+              <a href="" class="card-title text-center ellipsis p-2 mt-2">${item.name}</a>
+
           </div>
         </div>
-      </div>
       </c:forEach>
+      </div>
     </div>
 
     <div class="container mt-5">
 
-      <!-- Nút bấm cuộn -->
       <div class="d-flex justify-content-between my-3">
-        <button id="scrollLeft" class="btn btn-dark">←</button>
+        <button id="scrollLeftNew" class="btn btn-dark">←</button>
         <h2 class="text-center">Sản phẩm mới</h2>
-        <button id="scrollRight" class="btn btn-dark">→</button>
+        <button id="scrollRightNew" class="btn btn-dark">→</button>
       </div>
 
-      <!-- Danh sách sản phẩm -->
-      <div class="scroll-container" id="scrollContainer">
+      <div class="scroll-container" id="scrollContainerNew">
         <div class="row flex-nowrap">
           <c:forEach var="item" items="${listTopProductByCreatedDate}">
           <div class="col-md-3">
@@ -270,13 +274,13 @@
 
       <!-- Nút bấm cuộn -->
       <div class="d-flex justify-content-between my-3">
-        <button id="scrollLeft" class="btn btn-dark">←</button>
-        <h2 class="text-center">Sản phẩm mới</h2>
-        <button id="scrollRight" class="btn btn-dark">→</button>
+        <button id="scrollLeftSell" class="btn btn-dark">←</button>
+        <h2 class="text-center">Bán chạy</h2>
+        <button id="scrollRightSell" class="btn btn-dark">→</button>
       </div>
 
       <!-- Danh sách sản phẩm -->
-      <div class="scroll-container" id="scrollContainer">
+      <div class="scroll-container" id="scrollContainerSell">
         <div class="row flex-nowrap">
           <c:forEach var="item" items="${listSellingProducts}">
           <div class="col-md-3">
@@ -323,7 +327,6 @@
 
 
 <script>
-  // Add heart favorite functionality
   document.querySelectorAll('.action-button:first-child').forEach(button => {
     button.addEventListener('click', function () {
       const svg = this.querySelector('svg');
@@ -348,16 +351,40 @@
 </script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const scrollContainer = document.getElementById("scrollContainer");
-    const btnLeft = document.getElementById("scrollLeft");
-    const btnRight = document.getElementById("scrollRight");
+    const scrollContainerNew = document.getElementById("scrollContainerNew");
+    const btnLeftNew = document.getElementById("scrollLeftNew");
+    const btnRightNew = document.getElementById("scrollRightNew");
 
-    btnLeft.addEventListener("click", () => {
-      scrollContainer.scrollBy({ left: -300, behavior: "smooth" });
+    btnLeftNew.addEventListener("click", () => {
+      scrollContainerNew.scrollBy({ left: -300, behavior: "smooth" });
     });
 
-    btnRight.addEventListener("click", () => {
-      scrollContainer.scrollBy({ left: 300, behavior: "smooth" });
+    btnRightNew.addEventListener("click", () => {
+      scrollContainerNew.scrollBy({ left: 300, behavior: "smooth" });
+    });
+
+    const scrollContainerSell = document.getElementById("scrollContainerSell");
+    const btnLeftSell = document.getElementById("scrollLeftSell");
+    const btnRightSell = document.getElementById("scrollRightSell");
+
+    btnLeftSell.addEventListener("click", () => {
+      scrollContainerSell.scrollBy({ left: -300, behavior: "smooth" });
+    });
+
+    btnRightSell.addEventListener("click", () => {
+      scrollContainerSell.scrollBy({ left: 300, behavior: "smooth" });
+    });
+
+    const scrollContainerCategory = document.getElementById("scrollContainerCategory");
+    const btnLeftCategory = document.getElementById("scrollLeftCategory");
+    const btnRightCategory = document.getElementById("scrollRightCategory");
+
+    btnLeftCategory.addEventListener("click", () => {
+      scrollContainerCategory.scrollBy({ left: -300, behavior: "smooth" });
+    });
+
+    btnRightCategory.addEventListener("click", () => {
+      scrollContainerCategory.scrollBy({ left: 300, behavior: "smooth" });
     });
   });
 
