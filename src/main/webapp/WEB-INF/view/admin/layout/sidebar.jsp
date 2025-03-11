@@ -15,7 +15,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item ${activePage == 'admin' ? 'active' : ''}">
                 <a class="nav-link" href="/admin">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -25,7 +25,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item -->
-            <li class="nav-item">
+            <li class="nav-item ${activePage == 'user' ? 'active' : ''}">
                 <a class="nav-link" href="/admin/user">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Quản lí người dùng</span></a>
@@ -35,15 +35,20 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item -->
-            <li class="nav-item">
+            <li class="nav-item ${activePage == 'store' ? 'active' : ''}">
                 <a class="nav-link" href="/admin/store">
                     <i class="fas fa-fw fa-laptop"></i>
                     <span>Quản lí cửa hàng</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ${activePage == 'product' ? 'active' : ''}">
                 <a class="nav-link" href="/admin/product">
                     <i class="fas fa-fw fa-laptop"></i>
                     <span>Quản lí sản phẩm</span></a>
+            </li>
+            <li class="nav-item ${activePage == 'category' ? 'active' : ''}">
+                <a class="nav-link" href="/admin/category">
+                    <i class="fas fa-fw fa-laptop"></i>
+                    <span>Quản lí loại sản phẩm</span></a>
             </li>
 
             <!-- Divider -->

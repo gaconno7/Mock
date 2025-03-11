@@ -1,6 +1,8 @@
 package com.mock.taka.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,15 +30,19 @@ public class Store  implements Serializable {
     String id;
 
     @Column(name = "store_name")
+    @NotNull
+    @NotEmpty(message = "Tên cửa hàng không được để trống")
     String name;
 
     @Column(name = "image")
     String image;
 
     @Column(name = "description", columnDefinition = "TEXT")
+    @NotNull
+    @NotEmpty(message = "Miêu tả không được để trống")
     String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     User user;
 

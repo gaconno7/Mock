@@ -43,74 +43,128 @@
 
                                     <!-- Message Content -->
                                     <jsp:include page="../layout/message.jsp" />
-                                    <!-- End of Message Content -->
 
-                                    <!-- DataTales Example -->
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
                                             <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm</h6>
                                         </div>
                                         <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered" id="dataTable" width="100%"
-                                                    cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>STT</th>
-                                                            <th>Tên</th>
-                                                            <th>Giá</th>
-                                                            <th>Cửa hàng</th>
-                                                            <th>Hành động</th>
 
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <c:forEach var="product" items="${products}" varStatus="status">
-                                                            <tr>
-                                                                <th>${status.index + 1}</th>
-                                                                <td>${product.name}</td>
-                                                                <td>
-                                                                    <fmt:formatNumber type="number"
-                                                                        value="${product.price}" /> đ
-                                                                </td>
-                                                                <td>${product.store.name}</td>
-                                                                <td>
-                                                                    <a class="btn btn-success"
-                                                                        href="/admin/product/${product.id}">Xem thêm</a>
-                                                                    <a class="btn btn-warning"
-                                                                        href="/admin/product/update/${product.id}">Cập
-                                                                        nhật</a>
-                                                                    <a class="btn btn-danger" href="#"
-                                                                        data-toggle="modal" data-target="#deleteModal"
-                                                                        data-entity-id="${product.id}"
-                                                                        data-entity-name="${product.name}"> Xoá
-                                                                    </a>
-                                                                </td>
+                                            <div class="row mb-4">
+                                                <div class="col-md-6">
+                                                    <c:choose>
+                                                        <c:when test="${not empty storeId}">
 
-                                                            </tr>
-                                                        </c:forEach>
-                                                    </tbody>
-                                                </table>
-
-                                                <!-- Pagination -->
-
+                                                            <form action="/admin/store/${storeId}/products" method="get"
+                                                                class="form-inline">
+                                                                <div class="form-group mr-2">
+                                                                    <label for="categoryId" class="mr-2">Lọc theo danh
+                                                                        mục:</label>
+                                                                    <select name="categoryId" id="categoryId"
+                                                                        class="form-control">
+                                                                        <option value="">-- Tất cả danh mục --</option>
+                                                                        <c:forEach var="cat" items="${categories}">
+                                                                            <option value="${cat.id}" ${cat.id eq
+                                                                                selectedCategoryId ? 'selected' : '' }>
+                                                                                ${cat.name}
+                                                                            </option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Lọc</button>
+                                                                <a href="/admin/store/${storeId}/products"
+                                                                    class="btn btn-secondary ml-2">Xóa bộ lọc</a>
+                                                            </form>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <form action="/admin/product/filter" method="get"
+                                                                class="form-inline">
+                                                                <div class="form-group mr-2">
+                                                                    <label for="categoryId" class="mr-2">Lọc theo danh
+                                                                        mục:</label>
+                                                                    <select name="categoryId" id="categoryId"
+                                                                        class="form-control">
+                                                                        <option value="">-- Tất cả danh mục --</option>
+                                                                        <c:forEach var="cat" items="${categories}">
+                                                                            <option value="${cat.id}" ${cat.id eq
+                                                                                selectedCategoryId ? 'selected' : '' }>
+                                                                                ${cat.name}
+                                                                            </option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Lọc</button>
+                                                                <a href="/admin/product"
+                                                                    class="btn btn-secondary ml-2">Xóa bộ lọc</a>
+                                                            </form>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%"
+                                                cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>STT</th>
+                                                        <th>Tên</th>
+                                                        <th>Giá</th>
+                                                        <th>Cửa hàng</th>
+                                                        <th>Loại sản phẩm</th>
+                                                        <th>Hành động</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach var="product" items="${products}" varStatus="status">
+                                                        <tr>
+                                                            <th>${status.index + 1}</th>
+                                                            <td>${product.name}</td>
+                                                            <td>
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${product.price}" /> đ
+                                                            </td>
+                                                            <td>${product.store.name}</td>
+                                                            <td>${product.category.name}</td>
+                                                            <td>
+                                                                <a class="btn btn-success"
+                                                                    href="/admin/product/${product.id}">Xem thêm</a>
+                                                                <a class="btn btn-warning"
+                                                                    href="/admin/product/update/${product.id}">Cập
+                                                                    nhật</a>
+                                                                <a class="btn btn-danger" href="#" data-toggle="modal"
+                                                                    data-target="#deleteModal"
+                                                                    data-entity-id="${product.id}"
+                                                                    data-entity-name="${product.name}"> Xoá
+                                                                </a>
+                                                            </td>
+
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
                                     </div>
-
                                 </div>
-                                <!-- /.container-fluid -->
-
 
                             </div>
-                            <!-- End of Main Content -->
+                            <!-- /.container-fluid -->
 
-                            <!-- Footer -->
-                            <jsp:include page="../layout/footer.jsp" />
-                            <!-- End of Footer -->
 
                         </div>
-                        <!-- End of Content Wrapper -->
+                        <!-- End of Main Content -->
+
+                        <!-- Footer -->
+                        <jsp:include page="../layout/footer.jsp" />
+                        <!-- End of Footer -->
+
+                    </div>
+                    <!-- End of Content Wrapper -->
 
                     </div>
                     <!-- End of Page Wrapper -->

@@ -5,12 +5,64 @@
             <!DOCTYPE html>
             <html lang="en">
             <script>
-                $(document).ready(() => {
-                    const imageFile = $("#imageFile");
-                    imageFile.change(function (e) {
-                        const imgURL = URL.createObjectURL(e.target.files[0]);
-                        $("#avatarPreview").attr("src", imgURL);
-                        $("#avatarPreview").css({ "display": "block" });
+                document.addEventListener('DOMContentLoaded', function () {
+                    const imageInput = document.getElementById('imageFile');
+                    const previewContainer = document.getElementById('imagePreviewContainer');
+
+                    // Thêm sự kiện lắng nghe khi người dùng chọn file
+                    imageInput.addEventListener('change', function () {
+                        // Xóa các preview trước đó
+                        previewContainer.innerHTML = '';
+
+                        // Kiểm tra nếu có file được chọn
+                        if (this.files && this.files.length > 0) {
+                            for (let i = 0; i < this.files.length; i++) {
+                                const file = this.files[i];
+
+                                // Đảm bảo file là hình ảnh
+                                if (!file.type.match('image.*')) {
+                                    continue;
+                                }
+
+                                // Tạo container cho mỗi ảnh preview
+                                const previewWrapper = document.createElement('div');
+                                previewWrapper.className = 'preview-item me-2 mb-2 position-relative';
+                                previewWrapper.style.width = '150px';
+
+                                // Tạo phần tử hình ảnh
+                                const img = document.createElement('img');
+                                img.className = 'img-fluid rounded';
+                                img.style.maxHeight = '150px';
+                                img.style.objectFit = 'cover';
+
+                                // Tạo nút xóa
+                                const removeBtn = document.createElement('button');
+                                removeBtn.className = 'btn btn-sm btn-danger position-absolute';
+                                removeBtn.innerHTML = '&times;';
+                                removeBtn.style.top = '5px';
+                                removeBtn.style.right = '5px';
+                                removeBtn.style.padding = '0 6px';
+
+                                // Thêm chức năng xóa
+                                removeBtn.addEventListener('click', function () {
+                                    previewWrapper.remove();
+                                    // Lưu ý: Điều này không xóa file khỏi input
+                                    // Để làm điều đó, bạn cần một giải pháp phức tạp hơn
+                                });
+
+                                // Đọc file hình ảnh để tạo preview
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    img.src = e.target.result;
+                                };
+                                reader.readAsDataURL(file);
+
+                                // Thêm các phần tử vào DOM
+                                previewWrapper.appendChild(img);
+                                previewWrapper.appendChild(removeBtn);
+                                previewContainer.appendChild(previewWrapper);
+                            }
+                        }
                     });
                 }); 
             </script>
@@ -121,12 +173,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row justify-content-md-center">
-                                                        <label for="storeId"
-                                                            class="col-md-4 col-form-label">Store:</label>
+                                                        <label for="storeId" class="col-md-4 col-form-label">Cửa
+                                                            hàng:</label>
                                                         <div class="col-md-8">
                                                             <select name="storeId" id="storeId"
                                                                 class="form-control ${not empty errorStore ? 'is-invalid' : ''}">
-                                                                <option value="">Select Store</option>
+                                                                <option value="">Chọn cửa hàng</option>
                                                                 <c:forEach items="${stores}" var="store">
                                                                     <option value="${store.id}" ${newProduct.store
                                                                         !=null && newProduct.store.id==store.id
@@ -138,8 +190,24 @@
                                                             ${errorStore}
                                                         </div>
                                                     </div>
-
-
+                                                    <div class="form-group row justify-content-md-center">
+                                                        <label for="categoryId" class="col-md-4 col-form-label">Loại sản
+                                                            phẩm:</label>
+                                                        <div class="col-md-8">
+                                                            <select name="categoryId" id="categoryId"
+                                                                class="form-control ${not empty errorCategory ? 'is-invalid' : ''}">
+                                                                <option value="">Chọn loại sản phẩm</option>
+                                                                <c:forEach items="${category}" var="category">
+                                                                    <option value="${category.id}" ${newProduct.category
+                                                                        !=null && newProduct.category.id==category.id
+                                                                        ? 'selected' : '' }>
+                                                                        ${category.name}
+                                                                    </option>
+                                                                </c:forEach>
+                                                            </select>
+                                                            ${errorCategory}
+                                                        </div>
+                                                    </div>
 
                                                     <div class="form-group row justify-content-md-center">
                                                         <label for="detailDesc" class="col-md-4 col-form-label">Mô tả
@@ -154,24 +222,18 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row justify-content-md-center">
-                                                        <label for="avatarFile" class="col-md-4 col-form-label">Hình
+                                                        <label for="imageFile" class="col-md-4 col-form-label">Hình
                                                             ảnh:</label>
                                                         <div class="col-md-8">
-                                                            <input class="form-control" type="file" id="avatarFile"
-                                                                accept=".png, .jpg, .jpeg" name="hoidanitFile" />
-                                                            <img style="max-height: 250px; display: none; margin-top: 10px;"
-                                                                alt="New Image Preview" id="avatarPreview" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group row justify-content-md-end">
-                                                        <div class="col-md-8 d-flex justify-content-center">
-                                                            <img style="max-height: 250px; display: none;" alt=""
-                                                                id="avatarPreview">
+                                                            <input class="form-control" type="file" id="imageFile"
+                                                                accept=".png, .jpg, .jpeg" name="imageFile" multiple />
+                                                            <small class="form-text text-muted">Bạn có thể chọn
+                                                                nhiều ảnh cùng lúc.</small>
+                                                            <div id="imagePreviewContainer"
+                                                                class="mt-3 d-flex flex-wrap"></div>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
 
                                             <div class="form-group row justify-content-md-center">
@@ -204,8 +266,8 @@
                 <!-- Modal Content -->
                 <jsp:include page="../layout/deleteModal.jsp">
                     <jsp:param name="entity" value="sản phẩm" />
-                    <jsp:param name="actionSubfolder" value="user" />
-                    <jsp:param name="modalAttribute" value="deleteUser" />
+                    <jsp:param name="actionSubfolder" value="imageFile" />
+                    <jsp:param name="modalAttribute" value="CreateimageFile" />
                 </jsp:include>
 
                 <!-- End of Page Wrapper -->

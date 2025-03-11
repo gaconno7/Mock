@@ -1,11 +1,15 @@
-package com.mock.taka.service;
+package com.mock.taka.admin.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
+
+import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
-import com.mock.taka.repository.ProductRepository;
+import com.mock.taka.admin.repository.ProductRepository;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -35,4 +39,17 @@ public class ProductService {
     public List<Product> findByStoreAndIsDeletedFalse(Store store) {
         return productRepository.findByStoreAndDeletedFalse(store);
     }
+    public List<Product> findByCategoryAndDeletedFalse(Category category) {
+        return productRepository.findByCategoryAndDeletedFalse(category);
+    }
+    public List<Product> findByStoreAndCategoryAndDeletedFalse(Store store, Category category) {
+        return productRepository.findByStoreAndCategoryAndDeletedFalse(store, category);
+    }
+    public List<Category> findCategoriesByStore(Store store) {
+    List<Product> products = findByStoreAndIsDeletedFalse(store);
+    return products.stream()
+            .map(Product::getCategory)
+            .distinct()
+            .collect(Collectors.toList());
+}
 }

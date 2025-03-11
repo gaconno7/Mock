@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,23 +32,31 @@ public class Product implements Serializable {
     @GeneratedValue(strategy= GenerationType.UUID)
     @Column(name="product_id")
     String id;
-
+    
     @Column(name = "product_name")
+    @NotNull
+    @NotEmpty(message = "Tên sản phẩm không được để trống")
     String name;
 
     @Column(name = "price")
+    @NotNull
+    @DecimalMin(value = "0", inclusive = false, message = "Giá phải lớn hơn 0")
     double price;
 
     @Column(name = "discount-price")
     double discountPrice;
     
     @Column(name = "quantity")
+    @NotNull
+    @Min(value = 1, message = "Số lượng cần lớn hơn hoặc bằng 1")
     int quantity;
 
     @Column(name = "image")
     String image;
 
     @Column(name = "description")
+    @NotNull
+    @NotEmpty(message = "Miêu tả không được để trống")
     String description;
     
     @CreatedDate

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -29,9 +31,13 @@ public class Category  implements Serializable {
     String id;
 
     @Column(name = "category_name")
+    @NotNull
+    @NotEmpty(message = "Tên loại sản phẩm không được để trống")
     String name;
 
     @Column(name = "description")
+    @NotNull
+    @NotEmpty(message = "Miêu tả không được để trống")
     String description;
 
     @CreatedDate
@@ -46,11 +52,19 @@ public class Category  implements Serializable {
     Date deletedDate;
 
     @Column(name = "status")
-    boolean status;
+    boolean status = true;
+    public void setStatus(boolean status) {
+        this.status = status;
+        // Cập nhật deletedDate khi soft delete
+        if (status == false) {
+            this.deletedDate = new Date();
+        }
+    }
 
     @Column(name = "image")
     String image;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     List<Product> products;
+
 }

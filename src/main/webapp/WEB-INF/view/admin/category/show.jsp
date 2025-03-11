@@ -34,10 +34,11 @@
 
                                     <!-- Page Heading -->
                                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                                        <h1 class="h3 mb-0 text-gray-800">Quản lí cửa hàng</h1>
-                                        <a href="/admin/store/create"
+                                        <h1 class="h3 mb-0 text-gray-800">Danh mục sản phẩm</h1>
+                                        <a href="/admin/category/create"
                                             class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm cửa hàng</a>
+                                                class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm loại sản
+                                            phẩm</a>
 
                                     </div>
 
@@ -48,7 +49,7 @@
                                     <!-- DataTales Example -->
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
-                                            <h6 class="m-0 font-weight-bold text-primary">Danh sách cửa hàng</h6>
+                                            <h6 class="m-0 font-weight-bold text-primary">Danh sách loại sản phẩm</h6>
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
@@ -58,30 +59,29 @@
                                                         <tr>
                                                             <th>STT</th>
                                                             <th>Tên</th>
-                                                            <th>Người sở hữu</th>
                                                             <th>Mô tả</th>
                                                             <th>Hành động</th>
 
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <c:forEach var="store" items="${store}" varStatus="status">
+                                                        <c:forEach var="category" items="${category}"
+                                                            varStatus="status">
                                                             <tr>
                                                                 <th>${status.index + 1}</th>
-                                                                <td>${store.name}</td>
-                                                                <td>${store.user.fullname}</td>
-                                                                <td>${store.description}</td>
+                                                                <td>${category.name}</td>
+                                                                <td>${category.description}</td>
                                                                 <td>
                                                                     <a class="btn btn-success"
-                                                                        href="/admin/store/${store.id}/products">Xem
+                                                                        href="/admin/category/${category.id}/products">Xem
                                                                         thêm</a>
                                                                     <a class="btn btn-warning"
-                                                                        href="/admin/store/update/${store.id}">Cập
+                                                                        href="/admin/category/update/${category.id}">Cập
                                                                         nhật</a>
                                                                     <a class="btn btn-danger" href="#"
                                                                         data-toggle="modal" data-target="#deleteModal"
-                                                                        data-entity-id="${store.id}"
-                                                                        data-entity-name="${store.name}"> Xoá
+                                                                        data-entity-id="${category.id}"
+                                                                        data-entity-name="${category.name}"> Xoá
                                                                     </a>
                                                                 </td>
 
@@ -116,8 +116,8 @@
                     <!-- Modal Content -->
                     <jsp:include page="../layout/deleteModal.jsp">
                         <jsp:param name="entity" value="sản phẩm" />
-                        <jsp:param name="actionSubfolder" value="store" />
-                        <jsp:param name="modalAttribute" value="deleteStore" />
+                        <jsp:param name="actionSubfolder" value="category" />
+                        <jsp:param name="modalAttribute" value="deleteCategory" />
                     </jsp:include>
 
                     <jsp:include page="../layout/foot.jsp" />

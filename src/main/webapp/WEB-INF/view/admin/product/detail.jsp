@@ -77,12 +77,26 @@
                                                         <tr>
                                                             <th>Ảnh sản phẩm</th>
                                                             <td>
-                                                                <c:if test="${empty product.image}">
+                                                                <c:if test="${empty productImages}">
                                                                     <span class="text-muted">(Chưa có)</span>
                                                                 </c:if>
-                                                                <c:if test="${not empty product.image}">
-                                                                    <img style="max-height: 250px; display: block;"
-                                                                        src="/images/product/${product.image}">
+                                                                <c:if test="${not empty productImages}">
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <div class="row">
+                                                                                <c:forEach items="${productImages}"
+                                                                                    var="image">
+                                                                                    <div class="col-md-3 mb-3">
+                                                                                        <div class="card">
+                                                                                            <img src="${image.url}"
+                                                                                                class="card-img-top"
+                                                                                                alt="Hình ảnh sản phẩm">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </c:forEach>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </c:if>
                                                             </td>
                                                         </tr>

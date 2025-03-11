@@ -138,6 +138,25 @@
                                                             ${errorStore}
                                                         </div>
                                                     </div>
+                                                    <div class="form-group row justify-content-md-center">
+                                                        <label for="categoryId" class="col-md-4 col-form-label">Loại sản
+                                                            phẩm:</label>
+                                                        <div class="col-md-8">
+                                                            <select name="categoryId" id="categoryId"
+                                                                class="form-control ${not empty errorCategory ? 'is-invalid' : ''}">
+                                                                <option value="">Chọn loại sản phẩm</option>
+                                                                <c:forEach items="${category}" var="category">
+                                                                    <option value="${category.id}" ${newProduct.category
+                                                                        !=null && newProduct.category.id==category.id
+                                                                        ? 'selected' : '' }>
+                                                                        ${category.name}
+                                                                    </option>
+                                                                </c:forEach>
+                                                            </select>
+                                                            ${errorCategory}
+                                                        </div>
+                                                    </div>
+
 
                                                     <div class="form-group row justify-content-md-center">
                                                         <label for="detailDesc" class="col-md-4 col-form-label">Mô tả
@@ -150,15 +169,37 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group row justify-content-md-center">
-                                                        <label for="avatarFile" class="col-md-4 col-form-label">Hình
-                                                            ảnh:</label>
-                                                        <div class="col-md-8">
-                                                            <input class="form-control" type="file" id="avatarFile"
-                                                                accept=".png, .jpg, .jpeg" name="hoidanitFile" />
-                                                            <img style="max-height: 250px; display: none; margin-top: 10px;"
-                                                                alt="New Image Preview" id="avatarPreview" />
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h4>Hình ảnh hiện tại</h4>
+                                                            <div class="row">
+                                                                <c:forEach items="${productImages}" var="image">
+                                                                    <div class="col-md-3 mb-3">
+                                                                        <div class="card">
+                                                                            <img src="${image.url}" class="card-img-top"
+                                                                                alt="Hình ảnh sản phẩm">
+                                                                            <div class="card-body">
+                                                                                <form
+                                                                                    action="${pageContext.request.contextPath}/admin/product/delete-image/${image.imageId}"
+                                                                                    method="post">
+                                                                                    <input type="hidden"
+                                                                                        name="productId"
+                                                                                        value="${newProduct.id}">
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-sm btn-danger">Xóa</button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </c:forEach>
+                                                            </div>
                                                         </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="imageFile">Tải lên thêm hình ảnh</label>
+                                                        <input type="file" class="form-control-file" id="imageFile"
+                                                            name="imageFile" multiple>
                                                     </div>
                                                 </div>
                                             </div>

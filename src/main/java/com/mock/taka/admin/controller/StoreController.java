@@ -1,4 +1,4 @@
-package com.mock.taka.controller;
+package com.mock.taka.admin.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,30 +10,38 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
-import com.mock.taka.service.ProductService;
-import com.mock.taka.service.StoreService;
+import com.mock.taka.admin.service.CategoryService;
+import com.mock.taka.admin.service.ProductService;
+import com.mock.taka.admin.service.StoreService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 @Controller
 public class StoreController {
     private final StoreService storeService;
     private final ProductService productService;
+    private final CategoryService categoryService;
 
-    public StoreController(StoreService storeService, ProductService productService) {
+    public StoreController(StoreService storeService, ProductService productService, CategoryService categoryService) {
         this.storeService = storeService;
         this.productService = productService;
+        this.categoryService = categoryService;
     }
     @GetMapping("/admin/store")
-    public String getStore(Model model) {
+    public String getStore(Model model, HttpServletRequest active) {
+        active.setAttribute("activePage", "store");
         List<Store> str = this.storeService.fetchStore();
         model.addAttribute("store", str);
         return "/admin/store/show";
     }
        @GetMapping("/admin/store/create")
-    public String getCreateStorePage(Model model) {
+    public String getCreateStorePage(Model model, HttpServletRequest active) {
+        active.setAttribute("activePage", "store");
         model.addAttribute("newStore", new Store());
         return "admin/store/create";
     }
@@ -53,7 +61,8 @@ public class StoreController {
         return "redirect:/admin/store";
     }
     @GetMapping("/admin/store/update/{id}")
-    public String getUpdateStorePage(Model model, @PathVariable String id) {
+    public String getUpdateStorePage(Model model, @PathVariable String id, HttpServletRequest active) {
+        active.setAttribute("activePage", "store");
         Optional<Store> currentStore = this.storeService.fetchStoreById(id);
         model.addAttribute("newStore", currentStore.get());
         return "admin/store/update";
@@ -80,7 +89,8 @@ public class StoreController {
         return "redirect:/admin/store";
     }
     @GetMapping("/admin/store/delete/{id}")
-    public String getDeleteStorePage(Model model, @PathVariable long id) {
+    public String getDeleteStorePage(Model model, @PathVariable long id, HttpServletRequest active) {
+        active.setAttribute("activePage", "store");
         model.addAttribute("id", id);
         model.addAttribute("newStore", new Store());
         return "admin/store/delete";
@@ -92,14 +102,44 @@ public class StoreController {
         return "redirect:/admin/store";
     }
     @GetMapping("/admin/store/{id}/products")
-public String getProductsByStore(Model model, @PathVariable String id) {
+public String getProductsByStore(
+        Model model, 
+        @PathVariable String id,
+        @RequestParam(required = false) String categoryId,
+        HttpServletRequest active) {
+    
+    active.setAttribute("activePage", "store");
     Optional<Store> store = storeService.fetchStoreById(id);
+    
     if (store.isPresent()) {
-        List<Product> products = productService.findByStoreAndIsDeletedFalse(store.get());
+        List<Product> products;
+        
+      
+        if (categoryId != null && !categoryId.isEmpty()) {
+            Optional<Category> category = categoryService.fetchCategoryById(categoryId);
+            if (category.isPresent()) {
+           
+                products = productService.findByStoreAndCategoryAndDeletedFalse(store.get(), category.get());
+                model.addAttribute("selectedCategoryId", categoryId);
+            } else {
+             
+                products = productService.findByStoreAndIsDeletedFalse(store.get());
+            }
+        } else {
+         
+            products = productService.findByStoreAndIsDeletedFalse(store.get());
+        }
+        
+        List<Category> storeCategories = productService.findCategoriesByStore(store.get());
+        
         model.addAttribute("products", products);
         model.addAttribute("storeName", store.get().getName());
+        model.addAttribute("categories", storeCategories);
+        model.addAttribute("storeId", id);
+        
         return "admin/product/show"; 
     }
+    
     return "redirect:/admin/store"; 
 }
 }
