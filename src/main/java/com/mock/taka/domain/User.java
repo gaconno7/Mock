@@ -67,4 +67,11 @@ public class User  implements Serializable {
     @JsonManagedReference(value = "user_wishlist")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<WishlistItem> wishlistItems;
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<CartItem> cartItems;
+
+    public User(long id) {
+        this.id = id;
+    }
 }

@@ -53,7 +53,7 @@
 </div>
 
 <!-- Product Section -->
-<div class="product-container">
+<!-- <div class="product-container">
     <div class="product-images">
         <div class="thumbnails">
             <c:forEach var="image" items="${product.productImages}" >
@@ -89,7 +89,57 @@
         </div>
 
     </div>
+</div> -->
+
+<div class="product-container">
+    <div class="product-images">
+        <div class="thumbnails">
+            <c:forEach var="image" items="${product.productImages}">
+                <div class="thumbnail">
+                    <img src="${image.url}" class="object-fit" onclick="changeImage('${image.url}')" width="70vh" height="70vh" alt="Image">
+                </div>
+            </c:forEach>
+        </div>
+        <div class="main-image">
+            <img id="main-product-image" class="object-fit" width="550vh" height="550vh" 
+                 src="${not empty product.productImages ? product.productImages[0].url : ''}" 
+                 alt="${product.name}">
+        </div>
+    </div>
+    
+    <div class="product-details">
+        <h1 class="product-title">${product.name}</h1>
+        <div class="price"><span id="product-price">${product.price}</span> VNĐ</div>
+        <div class="description">${product.description}</div>
+        <div class="divider"></div>
+
+        <!-- Chọn phiên bản sản phẩm -->
+        <div class="options-label">Đặc điểm:</div>
+        <div class="size-options">
+            <c:forEach var="variant" items="${product.productVariants}">
+                <div class="size-option" data-variant-id="${variant.productVariantId}">
+                    ${variant.attribute} - ${variant.value}
+                </div>
+            </c:forEach>
+        </div>
+
+        <!-- Số lượng -->
+        <div class="quantity">
+            <div class="quantity-input">
+                <button onclick="changeQuantity(-1)">-</button>
+                <input type="text" id="quantity" value="1">
+                <button onclick="changeQuantity(1)">+</button>
+            </div>
+        </div>
+
+        <!-- Nút thêm vào giỏ hàng -->
+        <button class="buy-now" onclick="addToCart('${product.id}')">Mua ngay</button>
+        <button class="wishlist"><i class="bi bi-heart"></i></button>
+    </div>
 </div>
+
+
+
 
 <!-- Customer Reviews Section -->
 <div class="reviews-section">
@@ -266,6 +316,65 @@
         </div>
     </div>
     <script>
+        $(document).ready(function () {
+            let selectedVariantId = null;
+        
+            // Chọn phiên bản sản phẩm
+            $(".size-option").click(function () {
+                $(".size-option").removeClass("selected");
+                $(this).addClass("selected");
+                selectedVariantId = $(this).data("variant-id");
+            });
+        
+            // Thay đổi ảnh chính khi chọn ảnh nhỏ
+            function changeImage(imageUrl) {
+                $("#main-product-image").attr("src", imageUrl);
+            }
+        
+            // Thay đổi số lượng
+            function changeQuantity(change) {
+                let quantityInput = $("#quantity");
+                let currentQuantity = parseInt(quantityInput.val());
+        
+                if (!isNaN(currentQuantity) && currentQuantity + change > 0) {
+                    quantityInput.val(currentQuantity + change);
+                }
+            }
+        
+            // Thêm vào giỏ hàng AJAX
+            function addToCart(productId) {
+                let quantity = $("#quantity").val();
+        
+                if (!selectedVariantId) {
+                    alert("Vui lòng chọn phiên bản sản phẩm!");
+                    return;
+                }
+        
+                $.ajax({
+                    url: "/user/cart/add",
+                    type: "POST",
+                    data: {
+                        productId: productId,
+                        productVariantId: selectedVariantId,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        alert(response.message);
+                        $("#totalCartPrice").text(response.totalCartPrice);
+                    },
+                    error: function () {
+                        alert("Lỗi khi thêm vào giỏ hàng!");
+                    }
+                });
+            }
+        
+            window.changeImage = changeImage;
+            window.changeQuantity = changeQuantity;
+            window.addToCart = addToCart;
+        });
+        
+
+
 
         $(document).ready(function() {
 

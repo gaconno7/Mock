@@ -12,11 +12,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 
 @Entity
@@ -25,30 +27,34 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    String id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "product_variant_id")
+    ProductVariant productVariant;
 
     @Column(nullable = false)
-    private Integer quantity;
+    Integer quantity;
 
     public double getTotalPrice() {
         return product.getPrice() * quantity;
     }
 
-    public String getTotalPriceFormat() {
-        DecimalFormat decimalFormat = new DecimalFormat("#,###.##");
-        return decimalFormat.format(getTotalPrice());
-    }
+    // public String getTotalPriceFormat() {
+    //     DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    //     return decimalFormat.format(getTotalPrice());
+    // }
 }
 

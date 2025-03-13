@@ -1,6 +1,7 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,135 +10,209 @@
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        .cart-container { max-width: 1000px; margin: auto; padding: 40px 20px; }
-        .cart-table th, .cart-table td { text-align: center; vertical-align: middle; padding: 15px; }
-        .cart-table img { width: 50px; }
-        .remove-btn { color: red; cursor: pointer; }
-        .quantity-control button { border: none; background: #ddd; padding: 5px 10px; cursor: pointer; }
-        .quantity-control input { width: 40px; text-align: center; border: none; }
+        body { background-color: #f8f9fa; }
+        .cart-container { max-width: 900px; margin: auto; padding: 20px; }
+        .cart-table img { width: 50px; margin-right: 10px; }
+        .cart-total { border: 1px solid #ddd; padding: 20px; border-radius: 10px; }
+        .btn-remove { color: red; font-size: 20px; text-decoration: none; cursor: pointer; }
+        .btn-remove:hover { color: darkred; }
+        .quantity-control { display: flex; align-items: center; }
+        .quantity-control button { width: 30px; height: 30px; border: none; background-color: #ddd; cursor: pointer; }
+        .quantity-control input { width: 40px; text-align: center; border: none; margin: 0 5px; }
     </style>
 </head>
 <body>
-    <div class="cart-container">
-        <h3>Shopping Cart</h3>
-        
-        <table class="table cart-table mt-3">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="cart-content">
-                <c:forEach var="item" items="${cartItems}">
-                    <tr>
-                        <td><img src="${item.product.image}" alt=""> ${item.product.name}</td>
-                        <td>$${item.product.price}</td>
-                        <td>
-                            <div class="quantity-control">
-                                <button class="update-quantity" data-id="${item.id}" data-change="-1">-</button>
-                                <input type="text" value="${item.quantity}" readonly>
-                                <button class="update-quantity" data-id="${item.id}" data-change="1">+</button>
-                            </div>
-                        </td>
-                        <!-- <td>$<span class="subtotal">${item.totalPrice}</span></td>
-                        <td><span class="remove-btn" data-id="${item.id}">&times;</span></td> -->
-                        <td>$<span class="subtotal" id="subtotal-${item.id}">${item.totalPriceFormat}</span></td>
-                        <td><span class="remove-btn" data-id="${item.id}">&times;</span></td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
 
-        <h5>Total: $<span id="totalPrice">${totalCartPrice}</span></h5>
+<div class="cart-container">
+    <h2 class="mb-4">Shopping Cart</h2>
+
+    <!-- Bảng sản phẩm -->
+    <table class="table cart-table">
+        <thead class="table-light">
+            <tr>
+                <th>Select</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        
+
+        <tbody>
+            <c:choose>
+                <c:when test="${not empty cartItems}">
+                    <c:forEach var="item" items="${cartItems}">
+                        <tr id="cart-item-${item.id}">
+                            <td>
+                                <input type="checkbox" class="cart-checkbox" name="cartItemCheckbox" value="${item.id}" onchange="updateTotalCart()">
+                            </td>
+
+                            <td>
+                                <img src="${item.product.image}" alt="Ảnh sản phẩm">
+                                <div>
+                                    <span>${item.product.name}</span>
+                                    <c:if test="${not empty item.productVariant}">
+                                        <br>
+                                        <small class="text-muted">
+                                            ${item.productVariant.attribute}: ${item.productVariant.value}
+                                        </small>
+                                    </c:if>
+                                </div>
+                            </td>
+
+                            <td><span id="price-${item.id}" class="price">${item.product.price}</span> VNĐ</td>
+                            
+                            <td>
+                                <div class="quantity-control">
+                                    <button onclick="updateCart('${item.id}', -1)">-</button>
+                                    <input type="text" id="quantity-${item.id}" value="${item.quantity}" readonly> 
+                                    <button onclick="updateCart('${item.id}', 1)">+</button>
+                                </div>
+                            </td>
+                            <td><span class="subtotal" id="subtotal-${item.id}">${item.product.price * item.quantity}</span><span>  VNĐ</span></td>
+                            <td><span class="btn-remove" onclick="removeFromCart('${item.id}')">&times;</span></td>
+                        </tr>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <tr>
+                        <td colspan="5" class="text-center">Your cart is empty!</td>
+                    </tr>
+                </c:otherwise>
+            </c:choose>
+        </tbody>        
+    </table>
+
+    <!-- Nút quay lại -->
+    <div class="d-flex justify-content-between">
+        <a href="shop.jsp" class="btn btn-outline-dark">Return To Shop</a>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            attachCartEvents();
-        });
-        
-        function attachCartEvents() {
-            $(document).off("click", ".update-quantity").on("click", ".update-quantity", function () {
-                let cartItemId = $(this).data("id");
-                let delta = parseInt($(this).data("change"));
-                let input = $(this).siblings("input");
-                let currentQuantity = parseInt(input.val());
-                let newQuantity = currentQuantity + delta;
-        
-                if (newQuantity < 1) {
-                    return;
-                }
-        
-                updateCart(cartItemId, newQuantity);
-            });
-        
-            $(document).off("click", ".remove-btn").on("click", ".remove-btn", function () {
-                let cartItemId = $(this).data("id");
-                removeCartItem(cartItemId);
-            });
-        }
-        
-        $(document).ready(function () {
-            $(".update-quantity").click(function () {
-                let cartItemId = $(this).data("id");
-                let delta = parseInt($(this).data("change"));
-                let input = $(this).siblings("input");
-                let currentQuantity = parseInt(input.val());
-                let newQuantity = currentQuantity + delta;
-        
-                if (newQuantity < 1) {
-                    return;
-                }
-        
-                updateCart(cartItemId, newQuantity);
-            });
-        
-            $(".remove-btn").click(function () {
-                let cartItemId = $(this).data("id");
-                removeCartItem(cartItemId);
-            });
-        });
-        
-        function updateCart(cartItemId, quantity) {
-            $.ajax({
-                url: "/cart/update",
-                type: "POST",
-                data: { cartItemId: cartItemId, quantity: quantity },
-                success: function (response) {
-                    $("#cart-content").html($(response).find("#cart-content").html());
-                    $("#totalPrice").text($(response).find("#totalPrice").text());
-                },
-                error: function (xhr) {
-                    alert("Cập nhật thất bại! " + xhr.responseText);
-                }
-            });
-        }
-        
-        function removeCartItem(cartItemId) {
-            $.ajax({
-                url: "/cart/remove",
-                type: "POST",
-                data: { cartItemId: cartItemId },
-                success: function (response) {
-                    $("#cart-content").html($(response).find("#cart-content").html());
-                    $("#totalPrice").text($(response).find("#totalPrice").text());
-                },
-                error: function (xhr) {
-                    alert("Xóa sản phẩm thất bại! " + xhr.responseText);
-                }
-            });
-        }
-        
-        
-    </script>
+    <!-- Mã giảm giá -->
+    <div class="d-flex mt-4">
+        <input type="text" class="form-control w-50 me-2" placeholder="Coupon Code">
+        <button class="btn btn-danger">Apply Coupon</button>
+    </div>
 
+    <!-- Tổng tiền -->
+    <div class="cart-total mt-4">
+        <h5>Cart Total</h5>
+        <!-- <p>Subtotal: <strong><span id="subtotal-price">${totalCartPrice}</span> VNĐ</strong></p> -->
+        <p>Shipping: <strong>Free</strong></p>
+        <p>Selected Total: <strong><span id="selectedTotalPrice">0 VNĐ</span></strong></p>
+        <h5>Total: <strong><span id="totalCartPrice">${totalCartPrice}</span> VNĐ</strong></h5>
+        <button type="button" class="btn btn-danger w-100" onclick="proceedToCheckout();">
+            Proceed to Checkout
+        </button>
+    </div>
+</div>
 
+<script>
+    function updateTotalCart() {
+        let selectedItems = [];
     
+        $("input[name='cartItemCheckbox']:checked").each(function () {
+            selectedItems.push($(this).val()); 
+        });
+    
+        console.log("Selected Items:", selectedItems); // Debug kiểm tra danh sách gửi đi
+    
+        $.ajax({
+            url: "/user/cart/updateTotal",
+            type: "POST",
+            data: { selectedItems: selectedItems.join(",") }, // Gửi như form data
+            success: function (response) {
+                console.log("Response từ server:", response);
+                $("#selectedTotalPrice").text(response.totalSelectedCartPrice + " VNĐ");
+            },
+            error: function (xhr) {
+                console.error("Lỗi khi cập nhật tổng tiền:", xhr.status, xhr.responseText);
+            }
+        });
+    }
+
+    function updateCart(cartItemId, change) {
+        let quantityInput = $('#quantity-' + cartItemId);
+
+        let newQuantity = parseInt(quantityInput.val().trim()) + change;
+
+        if (newQuantity < 1) return;
+
+        // 🔍 Kiểm tra ID của phần tử giá
+        let priceElement = $('#price-' + cartItemId);
+    
+        // 🛠️ Lấy giá sản phẩm
+        let priceText = priceElement.text().trim();
+    
+        let price = parseFloat(priceText.replace(/[^\d.]/g, "")); // Loại bỏ ký tự không phải số
+    
+        let subtotal = price * newQuantity;
+    
+        $.ajax({
+            url: "/user/cart/update",
+            type: "POST",
+            data: {
+                cartItemId: cartItemId,
+                quantity: newQuantity
+            },
+            success: function (response) {
+                quantityInput.val(newQuantity);
+                $('#subtotal-' + cartItemId).text(subtotal);
+                $("#totalCartPrice").text(response.totalCartPrice);
+
+                updateTotalCart();
+            },
+            error: function () {
+                alert("Lỗi khi cập nhật giỏ hàng!");
+            }
+        });
+    }
+    
+    function removeFromCart(cartItemId) {
+        $.ajax({
+            url: "/user/cart/remove",
+            type: "POST",
+            data: { cartItemId: cartItemId },
+            success: function () {
+                $("#cart-item-" + cartItemId).remove();
+            },
+            error: function () {
+                alert("Lỗi khi xóa sản phẩm khỏi giỏ hàng!");
+            }
+        });
+    }
+    
+    function proceedToCheckout() {
+        let selectedItems = [];
+        
+        $("input[name='cartItemCheckbox']:checked").each(function () {
+            selectedItems.push($(this).val());
+        });
+    
+        if (selectedItems.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+            return;
+        }
+    
+        $.ajax({
+            type: "POST",
+            url: "/user/cart/proceedToCheckout",
+            contentType: "application/json",
+            data: JSON.stringify({ selectedItems: selectedItems }),
+            success: function () {
+                window.location.href = "/order/process?selectedItems=" + selectedItems.join(",");
+            },
+            error: function () {
+                alert("Đã xảy ra lỗi, vui lòng thử lại!");
+            }
+        });
+    }
+    
+    
+</script>
+
 </body>
 </html>

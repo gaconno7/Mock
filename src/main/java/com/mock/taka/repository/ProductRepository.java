@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.mock.taka.domain.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String>{
@@ -25,6 +26,9 @@ public interface ProductRepository extends JpaRepository<Product, String>{
     @Query("SELECT p FROM Product p JOIN Evaluation e on e.product = p WHERE p.name LIKE CONCAT('%', :keyword, '%') AND p.id <> :productId")
     List<Product> findRelatedProductsByName(@Param("keyword") String keyword, @Param("productId") String productId);
 
-    @Query("SELECT p FROM Product p JOIN Evaluation e on e.product = p WHERE p.id = :productId")
+    // @Query("SELECT p FROM Product p JOIN Evaluation e on e.product = p WHERE p.id = :productId")
+    // Product findProductById(@Param("productId") String productId);
+
+    @Query("SELECT p FROM Product p WHERE p.id = :productId")
     Product findProductById(@Param("productId") String productId);
 }

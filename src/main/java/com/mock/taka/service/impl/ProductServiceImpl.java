@@ -16,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -39,6 +40,19 @@ public class ProductServiceImpl implements ProductService {
     public Product findById(String id) {
         return productRepository.findProductById(id);
     }
+
+    // public Product findById(String id) {
+    //     Optional<Product> product = productRepository.findById(id);
+        
+    //     if (product.isEmpty()) {
+    //         System.out.println("❌ Không tìm thấy sản phẩm với id: " + id);
+    //     } else {
+    //         System.out.println("✅ Tìm thấy sản phẩm: " + product.get().getName());
+    //     }
+    
+    //     return product.orElse(null);
+    // }
+    
 
     @Override
     public List<Product> findRelatedProductsByName(String name, String id) {
