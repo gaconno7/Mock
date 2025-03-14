@@ -1,4 +1,4 @@
-package com.mock.taka.admin.service.validator;
+package com.mock.taka.service.validator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

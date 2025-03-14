@@ -68,6 +68,9 @@
                                             <c:set var="errorDetailDesc">
                                                 <form:errors path="description" cssClass="invalid-feedback" />
                                             </c:set>
+                                            <c:set var="errorUser">
+                                                <form:errors path="user" cssClass="invalid-feedback" />
+                                            </c:set>
 
                                             <div class="form-group row">
                                                 <div class="col-md-6">
@@ -90,12 +93,40 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="form-group row justify-content-md-center">
+                                                        <label for="userId" class="col-md-4 col-form-label">Người
+                                                            dùng:</label>
+                                                        <div class="col-md-8">
+                                                            <c:choose>
+                                                                <c:when test="${isUserPreselected}">
+                                                                    <input type="text" class="form-control"
+                                                                        value="${newStore.user.fullname}" readonly />
+                                                                    <input type="hidden" name="userId"
+                                                                        value="${selectedUserId}" />
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <select name="userId" id="userId"
+                                                                        class="form-control ${not empty errorUser ? 'is-invalid' : ''}">
+                                                                        <option value="">Chọn người dùng</option>
+                                                                        <c:forEach items="${users}" var="user">
+                                                                            <option value="${user.id}" ${newStore.user
+                                                                                !=null && newStore.user.id==user.id
+                                                                                ? 'selected' : '' }>
+                                                                                ${user.fullname}
+                                                                            </option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <div class="invalid-feedback">${errorUser}</div>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="form-group row justify-content-md-center">
-                                                        <label for="detailDesc" class="col-md-4 col-form-label">Mô tả
+                                                        <label for="description" class="col-md-4 col-form-label">Mô tả
                                                             chi tiết:</label>
                                                         <div class="col-md-8">
-                                                            <form:textarea rows="10" type="text" id="detailDesc"
+                                                            <form:textarea rows="10" type="text" id="description"
                                                                 class="form-control ${not empty errorDetailDesc ? 'is-invalid' : ''}"
                                                                 path="description" />
                                                             ${errorDetailDesc}

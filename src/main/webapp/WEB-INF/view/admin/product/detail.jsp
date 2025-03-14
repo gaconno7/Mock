@@ -59,10 +59,6 @@
                                                     cellspacing="0">
                                                     <tbody>
                                                         <tr>
-                                                            <th class="col-md-3">ID</th>
-                                                            <td>${product.id}</td>
-                                                        </tr>
-                                                        <tr>
                                                             <th>Tên sản phẩm</th>
                                                             <td>${product.name}</td>
                                                         </tr>
@@ -72,6 +68,10 @@
                                                                 <fmt:formatNumber type="number"
                                                                     value="${product.price}" /> đ
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="col-md-3">Mô tả</th>
+                                                            <td>${product.description}</td>
                                                         </tr>
 
                                                         <tr>

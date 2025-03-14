@@ -1,10 +1,9 @@
-package com.mock.taka.admin.controller;
+package com.mock.taka.controller;
 
+import com.mock.taka.service.impl.CloudinaryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.mock.taka.admin.service.impl.CloudinaryService;
 
 import java.io.IOException;
 

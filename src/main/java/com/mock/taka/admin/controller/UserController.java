@@ -1,4 +1,4 @@
-package com.mock.taka.admin.controller;
+package com.mock.taka.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mock.taka.domain.Store;
 import com.mock.taka.domain.User;
-import com.mock.taka.admin.repository.StoreRepository;
-import com.mock.taka.admin.service.StoreService;
-import com.mock.taka.admin.service.UserService;
-import com.mock.taka.admin.service.impl.CloudinaryService;
+import com.mock.taka.repository.StoreRepository;
+import com.mock.taka.service.StoreService;
+import com.mock.taka.service.UserService;
+import com.mock.taka.service.impl.CloudinaryService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -87,6 +88,11 @@ public class UserController {
     public String postDeleteUserPage(Model model, @ModelAttribute("deleteUser") User user) {
         Long idUser = user.getId();
         User delUser = this.userService.getUserById(idUser);
+        if (delUser.getStore() != null) {
+            Store userStore = delUser.getStore();
+            userStore.setDeleted(true); 
+            this.storeService.createStore(userStore);
+        }
         delUser.setStatus(false);
         this.userService.handleSaveUser(delUser);
         // this.userService.deleteById(user.getId());
@@ -181,6 +187,11 @@ public class UserController {
     @PostMapping("/admin/user/restore")
     public String postRestoreUser(Model model, @ModelAttribute("restoreUser") User user) {
         User restoreUser = this.userService.getUserById(user.getId());
+        if (restoreUser.getStore() != null) {
+            Store userStore = restoreUser.getStore();
+            userStore.setDeleted(false);
+            this.storeService.createStore(userStore);
+        }
         restoreUser.setStatus(true);
         this.userService.handleSaveUser(restoreUser);
         return "redirect:/admin/user/trash";

@@ -95,7 +95,7 @@
                                                         <label for="detailDesc" class="col-md-4 col-form-label">Mô tả
                                                             chi tiết:</label>
                                                         <div class="col-md-8">
-                                                            <form:textarea rows="10" type="text" id="detailDesc"
+                                                            <form:textarea rows="10" type="text" id="description"
                                                                 class="form-control ${not empty errorDetailDesc ? 'is-invalid' : ''}"
                                                                 path="description" />
                                                             ${errorDetailDesc}

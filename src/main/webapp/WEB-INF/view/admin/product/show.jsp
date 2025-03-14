@@ -102,69 +102,70 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="dataTable" width="100%"
-                                                cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>STT</th>
-                                                        <th>Tên</th>
-                                                        <th>Giá</th>
-                                                        <th>Cửa hàng</th>
-                                                        <th>Loại sản phẩm</th>
-                                                        <th>Hành động</th>
 
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <c:forEach var="product" items="${products}" varStatus="status">
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
                                                         <tr>
-                                                            <th>${status.index + 1}</th>
-                                                            <td>${product.name}</td>
-                                                            <td>
-                                                                <fmt:formatNumber type="number"
-                                                                    value="${product.price}" /> đ
-                                                            </td>
-                                                            <td>${product.store.name}</td>
-                                                            <td>${product.category.name}</td>
-                                                            <td>
-                                                                <a class="btn btn-success"
-                                                                    href="/admin/product/${product.id}">Xem thêm</a>
-                                                                <a class="btn btn-warning"
-                                                                    href="/admin/product/update/${product.id}">Cập
-                                                                    nhật</a>
-                                                                <a class="btn btn-danger" href="#" data-toggle="modal"
-                                                                    data-target="#deleteModal"
-                                                                    data-entity-id="${product.id}"
-                                                                    data-entity-name="${product.name}"> Xoá
-                                                                </a>
-                                                            </td>
+                                                            <th>STT</th>
+                                                            <th>Tên</th>
+                                                            <th>Giá</th>
+                                                            <th>Cửa hàng</th>
+                                                            <th>Loại sản phẩm</th>
+                                                            <th>Hành động</th>
 
                                                         </tr>
-                                                    </c:forEach>
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach var="product" items="${products}" varStatus="status">
+                                                            <tr>
+                                                                <th>${status.index + 1}</th>
+                                                                <td>${product.name}</td>
+                                                                <td>
+                                                                    <fmt:formatNumber type="number"
+                                                                        value="${product.price}" />
+                                                                    đ
+                                                                </td>
+                                                                <td>${product.store.name}</td>
+                                                                <td>${product.category.name}</td>
+                                                                <td>
+                                                                    <a class="btn btn-success"
+                                                                        href="/admin/product/${product.id}">Xem thêm</a>
+                                                                    <a class="btn btn-warning"
+                                                                        href="/admin/product/update/${product.id}">Cập
+                                                                        nhật</a>
+                                                                    <a class="btn btn-danger" href="#"
+                                                                        data-toggle="modal" data-target="#deleteModal"
+                                                                        data-entity-id="${product.id}"
+                                                                        data-entity-name="${product.name}"> Xoá
+                                                                    </a>
+                                                                </td>
+
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
 
 
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
+                                <!-- /.container-fluid -->
+
 
                             </div>
-                            <!-- /.container-fluid -->
+                            <!-- End of Main Content -->
 
+                            <!-- Footer -->
+                            <jsp:include page="../layout/footer.jsp" />
+                            <!-- End of Footer -->
 
                         </div>
-                        <!-- End of Main Content -->
-
-                        <!-- Footer -->
-                        <jsp:include page="../layout/footer.jsp" />
-                        <!-- End of Footer -->
-
-                    </div>
-                    <!-- End of Content Wrapper -->
+                        <!-- End of Content Wrapper -->
 
                     </div>
                     <!-- End of Page Wrapper -->

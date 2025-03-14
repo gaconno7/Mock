@@ -4,6 +4,8 @@
 
             <!DOCTYPE html>
             <html lang="en">
+
+
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     const imageInput = document.getElementById('imageFile');
@@ -66,6 +68,21 @@
                     });
                 }); 
             </script>
+
+            <script>
+                function calculateDiscountedPrice() {
+                    let price = parseFloat(document.getElementById("price").value) || 0;
+                    let discountPercentage = parseFloat(document.getElementById("discountPercentage").value) || 0;
+
+                    // Tính giá sau khi giảm
+                    let discountedPrice = price - (price * discountPercentage / 100);
+
+                    // Hiển thị kết quả
+                    document.getElementById("discountPrice").value = discountedPrice.toFixed(2);
+                }
+            </script>
+
+
 
             <jsp:include page="../layout/head.jsp">
                 <jsp:param name="pageTitle" value="Thêm sản phẩm" />
@@ -161,6 +178,24 @@
                                                             ${errorPrice}
                                                         </div>
                                                     </div>
+                                                    <div class="form-group row justify-content-md-center">
+                                                        <label for="discountPercentage"
+                                                            class="col-md-4 col-form-label">Giảm giá (%):</label>
+                                                        <div class="col-md-8">
+                                                            <form:input min="0" max="100" type="number"
+                                                                id="discountPercentage" class="form-control"
+                                                                path="discountPrice"
+                                                                oninput="calculateDiscountedPrice()" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row justify-content-md-center">
+                                                        <label for="price" class="col-md-4 col-form-label">Giảm
+                                                            giá:</label>
+                                                        <div class="col-md-8">
+                                                            <input type="number" id="discountPrice"
+                                                                class="form-control" />
+                                                        </div>
+                                                    </div>
 
                                                     <div class="form-group row justify-content-md-center">
                                                         <label for="quantity" class="col-md-4 col-form-label">Số
@@ -210,14 +245,15 @@
                                                     </div>
 
                                                     <div class="form-group row justify-content-md-center">
-                                                        <label for="detailDesc" class="col-md-4 col-form-label">Mô tả
+                                                        <label for="content" class="col-md-4 col-form-label">Mô tả
                                                             chi tiết:</label>
                                                         <div class="col-md-8">
-                                                            <form:textarea rows="10" type="text" id="detailDesc"
+                                                            <form:textarea rows="10" type="text" id="description"
                                                                 class="form-control ${not empty errorDetailDesc ? 'is-invalid' : ''}"
                                                                 path="description" />
                                                             ${errorDetailDesc}
                                                         </div>
+
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">

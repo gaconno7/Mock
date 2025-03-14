@@ -1,4 +1,4 @@
-package com.mock.taka.admin.controller;
+package com.mock.taka.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
-import com.mock.taka.admin.service.CategoryService;
-import com.mock.taka.admin.service.ProductService;
-import com.mock.taka.admin.service.StoreService;
+import com.mock.taka.domain.User;
+import com.mock.taka.service.CategoryService;
+import com.mock.taka.service.ProductService;
+import com.mock.taka.service.StoreService;
+import com.mock.taka.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -26,11 +28,17 @@ public class StoreController {
     private final StoreService storeService;
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final UserService userService;
 
-    public StoreController(StoreService storeService, ProductService productService, CategoryService categoryService) {
+    public StoreController(
+        StoreService storeService,
+        ProductService productService,
+        CategoryService categoryService,
+        UserService userService) {
         this.storeService = storeService;
         this.productService = productService;
         this.categoryService = categoryService;
+        this.userService = userService;
     }
     @GetMapping("/admin/store")
     public String getStore(Model model, HttpServletRequest active) {
@@ -39,27 +47,75 @@ public class StoreController {
         model.addAttribute("store", str);
         return "/admin/store/show";
     }
-       @GetMapping("/admin/store/create")
-    public String getCreateStorePage(Model model, HttpServletRequest active) {
-        active.setAttribute("activePage", "store");
-        model.addAttribute("newStore", new Store());
+    //    @GetMapping("/admin/store/create")
+    // public String getCreateStorePage(Model model, HttpServletRequest active) {
+    //     active.setAttribute("activePage", "store");
+    //     model.addAttribute("newStore", new Store());
+    //     model.addAttribute("users", userService.getUserByRole("ROLE_USER"));
+    //     return "admin/store/create";
+    // }
+    @GetMapping("/admin/user/{userId}/store/create")
+public String getCreateStoreForUserPage(@PathVariable Long userId, Model model, HttpServletRequest active) {
+    active.setAttribute("activePage", "store");
+    
+    Optional<User> selectedUser = this.userService.findUserById(userId);
+    if (selectedUser.isPresent()) {
+        Store newStore = new Store();
+        newStore.setUser(selectedUser.get());
+        model.addAttribute("newStore", newStore);
+        model.addAttribute("selectedUserId", userId);
+        model.addAttribute("isUserPreselected", true);
+        return "admin/store/create";
+    } else {
+        return "redirect:/admin/user";
+    }
+}
+    
+
+    @PostMapping("/admin/store/create")
+public String handleCreateStore(
+        @ModelAttribute("newStore") @Valid Store str,
+        @RequestParam(value = "userId", required = false) Long userId,
+        BindingResult newStoreBindingResult,
+        Model model) {
+    if (newStoreBindingResult.hasErrors()) {
+        if (userId != null) {
+            Optional<User> selectedUser = this.userService.findUserById(userId);
+            if (selectedUser.isPresent()) {
+                model.addAttribute("selectedUserId", userId);
+                model.addAttribute("isUserPreselected", true);
+                str.setUser(selectedUser.get());
+            } else {
+                model.addAttribute("users", userService.getUserByRole("ROLE_USER"));
+            }
+        } else {
+            model.addAttribute("users", userService.getUserByRole("ROLE_USER"));
+        }
+        return "admin/store/create";
+    }
+    
+    if (userId == null) {
+        newStoreBindingResult.rejectValue("user", "error.user", "Vui lòng chọn người dùng");
+        model.addAttribute("users", userService.getUserByRole("ROLE_USER"));
+        return "admin/store/create";
+    }
+    
+    Optional<User> selectedUser = this.userService.findUserById(userId);
+    if (selectedUser.isPresent()) {
+        User user = selectedUser.get();
+        str.setUser(user);
+        this.userService.updateUserRole(user, "ROLE_SUPPLIER");
+    } else {
+        newStoreBindingResult.rejectValue("user", "error.user", "Người dùng không tồn tại");
+        model.addAttribute("users", userService.getUserByRole("ROLE_USER"));
         return "admin/store/create";
     }
 
-    @PostMapping("/admin/store/create")
-    public String handleCreateStore(
-            @ModelAttribute("newStore") @Valid Store str,
-            BindingResult newStoreBindingResult) {
-        // validate
-        if (newStoreBindingResult.hasErrors()) {
-            return "admin/store/create";
-        }
+    this.storeService.createStore(str);
 
-
-        this.storeService.createStore(str);
-
-        return "redirect:/admin/store";
-    }
+    return "redirect:/admin/store";
+}
+    
     @GetMapping("/admin/store/update/{id}")
     public String getUpdateStorePage(Model model, @PathVariable String id, HttpServletRequest active) {
         active.setAttribute("activePage", "store");
@@ -98,7 +154,14 @@ public class StoreController {
 
     @PostMapping("/admin/store/delete")
     public String postDeleteStore(Model model, @ModelAttribute("newStore") Store str) {
-        this.storeService.deleteStore(str.getId());
+        Optional<Store> storeOpt = this.storeService.fetchStoreById(str.getId());
+        if (storeOpt.isPresent()) {
+            Store store = storeOpt.get();
+            User user = store.getUser();
+            this.storeService.deleteStore(str.getId());
+            this.userService.updateUserRole(user,   "ROLE_USER");
+        }
+        
         return "redirect:/admin/store";
     }
     @GetMapping("/admin/store/{id}/products")
@@ -142,4 +205,5 @@ public String getProductsByStore(
     
     return "redirect:/admin/store"; 
 }
+
 }

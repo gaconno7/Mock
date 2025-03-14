@@ -1,22 +1,26 @@
-package com.mock.taka.admin.service;
+package com.mock.taka.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-
+import com.mock.taka.controller.CategoryController;
 import com.mock.taka.domain.Role;
 import com.mock.taka.domain.User;
-import com.mock.taka.admin.repository.RoleRepository;
-import com.mock.taka.admin.repository.UserRepository;
+import com.mock.taka.repository.RoleRepository;
+import com.mock.taka.repository.UserRepository;
 
 @Service
 public class UserService {
+
+    private final CategoryController categoryController;
     private UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, CategoryController categoryController) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.categoryController = categoryController;
     }
 
     public long getCountUser() {
@@ -29,6 +33,9 @@ public class UserService {
 
     public User getUserById(Long id) {
         return this.userRepository.getReferenceById(id);
+    }
+    public Optional<User> findUserById(long id){
+        return this.userRepository.findUserById(id);
     }
 
     public void deleteById(Long id) {
@@ -53,6 +60,13 @@ public class UserService {
 
     public boolean checkEmailExist(String email) {
         return this.userRepository.existsByEmail(email);
+    }
+    public void updateUserRole(User user, String roleName) {
+        Role role = roleRepository.findByName(roleName);
+        if (role != null) {
+            user.setRole(role);
+            userRepository.save(user);
+        }
     }
 
 }

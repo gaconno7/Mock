@@ -1,9 +1,9 @@
-package com.mock.taka.admin.service.validator;
+package com.mock.taka.service.validator;
 
 import org.springframework.stereotype.Service;
 
 import com.mock.taka.domain.dto.RegisterDTO;
-import com.mock.taka.admin.service.UserService;
+import com.mock.taka.service.UserService;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

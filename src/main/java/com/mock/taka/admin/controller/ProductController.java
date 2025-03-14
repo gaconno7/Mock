@@ -1,4 +1,4 @@
-package com.mock.taka.admin.controller;
+package com.mock.taka.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mock.taka.admin.service.CategoryService;
-import com.mock.taka.admin.service.ProductImageService;
-import com.mock.taka.admin.service.ProductService;
-import com.mock.taka.admin.service.StoreService;
-import com.mock.taka.admin.service.impl.CloudinaryService;
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.ProductImage;
 import com.mock.taka.domain.Store;
+import com.mock.taka.service.CategoryService;
+import com.mock.taka.service.ProductImageService;
+import com.mock.taka.service.ProductService;
+import com.mock.taka.service.StoreService;
+import com.mock.taka.service.impl.CloudinaryService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

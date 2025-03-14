@@ -1,4 +1,4 @@
-package com.mock.taka.admin.service.impl;
+package com.mock.taka.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;

@@ -1,4 +1,4 @@
-package com.mock.taka.admin.service;
+package com.mock.taka.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
-import com.mock.taka.admin.repository.ProductRepository;
+import com.mock.taka.repository.ProductRepository;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;

@@ -1,4 +1,4 @@
-package com.mock.taka.admin.controller;
+package com.mock.taka.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.mock.taka.admin.service.CategoryService;
-import com.mock.taka.admin.service.ProductService;
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
+import com.mock.taka.service.CategoryService;
+import com.mock.taka.service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -31,7 +31,7 @@ public class CategoryController {
     }
     @GetMapping("/admin/category")
     public String getCategory(Model model, HttpServletRequest active) {
-        active.setAttribute("activePage", "store");
+        active.setAttribute("activePage", "category");
         List<Category> ctg = this.categoryService.fetchCategory();
         model.addAttribute("category", ctg);
         return "/admin/category/show";
@@ -39,7 +39,7 @@ public class CategoryController {
 
        @GetMapping("/admin/category/create")
     public String getCreateCategoryPage(Model model, HttpServletRequest active) {
-        active.setAttribute("activePage", "store");
+        active.setAttribute("activePage", "category");
         model.addAttribute("newCategory", new Category());
         return "admin/category/create";
     }
@@ -60,7 +60,7 @@ public class CategoryController {
     }
      @GetMapping("/admin/category/update/{id}")
     public String getUpdateCategoryPage(Model model, @PathVariable String id, HttpServletRequest active) {
-        active.setAttribute("activePage", "store");
+        active.setAttribute("activePage", "category");
         Optional<Category> currentCategory = this.categoryService.fetchCategoryById(id);
         model.addAttribute("newCategory", currentCategory.get());
         return "admin/category/update";
@@ -88,7 +88,7 @@ public class CategoryController {
     }
     @GetMapping("/admin/category/delete/{id}")
     public String getDeleteCategoryPage(Model model, @PathVariable long id, HttpServletRequest active) {
-        active.setAttribute("activePage", "store");
+        active.setAttribute("activePage", "category");
         model.addAttribute("id", id);
         model.addAttribute("newCategory", new Category());
         return "admin/category/delete";
