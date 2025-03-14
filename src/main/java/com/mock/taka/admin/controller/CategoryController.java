@@ -1,5 +1,4 @@
-package com.mock.taka.controller;
-
+package com.mock.taka.admin.controller;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
-import com.mock.taka.service.CategoryService;
-import com.mock.taka.service.ProductService;
+import com.mock.taka.admin.service.CategoryService;
+import com.mock.taka.admin.service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

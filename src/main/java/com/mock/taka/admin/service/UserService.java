@@ -1,14 +1,14 @@
-package com.mock.taka.service;
+package com.mock.taka.admin.service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-import com.mock.taka.controller.CategoryController;
+import com.mock.taka.admin.controller.CategoryController;
 import com.mock.taka.domain.Role;
 import com.mock.taka.domain.User;
-import com.mock.taka.repository.RoleRepository;
-import com.mock.taka.repository.UserRepository;
+import com.mock.taka.admin.repository.RoleRepository;
+import com.mock.taka.admin.repository.UserRepository;
 
 @Service
 public class UserService {

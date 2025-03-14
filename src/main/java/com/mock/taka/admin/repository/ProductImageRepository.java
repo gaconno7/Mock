@@ -1,4 +1,4 @@
-package com.mock.taka.repository;
+package com.mock.taka.admin.repository;
 
 import java.util.List;
 

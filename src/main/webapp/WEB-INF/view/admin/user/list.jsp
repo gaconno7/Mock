@@ -38,7 +38,7 @@
                                         <a href="/admin/user" class="btn btn-sm btn-primary shadow-sm mx-2">
                                             <i class="fas fa-arrow-left fa-sm text-white-50"></i> Trở về
                                         </a>
-                                        <a href="/admin/user/create/" class="btn btn-sm btn-primary shadow-sm mx-2">
+                                        <a href="/admin/user/create" class="btn btn-sm btn-primary shadow-sm mx-2">
                                             <i class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm tài khoản
                                         </a>
                                     </div>

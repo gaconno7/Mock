@@ -1,4 +1,4 @@
-package com.mock.taka.controller;
+package com.mock.taka.admin.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +16,10 @@ import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
 import com.mock.taka.domain.User;
-import com.mock.taka.service.CategoryService;
-import com.mock.taka.service.ProductService;
-import com.mock.taka.service.StoreService;
-import com.mock.taka.service.UserService;
+import com.mock.taka.admin.service.CategoryService;
+import com.mock.taka.admin.service.ProductService;
+import com.mock.taka.admin.service.StoreService;
+import com.mock.taka.admin.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

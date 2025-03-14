@@ -43,7 +43,7 @@ public class Product implements Serializable {
     @DecimalMin(value = "0", inclusive = false, message = "Giá phải lớn hơn 0")
     double price;
 
-    @Column(name = "discount-price")
+    @Column(name = "discount_price")
     double discountPrice;
     
     @Column(name = "quantity")

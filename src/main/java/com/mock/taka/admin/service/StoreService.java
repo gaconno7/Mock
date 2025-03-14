@@ -1,4 +1,4 @@
-package com.mock.taka.service;
+package com.mock.taka.admin.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.mock.taka.domain.Store;
-import com.mock.taka.repository.StoreRepository;
+import com.mock.taka.admin.repository.StoreRepository;
 @Service
 public class StoreService {
     private final StoreRepository storeRepository;

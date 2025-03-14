@@ -1,4 +1,4 @@
-package com.mock.taka.service.validator;
+package com.mock.taka.admin.service.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

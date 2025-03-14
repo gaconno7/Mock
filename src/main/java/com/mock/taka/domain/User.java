@@ -53,7 +53,7 @@ public class User implements Serializable {
     @JoinColumn(name = "role_id")
     Role role;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     Store store;
 
     @CreatedDate

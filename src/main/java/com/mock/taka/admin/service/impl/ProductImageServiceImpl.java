@@ -1,9 +1,9 @@
-package com.mock.taka.service.impl;
+package com.mock.taka.admin.service.impl;
 
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.ProductImage;
-import com.mock.taka.repository.ProductImageRepository;
-import com.mock.taka.service.ProductImageService;
+import com.mock.taka.admin.repository.ProductImageRepository;
+import com.mock.taka.admin.service.ProductImageService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

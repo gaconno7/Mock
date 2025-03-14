@@ -1,4 +1,4 @@
-package com.mock.taka.service;
+package com.mock.taka.admin.service;
 
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.ProductImage;
