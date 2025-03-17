@@ -51,10 +51,5 @@ public class CartItem {
     public double getTotalPrice() {
         return product.getPrice() * quantity;
     }
-
-    // public String getTotalPriceFormat() {
-    //     DecimalFormat decimalFormat = new DecimalFormat("#,###");
-    //     return decimalFormat.format(getTotalPrice());
-    // }
 }
 

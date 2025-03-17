@@ -63,7 +63,7 @@
                                 </div>
                             </td>
 
-                            <td><span id="price-${item.id}" class="price">${item.product.price}</span> VNĐ</td>
+                            <td><span id="price-${item.id}" class="price">${item.product.price}</span></td>
                             
                             <td>
                                 <div class="quantity-control">
@@ -86,24 +86,12 @@
         </tbody>        
     </table>
 
-    <!-- Nút quay lại -->
-    <div class="d-flex justify-content-between">
-        <a href="shop.jsp" class="btn btn-outline-dark">Return To Shop</a>
-    </div>
-
-    <!-- Mã giảm giá -->
-    <div class="d-flex mt-4">
-        <input type="text" class="form-control w-50 me-2" placeholder="Coupon Code">
-        <button class="btn btn-danger">Apply Coupon</button>
-    </div>
-
     <!-- Tổng tiền -->
     <div class="cart-total mt-4">
         <h5>Cart Total</h5>
         <!-- <p>Subtotal: <strong><span id="subtotal-price">${totalCartPrice}</span> VNĐ</strong></p> -->
         <p>Shipping: <strong>Free</strong></p>
         <p>Selected Total: <strong><span id="selectedTotalPrice">0 VNĐ</span></strong></p>
-        <h5>Total: <strong><span id="totalCartPrice">${totalCartPrice}</span> VNĐ</strong></h5>
         <button type="button" class="btn btn-danger w-100" onclick="proceedToCheckout();">
             Proceed to Checkout
         </button>

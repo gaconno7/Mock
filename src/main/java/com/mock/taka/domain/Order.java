@@ -51,4 +51,7 @@ public class Order implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "transport_id")
     Transport transport;
+
+    @Column(name = "total_price")
+    double totalPrice;
 }

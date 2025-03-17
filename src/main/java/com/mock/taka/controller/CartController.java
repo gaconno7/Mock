@@ -38,62 +38,6 @@ public class CartController {
         return "client/cart/cart";
     }
 
-    // @PostMapping("/update")
-    // public String updateCartItem(@RequestParam String cartItemId, @RequestParam int quantity, Model model, HttpSession httpSession) {
-    //     User user = (User)httpSession.getAttribute("user");
-    //     model.addAttribute("cartItems", cartService.getCartItems(user.getId()));
-    //     model.addAttribute("totalCartPrice", cartService.calculateTotalCartPrice());
-    //     return "client/cart/cart";
-    // }
-
-    // @PostMapping("/remove")
-    // public String removeCartItem(@RequestParam String cartItemId, Model model, HttpSession httpSession) {
-    //     User user = (User)httpSession.getAttribute("user");
-    //     model.addAttribute("cartItems", cartService.getCartItems(user.getId()));
-    //     model.addAttribute("totalCartPrice", cartService.calculateTotalCartPrice());
-    //     return "client/cart/cart";
-    // }
-
-    // @PostMapping("/update")
-    // @ResponseBody
-    // public ResponseEntity<Map<String, Object>> updateCartItem(
-    //         @RequestParam String cartItemId, 
-    //         @RequestParam int quantity, 
-    //         HttpSession session) {
-
-    //     User user = (User) session.getAttribute("user");
-    //     if (user == null) {
-    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-    //     }
-
-    //     // Cập nhật giỏ hàng
-    //     boolean updated = cartService.updateCartItem(cartItemId, quantity);
-    //     if (!updated) {
-    //         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-    //     }
-
-    //     // Tạo phản hồi JSON
-    //     Map<String, Object> response = new HashMap<>();
-    //     response.put("quantity", quantity);
-    //     response.put("subtotal", cartService.calculateTotalCartPrice(user.getId()));
-    //     response.put("totalCartPrice", cartService.calculateTotalCartPrice(user.getId()));
-
-    //     return ResponseEntity.ok(response);
-    // }
-
-
-    // @PostMapping("/remove")
-    // @ResponseBody
-    // public Map<String, Object> removeCartItem(@RequestParam String cartItemId, HttpSession session) {
-    //     User user = (User) session.getAttribute("user");
-    //     cartService.removeCartItem(cartItemId);
-
-    //     Map<String, Object> response = new HashMap<>();
-    //     response.put("totalCartPrice", cartService.calculateTotalCartPrice(user.getId()));
-
-    //     return response;
-    // }
-
     @PostMapping("/update")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateCartItem(
@@ -197,7 +141,7 @@ public class CartController {
             return ResponseEntity.badRequest().body("Không có sản phẩm nào được chọn.");
         }
 
-        // Lưu danh sách ID sản phẩm vào session để sử dụng trong CheckoutController
+        // Lưu danh sách ID sản phẩm vào session để sử dụng trong OrderController
         session.setAttribute("selectedItems", selectedItems);
 
         return ResponseEntity.ok("Chuyển sang trang thanh toán");

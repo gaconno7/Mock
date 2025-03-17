@@ -76,56 +76,13 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Street Address<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="address">
                     </div>
                 </form>
             </div>
     
             <!-- Order Summary -->
             <div class="col-12 col-md-6">
-                <!-- <h4 class="mt-4 fw-bold">Order Summary</h4>
-                <div class="border p-3">
-                    <div class="d-flex justify-content-between">
-                        <span><img src="gamepad.png" width="40"> H1 Gamepad</span>
-                        <span>$1100</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <span><img src="monitor.png" width="40"> LCD Monitor</span>
-                        <span>$650</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between">
-                        <strong>Subtotal:</strong>
-                        <span>$1750</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <span>Shipping:</span>
-                        <span>Free</span>
-                    </div>
-                    <div class="d-flex justify-content-between fw-bold">
-                        <span>Total:</span>
-                        <span>$1750</span>
-                    </div>
-                    <div class="payment-icons mt-2">
-                        <img src="visa.png">
-                        <img src="mastercard.png">
-                        <img src="momo.png">
-                        <img src="cash.png">
-                    </div>
-                    <div class="form-check mt-3">
-                        <input class="form-check-input" type="radio" name="paymentMethod" value="bank">
-                        <label class="form-check-label">Bank</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentMethod" value="cod" checked>
-                        <label class="form-check-label">Cash on delivery</label>
-                    </div>
-                    <div class="apply-coupon mt-3">
-                        <input type="text" class="form-control" placeholder="Coupon Code">
-                        <button class="btn btn-danger">Apply Coupon</button>
-                    </div>
-                    <button type="submit" class="btn btn-danger mt-3">Place Order</button>
-                </div> -->
                 <!-- Bảng danh sách sản phẩm -->
                 <table class="table">
                     <thead class="table-light">
@@ -137,7 +94,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="item" items="${cartItems}">
+                        <c:forEach var="item" items="${orderItems}">
                             <tr>
                                 <td>
                                     <img src="${item.product.image}" width="50px" alt="Ảnh sản phẩm">
@@ -160,6 +117,7 @@
                 <div class="order-summary mt-4">
                     <h5>Order Summary</h5>
                     <p>Shipping: <strong>Free</strong></p>
+                    <p id="couponMessage" class="text-danger"></p>
                     <p class="total-price">Total: ${totalPrice} VNĐ</p>
                 </div>
 
@@ -172,16 +130,17 @@
                     <label class="form-check-label">Cash on delivery</label>
                 </div>
                 <div class="apply-coupon mt-3">
-                    <input type="text" class="form-control" placeholder="Coupon Code">
-                    <button class="btn btn-danger">Apply Coupon</button>
+                    <input type="text" id="couponCode" class="form-control" placeholder="Coupon Code">
+                    <button type="button" id="applyCouponBtn" class="btn btn-danger">Apply Coupon</button>
                 </div>
-                <form action="/order/confirm" method="post">
+                <!-- <form action="/order/confirm" method="post">
                     <input type="hidden" name="totalPrice" value="${totalPrice}">
                     <button type="submit" class="btn btn-danger mt-3">Confirm Order</button>
-                </form>
+                </form> -->
+                <button id="confirmOrderBtn" class="btn btn-danger mt-3">Confirm Order</button>
             </div>
         </div>
-    </div>    
+    </div>
 
 <script>
     $(document).ready(function () {
@@ -272,11 +231,80 @@
                 });
             }
         });
+
+        $("#confirmOrderBtn").click(function() {
+            // Get address components
+            var street = $("#address").val();
+            var provinceText = $("#province option:selected").text();
+            var districtText = $("#district option:selected").text();
+            var wardText = $("#ward option:selected").text();
+            var totalPrice = parseFloat($(".total-price").text().replace("Total: ", "").replace(" VNĐ", "").replace(/,/g, ""));
+
+            var fullAddress = street;
+            // Combine address components into a single string
+            fullAddress += ", " + wardText + ", " + districtText + ", " + provinceText;
+            
+            // Get payment method
+            // var paymentMethod = $("input[name='paymentMethod']:checked").val();
+            
+            // Prepare data to send
+            var orderData = {
+                address: fullAddress,
+                totalPrice: totalPrice
+                // We don't need to send orderItems because they are already in the session/controller
+            };
+            
+            // Send AJAX request
+            $.ajax({
+                url: "/order/confirm",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(orderData),
+                success: function(response) {
+                    // Successful response handling
+                    if (response.success) {
+                        // Redirect to order confirmation page
+                        window.location.href = response.redirectUrl || "/order/success";
+                    } else {
+                        // Show error message
+                        alert(response.message || "An error occurred processing your order. Please try again.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Error handling
+                    console.error("Error submitting order:", error);
+                    alert("An error occurred while processing your order. Please try again.");
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $("#applyCouponBtn").click(function () {
+                var couponCode = $("#couponCode").val();
+                var totalPrice = parseFloat($(".total-price").text().replace(/[^0-9.]/g, "")); // Lấy số từ HTML
+        
+                $.ajax({
+                    url: "/order/apply-coupon",
+                    method: "POST",
+                    data: { 
+                        couponCode: couponCode, 
+                        totalPrice: totalPrice 
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $(".total-price").text("Total: " + response.newTotalPrice.toLocaleString() + " VNĐ"); // Cập nhật giá mới
+                            $("#couponMessage").text(response.message).removeClass("text-danger").addClass("text-success"); // Hiển thị thông báo
+                        }
+                    },
+                    error: function (xhr) {
+                        $("#couponMessage").text(xhr.responseJSON.message || "Lỗi khi áp dụng mã giảm giá!")
+                            .removeClass("text-success").addClass("text-danger"); // Hiển thị lỗi
+                    }
+                });
+            });
+        });
+        
     });
-
-
 </script>
-
-
 </body>
 </html>
