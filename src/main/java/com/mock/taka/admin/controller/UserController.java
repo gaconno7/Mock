@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mock.taka.domain.Role;
 import com.mock.taka.domain.Store;
 import com.mock.taka.domain.User;
 import com.mock.taka.admin.repository.StoreRepository;
@@ -37,11 +38,6 @@ public class UserController {
         this.storeService = storeService;
     }
 
-    @GetMapping("/admin")
-    public String getHomePage(HttpServletRequest active) {
-        active.setAttribute("activePage", "admin");
-        return "admin/dashboard/show";
-    }
 
     @GetMapping("/admin/user")
     public String getUserPage(Model model, HttpServletRequest active) {
@@ -117,6 +113,23 @@ public class UserController {
     public String getCreateUserPage(Model model, @ModelAttribute("newUser") User user, HttpServletRequest active) {
         active.setAttribute("activePage", "user");
         return "admin/user/create";
+    }
+    
+    // Thêm phương thức mới để tạo người dùng với role được chọn sẵn
+    @GetMapping("/admin/user/create/{roleId}")
+    public String getCreateUserByRole(@PathVariable String roleId, Model model, HttpServletRequest active) {
+        active.setAttribute("activePage", "user");
+        
+        // Lấy role theo tên
+        Role selectedRole = this.userService.getRoleByName(roleId);
+        if (selectedRole != null) {
+            User newUser = new User();
+            newUser.setRole(selectedRole);
+            model.addAttribute("newUser", newUser);
+            return "admin/user/create";
+        } else {
+            return "redirect:/admin/user";
+        }
     }
 
     @PostMapping("/admin/user/create")

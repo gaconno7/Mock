@@ -165,7 +165,7 @@ public String handleCreateStore(
         return "redirect:/admin/store";
     }
     @GetMapping("/admin/store/{id}/products")
-public String getProductsByStore(
+    public String getProductsByStore(
         Model model, 
         @PathVariable String id,
         @RequestParam(required = false) String categoryId,
@@ -206,4 +206,49 @@ public String getProductsByStore(
     return "redirect:/admin/store"; 
 }
 
+    // ===== Các phương thức liên quan đến khôi phục cửa hàng =====
+    @GetMapping("/admin/store/deleted")
+    public String getDeletedStores(Model model, HttpServletRequest active) {
+        active.setAttribute("activePage", "store");
+        List<Store> deletedStores = this.storeService.fetchDeletedStores();
+        model.addAttribute("deletedStores", deletedStores);
+        return "admin/store/deleted";
+    }
+
+    @GetMapping("/admin/store/restore/{id}")
+public String getRestoreStore(Model model, @PathVariable String id, HttpServletRequest request) {
+    request.setAttribute("activePage", "store");
+    
+    Optional<Store> storeOptional = storeService.fetchStoreById(id);
+    if (storeOptional.isPresent()) {
+        Store store = storeOptional.get();
+        if (store.isDeleted()) {
+            model.addAttribute("restoreStore", store);
+            return "admin/store/restore";
+        }
+    }
+    return "redirect:/admin/store?error=Không tìm thấy cửa hàng cần khôi phục";
+}
+
+@PostMapping("/admin/store/restore")
+public String postRestoreStore(@ModelAttribute("restoreStore") Store storeForm) {
+    Optional<Store> storeOptional = storeService.fetchStoreById(storeForm.getId());
+    if (storeOptional.isPresent()) {
+        Store store = storeOptional.get();
+        if (store.isDeleted()) {
+            // Khôi phục cửa hàng
+            store.setDeleted(false);
+            
+            // Khôi phục quyền ROLE_SUPPLIER cho người dùng
+            User user = store.getUser();
+            if (user != null) {
+                userService.updateUserRole(user, "ROLE_SUPPLIER");
+            }
+            
+            storeService.createStore(store);
+            return "redirect:/admin/store";
+        }
+    }
+    return "redirect:/admin/store?error=Không thể khôi phục cửa hàng";
+}
 }

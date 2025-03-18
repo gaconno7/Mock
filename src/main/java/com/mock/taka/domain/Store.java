@@ -42,7 +42,7 @@ public class Store  implements Serializable {
     @NotEmpty(message = "Miêu tả không được để trống")
     String description;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     User user;
 

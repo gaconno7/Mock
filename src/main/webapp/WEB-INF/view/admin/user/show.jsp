@@ -44,7 +44,7 @@
                                 <h1 class="h3 mb-0 text-gray-800">Quản lý tài khoản</h1>
                                 <div class="d-flex">
                                     <a href="/admin/user/trash" class="btn btn-sm btn-primary shadow-sm mx-2">
-                                        <i class="fas fa-trash fa-sm text-white-50"></i> Tài khoản đã xoá
+                                        <i class="fas fa-trash fa-sm text-white-50"></i> Tài khoản đã bị khoá
                                     </a>
                                     <a href="/admin/user/create" class="btn btn-sm btn-primary shadow-sm mx-2">
                                         <i class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm tài khoản

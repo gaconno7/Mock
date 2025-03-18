@@ -244,6 +244,7 @@
                                                         </div>
                                                     </div>
 
+
                                                     <div class="form-group row justify-content-md-center">
                                                         <label for="content" class="col-md-4 col-form-label">Mô tả
                                                             chi tiết:</label>

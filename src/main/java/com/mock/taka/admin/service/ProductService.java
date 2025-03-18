@@ -52,4 +52,7 @@ public class ProductService {
             .distinct()
             .collect(Collectors.toList());
 }
+public long getCountProduct() {
+    return this.productRepository.countProductByDeletedIsFalse();
+}
 }

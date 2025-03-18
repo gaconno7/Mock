@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
+import com.mock.taka.domain.User;
 import com.mock.taka.admin.service.CategoryService;
 import com.mock.taka.admin.service.ProductService;
 

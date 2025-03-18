@@ -17,6 +17,7 @@ import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.ProductImage;
 import com.mock.taka.domain.Store;
+import com.mock.taka.domain.User;
 import com.mock.taka.admin.service.CategoryService;
 import com.mock.taka.admin.service.ProductImageService;
 import com.mock.taka.admin.service.ProductService;
@@ -62,14 +63,14 @@ public class ProductController {
         model.addAttribute("category", categoryService.fetchCategory());
         return "admin/product/create";
     }
-
+   
     @PostMapping("/admin/product/create")
 public String handleCreateProduct(
         @ModelAttribute("newProduct") @Valid Product pr,
         BindingResult newProductBindingResult,
         @RequestParam("imageFile") MultipartFile[] files,
         @RequestParam("storeId") String storeId,
-        @RequestParam("categoryId") String categoryId,
+        @RequestParam(value = "categoryId", required = false) String categoryId,
         Model model) throws IOException {
     // validate     
     if (newProductBindingResult.hasErrors()) {

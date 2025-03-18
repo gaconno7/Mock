@@ -81,7 +81,7 @@
                                                                     <a class="btn btn-danger" href="#"
                                                                         data-toggle="modal" data-target="#deleteModal"
                                                                         data-entity-id="${store.id}"
-                                                                        data-entity-name="${store.name}"> Xoá
+                                                                        data-entity-name="${store.name}"> Khoá
                                                                     </a>
                                                                 </td>
 
@@ -115,7 +115,7 @@
 
                     <!-- Modal Content -->
                     <jsp:include page="../layout/deleteModal.jsp">
-                        <jsp:param name="entity" value="sản phẩm" />
+                        <jsp:param name="entity" value="cửa hàng" />
                         <jsp:param name="actionSubfolder" value="store" />
                         <jsp:param name="modalAttribute" value="deleteStore" />
                     </jsp:include>

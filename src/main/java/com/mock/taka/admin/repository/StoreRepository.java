@@ -10,6 +10,7 @@ import com.mock.taka.domain.Store;
 @Repository
 public interface StoreRepository extends JpaRepository<Store, String>, JpaSpecificationExecutor<Store> {
   List<Store> findByDeletedFalse();
+  List<Store> findByDeletedTrue();
 
     default Specification<Store> notDeleted() {
         return (root, query, criteriaBuilder) -> 

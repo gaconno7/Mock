@@ -7,13 +7,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
-                            Bạn muốn xoá ${param.entity} <span id="entityName" class="text-danger"></span>?
+                            Bạn muốn khoá ${param.entity} <span id="entityName" class="text-danger"></span>?
                         </h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Bấm nút "Xác nhận xoá" ở dưới nếu bạn muốn xoá ${param.entity}
+                    <div class="modal-body">Bấm nút "Xác nhận Khoá" ở dưới nếu bạn muốn khoá ${param.entity}
                         này và những thông tin liên quan.
                     </div>
                     <div class="modal-footer">
@@ -23,7 +23,7 @@
                             modelAttribute="${param.modalAttribute}">
                             <input type="hidden" name="id" value="" class="form-control" path="id" />
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                            <button class="btn btn-danger">Xác nhận xoá</button>
+                            <button class="btn btn-danger">Xác nhận khoá</button>
                         </form>
                     </div>
                 </div>

@@ -18,6 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
     List<Product> findByStoreAndDeletedFalse(Store store);
     List<Product> findByCategoryAndDeletedFalse(Category category);
     List<Product> findByStoreAndCategoryAndDeletedFalse(Store store, Category category);
+    Long countProductByDeletedIsFalse();
   
     default Specification<Product> notDeleted() {
         return (root, query, criteriaBuilder) -> 

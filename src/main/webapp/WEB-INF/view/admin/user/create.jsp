@@ -124,9 +124,10 @@
                                                 <label for="role" class="col-md-1 col-form-label">Vai trò:</label>
                                                 <div class="col-md-3">
                                                     <form:select id="role" class="form-control" path="role.name">
+                                                        <form:option value="ROLE_USER">USER</form:option>
                                                         <form:option value="ROLE_ADMIN">ADMIN</form:option>
                                                         <form:option value="ROLE_SUPPLIER">SUPPLIER</form:option>
-                                                        <form:option value="ROLE_USER">USER</form:option>
+
                                                     </form:select>
                                                 </div>
                                             </div>

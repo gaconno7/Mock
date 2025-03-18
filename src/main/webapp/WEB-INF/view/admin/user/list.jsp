@@ -38,7 +38,8 @@
                                         <a href="/admin/user" class="btn btn-sm btn-primary shadow-sm mx-2">
                                             <i class="fas fa-arrow-left fa-sm text-white-50"></i> Trở về
                                         </a>
-                                        <a href="/admin/user/create" class="btn btn-sm btn-primary shadow-sm mx-2">
+                                        <a href="/admin/user/create/${users[0].role.name}"
+                                            class="btn btn-sm btn-primary shadow-sm mx-2">
                                             <i class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm tài khoản
                                         </a>
                                     </div>
@@ -93,17 +94,23 @@
                                                                         href="/admin/store/${user.store.id}/products">Cửa
                                                                         hàng</a>
                                                                 </c:if>
-                                                                <c:if
-                                                                    test="${empty user.store || user.store.deleted == true}">
+                                                                <c:if test="${empty user.store}">
                                                                     <a class="btn btn-success"
                                                                         href="/admin/user/${user.id}/store/create">Thêm
                                                                         Cửa hàng</a>
                                                                 </c:if>
+                                                                <c:if test="${user.store.deleted == true}">
+                                                                    <a class="btn btn-success"
+                                                                        href="/admin/store/restore/${user.store.id}">Khôi
+                                                                        phục
+                                                                        Cửa hàng</a>
+                                                                </c:if>
+
 
                                                                 <a class="btn btn-danger" href="#" data-toggle="modal"
                                                                     data-target="#deleteModal"
                                                                     data-entity-id="${user.id}"
-                                                                    data-entity-name="${user.fullname}"> Xoá
+                                                                    data-entity-name="${user.fullname}"> Khoá tài khoản
                                                                 </a>
                                                             </td>
 

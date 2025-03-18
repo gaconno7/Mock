@@ -53,7 +53,8 @@
                                 <!-- DataTales Example -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Danh sách tài khoản đã bị xoá</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Danh sách tài khoản đã bị khoá
+                                        </h6>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -86,7 +87,7 @@
                                                                     href="/admin/user/restore/${deletedUser.id}">Khôi
                                                                     phục</a>
                                                                 <a class="btn btn-danger"
-                                                                    href="/admin/user/perdelete/${deletedUser.id}">Xoá
+                                                                    href="/admin/user/perdelete/${deletedUser.id}">Khoá
                                                                     vĩnh
                                                                     viễn</a>
 

@@ -34,4 +34,8 @@ public class StoreService {
     public List<Store> fetchStore() {
         return storeRepository.findByDeletedFalse();
     }
+    
+    public List<Store> fetchDeletedStores() {
+        return storeRepository.findByDeletedTrue();
+    }
 }

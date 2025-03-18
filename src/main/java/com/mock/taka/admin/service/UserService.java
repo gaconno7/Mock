@@ -24,7 +24,7 @@ public class UserService {
     }
 
     public long getCountUser() {
-        return this.userRepository.count();
+        return this.userRepository.countUserByStatusIsTrue();
     }
 
     public List<User> getAllUser() {
@@ -68,5 +68,8 @@ public class UserService {
             userRepository.save(user);
         }
     }
-
+    public Long countByRoleName(String name) {
+        return this.userRepository.countByRoleNameAndStatusTrue(name);
+    }
+    
 }
