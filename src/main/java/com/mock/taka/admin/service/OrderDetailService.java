@@ -16,6 +16,9 @@ public class OrderDetailService {
     public List<OrderDetail> findAll() {
         return this.orderDetailRepository.findAll();
     }
+    public List<OrderDetail> fetchOrderDetail(String id){
+        return this.orderDetailRepository.getOrderDetailByOrderId(id);
+    }
 
 
 }

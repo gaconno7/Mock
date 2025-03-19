@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, String> {
-
+    List<OrderDetail> getOrderDetailByOrderId(String id);
 
 }

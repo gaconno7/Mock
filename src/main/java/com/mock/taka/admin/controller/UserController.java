@@ -16,14 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mock.taka.domain.Role;
 import com.mock.taka.domain.Store;
 import com.mock.taka.domain.User;
-import com.mock.taka.admin.repository.StoreRepository;
 import com.mock.taka.admin.service.StoreService;
 import com.mock.taka.admin.service.UserService;
 import com.mock.taka.admin.service.impl.CloudinaryService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class UserController {

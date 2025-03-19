@@ -50,6 +50,11 @@
                     <i class="fas fa-fw fa-laptop"></i>
                     <span>Quản lí loại sản phẩm</span></a>
             </li>
+            <li class="nav-item ${activePage == 'order' ? 'active' : ''}">
+                <a class="nav-link" href="/admin/order">
+                    <i class="fas fa-fw fa-laptop"></i>
+                    <span>Quản lí đơn hàng</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">

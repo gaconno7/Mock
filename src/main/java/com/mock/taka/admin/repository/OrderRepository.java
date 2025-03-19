@@ -1,6 +1,8 @@
 package com.mock.taka.admin.repository;
 
 import com.mock.taka.domain.Order;
+import com.mock.taka.domain.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +16,5 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
     @Query("SELECT SUM(o.totalPrice) FROM Order o")
     Double getTotalPriceSum();
+    List<Order> findByUser(User user);
 }
