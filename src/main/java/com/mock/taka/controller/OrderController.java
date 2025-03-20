@@ -95,6 +95,7 @@ public class OrderController {
         model.addAttribute("address", user.getAddress());
         model.addAttribute("orderItems", orderItems);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("name", user.getFullname());
 
         return "client/checkout";
     }

@@ -115,7 +115,7 @@
                 <form id="checkoutForm">
                     <div class="mb-3">
                         <label class="form-label">Họ và tên<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" placeholder="">
+                        <input type="text" class="form-control" placeholder="" value="${name}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Căn hộ, tầng, v.v. (không bắt buộc)</label>
