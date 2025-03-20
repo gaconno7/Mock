@@ -25,6 +25,7 @@ import com.mock.taka.domain.CartItem;
 import com.mock.taka.domain.Order;
 import com.mock.taka.domain.OrderDetail;
 import com.mock.taka.domain.User;
+import com.mock.taka.domain.Voucher;
 import com.mock.taka.repository.OrderDetailRepository;
 import com.mock.taka.repository.OrderRepository;
 import com.mock.taka.service.CartService;
@@ -86,7 +87,12 @@ public class OrderController {
             totalPrice += item.getProduct().getPrice() * item.getQuantity();
         }
 
+        //Lấy voucher
+        List<Voucher> vouchers = voucherService.getAllVouchers();
+
         // Gửi dữ liệu tới trang checkout.jsp
+        model.addAttribute("vouchers", vouchers);
+        model.addAttribute("address", user.getAddress());
         model.addAttribute("orderItems", orderItems);
         model.addAttribute("totalPrice", totalPrice);
 
@@ -186,20 +192,21 @@ public class OrderController {
     }
     
 
-    @PostMapping("/apply-coupon")
+    @PostMapping("/apply-voucher")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> applyCoupon(
-            @RequestParam("couponCode") String couponCode, 
-            @RequestParam("totalPrice") Double totalPrice) {
+    public ResponseEntity<Map<String, Object>> applyVoucher(
+            @RequestParam("voucherId") String voucherId, 
+            @RequestParam("totalPrice") Double totalPrice,
+            HttpSession session) {
 
         Map<String, Object> response = new HashMap<>();
 
         // Kiểm tra mã giảm giá
-        Double discountAmount = voucherService.validateAndApplyCoupon(couponCode, totalPrice);
+        Double discountAmount = voucherService.validateAndApplyVoucher(voucherId, totalPrice);
 
         if (discountAmount == null) {
             response.put("success", false);
-            response.put("message", "Invalid or expired coupon!");
+            response.put("message", "Invalid or expired voucher!");
             return ResponseEntity.badRequest().body(response);
         }
 
@@ -210,12 +217,14 @@ public class OrderController {
             newTotalPrice = 1.0;
         }
 
+        session.setAttribute("newTotalPrice", newTotalPrice);
+
         DecimalFormat df = new DecimalFormat("#,###");
 
         // Trả về JSON
         response.put("success", true);
         response.put("newTotalPrice", newTotalPrice);
-        response.put("message", "Coupon applied successfully! Discount: " + df.format(discountAmount) + " VNĐ");
+        response.put("message", "Voucher applied successfully! Discount: " + df.format(discountAmount) + " VNĐ");
         return ResponseEntity.ok(response);
     }
 

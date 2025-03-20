@@ -88,18 +88,18 @@
         </div>
     </header>
     <div class="cart-container">
-        <h2 class="mb-4">Shopping Cart</h2>
+        <h2 class="mb-4">Giỏ hàng</h2>
 
         <!-- Bảng sản phẩm -->
         <table class="table cart-table">
             <thead class="table-light">
                 <tr>
-                    <th>Select</th>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th>Action</th>
+                    <th>Chọn</th>
+                    <th>Sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Số tiền</th>
+                    <th>Xóa</th>
                 </tr>
             </thead>
             
@@ -142,7 +142,7 @@
                     </c:when>
                     <c:otherwise>
                         <tr>
-                            <td colspan="5" class="text-center">Your cart is empty!</td>
+                            <td colspan="5" class="text-center">Giỏ hàng trống!</td>
                         </tr>
                     </c:otherwise>
                 </c:choose>
@@ -151,12 +151,12 @@
 
         <!-- Tổng tiền -->
         <div class="cart-total mt-4">
-            <h5>Cart Total</h5>
+            <h5>Hóa đơn</h5>
             <!-- <p>Subtotal: <strong><span id="subtotal-price">${totalCartPrice}</span> VNĐ</strong></p> -->
-            <p>Shipping: <strong>Free</strong></p>
-            <p>Selected Total: <strong><span id="selectedTotalPrice">0</span> VNĐ</strong></p>
+            <p>Phí giao hàng: <strong>Miễn phí</strong></p>
+            <p>Tổng tiền: <strong><span id="selectedTotalPrice">0</span> VNĐ</strong></p>
             <button type="button" class="btn btn-danger w-100" onclick="proceedToCheckout();">
-                Proceed to Checkout
+                Đặt hàng
             </button>
         </div>
     </div>
@@ -215,7 +215,7 @@
                 //$('#subtotal-' + cartItemId).text(subtotal);
                 //$("#totalCartPrice").text(response.totalCartPrice);
                 $('#subtotal-' + cartItemId).text(parseFloat(subtotal).toLocaleString("en-US"));
-                $("#selectedTotalPrice").text(parseFloat(response.totalCartPrice).toLocaleString("en-US"));
+                //$("#selectedTotalPrice").text(parseFloat(response.totalCartPrice).toLocaleString("en-US"));
 
                 updateTotalCart();
             },

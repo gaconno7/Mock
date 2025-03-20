@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -74,7 +73,7 @@
             width: 100%;
             font-size: 18px;
         }
-        .apply-coupon {
+        .apply-voucher {
             display: flex;
             gap: 10px;
         }
@@ -112,14 +111,14 @@
         <div class="row">
             <!-- Billing Details -->
             <div class="col-12 col-lg-5">
-                <h2 class="fw-bold">Billing Details</h2>
+                <h2 class="fw-bold">Chi tiết đơn hàng</h2>
                 <form id="checkoutForm">
                     <div class="mb-3">
-                        <label class="form-label">First Name<span class="text-danger">*</span></label>
+                        <label class="form-label">Họ và tên<span class="text-danger">*</span></label>
                         <input type="text" class="form-control" placeholder="">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Apartment, floor, etc. (optional)</label>
+                        <label class="form-label">Căn hộ, tầng, v.v. (không bắt buộc)</label>
                         <input type="text" class="form-control">
                     </div>
                     <div class="mb-3">
@@ -129,20 +128,20 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">District</label>
+                        <label class="form-label">Quận/Huyện</label>
                         <select id="district" class="form-select" disabled>
                             <option value="">Chọn quận/huyện</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Ward</label>
+                        <label class="form-label">Phường/Xã</label>
                         <select id="ward" class="form-select" disabled>
                             <option value="">Chọn phường/xã</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Street Address<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="address">
+                        <label class="form-label">Địa chỉ chi tiết<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="address" value="${address}">
                     </div>
                 </form>
             </div>
@@ -153,10 +152,10 @@
                 <table class="table align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>Product</th>
-                            <th class="text-end">Price</th>
-                            <th class="text-center">Quantity</th>
-                            <th class="text-end">Subtotal</th>
+                            <th>Sản phẩm</th>
+                            <th class="text-end">Đơn giá</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-end">Số tiền</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -191,29 +190,43 @@
                 
 
                 <div class="order-summary mt-4">
-                    <h5>Order Summary</h5>
-                    <p>Shipping: <strong>Free</strong></p>
-                    <p id="couponMessage" class="text-danger"></p>
-                    <p class="total-price">Total: <fmt:formatNumber type="number" value="${totalPrice}"/> VNĐ</p>
+                    <h5>Đơn hàng</h5>
+                    <p>Phí giao hàng: <strong>Miễn phí</strong></p>
+                    <p id="voucherMessage" class="text-danger"></p>
+                    <p class="total-price">Tổng tiền: <fmt:formatNumber type="number" value="${totalPrice}"/> VNĐ</p>
+                    <p hidden class="total-price-value">Tổng tiền: <fmt:formatNumber type="number" value="${totalPrice}"/> VNĐ</p>
                 </div>
 
                 <div class="form-check mt-3">
                     <input class="form-check-input" type="radio" name="paymentMethod" value="bank">
-                    <label class="form-check-label">Bank</label>
+                    <label class="form-check-label">Thanh toán online</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="paymentMethod" value="cod" checked>
-                    <label class="form-check-label">Cash on delivery</label>
+                    <label class="form-check-label">Trả tiền trực tiếp</label>
                 </div>
-                <div class="apply-coupon mt-3">
-                    <input type="text" id="couponCode" class="form-control" placeholder="Coupon Code">
-                    <button type="button" id="applyCouponBtn" class="btn btn-danger">Apply Coupon</button>
+                <!-- <div class="apply-voucher mt-3">
+                    <input type="text" id="voucherCode" class="form-control" placeholder="voucher Code">
+                    <button type="button" id="applyvoucherBtn" class="btn btn-danger">Apply voucher</button>
+                </div> -->
+                <div class="apply-voucher mt-3">
+                    <label for="voucherSelect" class="form-label">Chọn Voucher</label>
+                    <div class="input-group">
+                        <select id="voucherSelect" class="form-select">
+                            <option value="">Chọn voucher...</option>
+                            <c:forEach var="voucher" items="${vouchers}">
+                                <option value="${voucher.id}">${voucher.name} - Giảm <fmt:formatNumber type="number" value="${voucher.discount}" pattern="#,##0"/> VNĐ</option>
+                            </c:forEach>
+                        </select>
+                        <button type="button" id="applyvoucherBtn" class="btn btn-danger">Áp dụng</button>
+                    </div>
+                    <p id="voucherMessage" class="text-danger mt-2"></p>
                 </div>
                 <!-- <form action="/order/confirm" method="post">
                     <input type="hidden" name="totalPrice" value="${totalPrice}">
                     <button type="submit" class="btn btn-danger mt-3">Confirm Order</button>
                 </form> -->
-                <button id="confirmOrderBtn" class="btn btn-danger mt-3">Confirm Order</button>
+                <button id="confirmOrderBtn" class="btn btn-danger mt-3">Đặt hàng</button>
             </div>
         </div>
     </div>
@@ -223,6 +236,7 @@
         var provinceSelect = $("#province");
         var districtSelect = $("#district");
         var wardSelect = $("#ward");
+        
     
         // Gọi API lấy danh sách tỉnh/thành phố
         $.ajax({
@@ -315,9 +329,10 @@
                 var provinceText = $("#province option:selected").text().trim();
                 var districtText = $("#district option:selected").text().trim();
                 var wardText = $("#ward option:selected").text().trim();
-                var totalPriceText = $(".total-price").text().replace("Total: ", "").replace(" VNĐ", "").replace(/,/g, "").trim();
+                // var totalPriceText = $(".total-price").text().replace("Total: ", "").replace(" VNĐ", "").replace(/,/g, "").trim();
+                var totalPriceText = $(".total-price-value").text().replace("Total: ", "").replace(" VNĐ", "").replace(/,/g, "").trim();
                 var totalPrice = parseFloat(totalPriceText) || 0;
-        
+
                 // Kiểm tra dữ liệu hợp lệ
                 if (!street || !provinceText || !districtText || !wardText || totalPrice <= 0) {
                     alert("Vui lòng nhập đầy đủ thông tin và kiểm tra tổng giá trị đơn hàng!");
@@ -372,31 +387,42 @@
         
 
         $(document).ready(function () {
-            $("#applyCouponBtn").click(function () {
-                var couponCode = $("#couponCode").val();
-                var totalPrice = parseFloat($(".total-price").text().replace(/[^0-9.]/g, "")); // Lấy số từ HTML
+            $("#applyvoucherBtn").click(function () {
+                let selectedVoucher = $("#voucherSelect").val(); // Lấy ID voucher
+                let totalPriceText = $(".total-price-value").text().replace(/[^\d]/g, ""); 
+                let totalPrice = parseFloat(totalPriceText);
+        
+                if (!selectedVoucher) {
+                    $("#voucherMessage").text("Vui lòng chọn voucher!").removeClass("text-success").addClass("text-danger");
+                    return;
+                }
         
                 $.ajax({
-                    url: "/order/apply-coupon",
+                    url: "/order/apply-voucher",
                     method: "POST",
+                    //contentType: "application/json",
                     data: { 
-                        couponCode: couponCode, 
-                        totalPrice: totalPrice 
+                        voucherId: selectedVoucher,
+                        totalPrice: totalPrice
                     },
                     success: function (response) {
                         if (response.success) {
-                            $(".total-price").text("Total: " + response.newTotalPrice.toLocaleString() + " VNĐ"); // Cập nhật giá mới
-                            $("#couponMessage").text(response.message).removeClass("text-danger").addClass("text-success"); // Hiển thị thông báo
+                            $(".total-price").text("Total: " + response.newTotalPrice.toLocaleString("en-US") + " VNĐ");
+                            $(".total-price-value").text("Total: " + response.newTotalPrice.toLocaleString("en-US") + " VNĐ");
+                            $("#voucherMessage").text(response.message).removeClass("text-danger").addClass("text-success");
+                            $("#applyvoucherBtn").prop("disabled", true);
+                        } else {
+                            $("#voucherMessage").text(response.message).removeClass("text-success").addClass("text-danger");
                         }
                     },
                     error: function (xhr) {
-                        $("#couponMessage").text(xhr.responseJSON.message || "Lỗi khi áp dụng mã giảm giá!")
-                            .removeClass("text-success").addClass("text-danger"); // Hiển thị lỗi
+                        let errorMessage = xhr.responseJSON?.message || "Lỗi khi áp dụng voucher!";
+                        $("#voucherMessage").text(errorMessage).removeClass("text-success").addClass("text-danger");
                     }
                 });
             });
         });
-        
+
     });
 </script>
 </body>
