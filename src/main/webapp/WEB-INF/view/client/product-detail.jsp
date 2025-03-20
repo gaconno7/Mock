@@ -7,46 +7,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Havic HV G-92 Gamepad | Exclusive</title>
+    <title>Cửa hàng</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="<c:url value="/css/product-detail.css"/> ">
+    <link rel="stylesheet" href="<c:url value="/client/css/product-detail.css"/> ">
 </head>
 
 <body>
 
 <!-- Header -->
-<header>
-    <div class="logo">Taka</div>
-    <div class="nav-links">
-        <a href="<c:url value="/home"/> ">Trang chủ</a>
-        <a href="<c:url value="/product/all"/> ">Của hàng</a>
-        <a href="#">Thông tin</a>
-    </div>
-    <div class="icons">
-        <span><a class="btn btn-outline-info" href="<c:url value="/user/wishlist"/> "><i class="bi bi-bag-heart"></i></a></span>
-        <span><a class="btn btn-outline-info" href="<c:url value="/user/cart"/> "><i class="bi bi-cart"></i></a></span>
-        <div class="dropdown">
-            <div class="btn btn-outline-info dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle"></i>
-            </div>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <c:if test="${not empty sessionScope.user}" >
-                    <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
-                    <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
-                </c:if>
-                <c:if test="${empty sessionScope.user}" >
-                    <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
-                    <li><a class="dropdown-item" href="<c:url value="/register"/> ">Đăng ký</a></li>
-                </c:if>
-            </ul>
-        </div>
-    </div>
-</header>
+<%@ include file="header/header.jsp" %>
 
-<!-- Breadcrumb -->
 <div class="breadcrumb">
     <a href="<c:url value="/home"/>">Trang chủ</a> <span>/</span> <a href="<c:url value="/product/all"/> ">Sản phẩm</a> <span>/</span>
     <a href="<c:url value="/product/all?category-id=${product.category.id}"/>">${product.category.name}</a>
@@ -66,13 +39,20 @@
     </div>
     <div class="product-details">
         <h1 class="product-title">${product.name}</h1>
-        <div class="price">${product.price}</div>
-        <div class="description">
-            ${product.description}
+        <div class="original-price">${product.price} đ</div>
+        <div class="price">${product.price - (product.price * product.discountPrice)/100} đ</div>
+        <div class="size-options">
+            <c:set var="totalRate" value="0" />
+            <c:forEach var="evaluation" items="${product.evaluations}">
+                <c:set var="totalRate" value="${totalRate + evaluation.rate}" />
+            </c:forEach>
+            <div class="rating">
+                <c:forEach var="i" begin="1" end="${product.evaluations.size() > 0 ? totalRate / product.evaluations.size() : 0}" step="1">
+                    ★
+                </c:forEach>
+                <span>(${product.evaluations.size()} lượt đánh giá)</span>
+            </div>
         </div>
-        <div class="divider"></div>
-
-        <div class="options-label">Đặc điểm:</div>
         <div class="size-options">
             <c:forEach var="item" items="${product.productVariants}">
                 <div class="size-option selected">${item.attribute} - ${item.value}</div>
@@ -85,12 +65,23 @@
                 <button>+</button>
             </div>
             <button class="buy-now">Mua ngay</button>
-            <button class="wishlist"><i class="bi bi-heart"></i></button>
+            <button class="wishlist" onclick="addItemToWishlist(`${sessionScope.user.id}`, `${product.id}`)"><i class="bi bi-heart"></i></button>
         </div>
-
     </div>
 </div>
+<div class="reviews-section">
+    <div class="section-heading">
+        <h2>Đặc điểm</h2>
+    </div>
 
+    <div class="review-summary">
+        <div class="description">
+            <c:out value="${product.description}" escapeXml="false" />
+        </div>
+    </div>
+
+
+</div>
 <!-- Customer Reviews Section -->
 <div class="reviews-section">
     <div class="section-heading">
@@ -99,7 +90,7 @@
 
     <div class="review-summary">
         <div class="average-rating">
-            <div class="big-rating">${averageRate} ★</div>
+            <div class="big-rating">${averageRate.toString().substring(0,3)} ★</div>
             <div>${countEvaluation} lượt đánh giá</div>
         </div>
 
@@ -142,47 +133,48 @@
         </div>
     </div>
 
-    <!-- Write Review Form -->
-    <div class="review-form-container">
-        <h3 class="review-form-title">Đánh giá</h3>
-        <form id="evaluation-form" enctype="multipart/form-data" >
-            <div class="form-group">
-                <label>Bình chọn</label>
-                <div class="star-rating-input">
-                    <input type="hidden" name="rating" id="rating-value" value="4">
-                    <label class="active" data-value="1">★</label>
-                    <label class="active" data-value="2">★</label>
-                    <label class="active" data-value="3">★</label>
-                    <label class="active" data-value="4">★</label>
-                    <label data-value="5">★</label>
+    <c:if test="${isOrder}">
+        <div class="review-form-container">
+            <h3 class="review-form-title">Đánh giá</h3>
+            <form id="evaluation-form" enctype="multipart/form-data" >
+                <div class="form-group">
+                    <label>Bình chọn</label>
+                    <div class="star-rating-input">
+                        <input type="hidden" name="rating" id="rating-value" value="4">
+                        <label class="active" data-value="1">★</label>
+                        <label class="active" data-value="2">★</label>
+                        <label class="active" data-value="3">★</label>
+                        <label class="active" data-value="4">★</label>
+                        <label data-value="5">★</label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <input type="hidden" name="product-id" class="form-control" value="${product.id}">
-            </div>
-
-            <div class="form-group">
-                <label for="review-title">Tiêu đề</label>
-                <input type="text" id="review-title" name="review-title" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="review-content">Nội dung</label>
-                <textarea id="review-content" name="review-content" class="form-control"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Ảnh minh hoạ (nếu có)</label>
-                <div class="file-upload">
-                    <input type="file" id="file" name="files">
+                <div class="form-group">
+                    <input type="hidden" name="product-id" class="form-control" value="${product.id}">
                 </div>
-            </div>
 
-            <button type="button" id="btn-submit" class="form-submit-btn">Lưu</button>
-        </form>
+                <div class="form-group">
+                    <label for="review-title">Tiêu đề</label>
+                    <input type="text" id="review-title" name="review-title" class="form-control">
+                </div>
 
-    </div>
+                <div class="form-group">
+                    <label for="review-content">Nội dung</label>
+                    <textarea id="review-content" name="review-content" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Ảnh minh hoạ (nếu có)</label>
+                    <div class="file-upload">
+                        <input type="file" id="file" name="files">
+                    </div>
+                </div>
+
+                <button type="button" id="btn-submit" class="form-submit-btn">Lưu</button>
+            </form>
+
+        </div>
+    </c:if>
 
     <div class="review-filters">
         <div class="review-filter active">All</div>
@@ -193,46 +185,16 @@
         <div class="review-filter">1 ★</div>
     </div>
 
-    <div class="review-list">
-        <c:forEach var="item" items="${evaluations}">
-        <div class="review-item">
-            <div class="review-header">
-                <div class="reviewer-info">
-                    <img src="${item.user.avatar}" class="reviewer-avatar" />
-                    <div>
-                        <div class="reviewer-name">${item.user.fullname}
-                        </div>
-                        <div class="rating">
-                        <c:forEach var="i" begin="1" end="${item.rate}" step="1" >
-                            ★
-                        </c:forEach>
-                        </div>
-                    </div>
-                </div>
-                <div class="review-date">${item.createdDate.toString().substring(0,10)}</div>
-            </div>
-            <div class="review-content">
-                <strong>${item.title}</strong>
-                <p>${item.review}</p>
-            </div>
-            <c:if test="${not empty item.image}">
-                <div class="review-images">
-                    <img class="review-image" src="${item.image}"/>
-                </div>
-            </c:if>
-            <div class="review-feedback">
-<%--                <div class="review-btn">🔄 Report</div>--%>
-            </div>
-        </div>
-        </c:forEach>
+    <div class="review-list mb-5" id="review-list-item">
+
     </div>
+    <c:if test="${not empty relatedProducts}">
     <div class="related-products" style="border-top: 1px solid #eee;">
         <div class="related-title">
             <h3>Sản phẩm tương tự</h3>
         </div>
         <div class="products-grid">
-            <c:if test="${not empty relatedProducts}">
-                <c:forEach items="${relatedProducts}" var="item">
+            <c:forEach items="${relatedProducts}" var="item">
                     <div class="product-card">
                         <div class="card-actions">
                             <button class="card-action-btn"><i class="bi bi-heart"></i></button>
@@ -262,11 +224,18 @@
                         </div>
                     </div>
                 </c:forEach>
-            </c:if>
         </div>
     </div>
+    </c:if>
     <script>
+        function renderRating(rate) {
+             let ratingHtml = '';
+            for (let i = 1; i <= rate; i++) {
+                ratingHtml += '<i class="bi bi-star-fill"></i>';
+            }
 
+            return ratingHtml;
+        }
         $(document).ready(function() {
 
             $('.star-rating-input label').on('click', function() {
@@ -285,8 +254,64 @@
             $("#btn-submit").click(function(event) {
                 event.preventDefault();
                 addEvaluation();
+                loadEvaluation(0);
             });
+
+            loadEvaluation(0);
+
         });
+
+        function loadEvaluation(page) {
+            let data = { page: page };
+            data.productId = '${product.id}';
+
+            $.ajax({
+                url : '${urlEvaluation}',
+                type: 'GET',
+                data: data,
+                success: function success (response) {
+                    let container = $('#review-list-item');
+                    container.empty();
+                    console.log(response)
+                    if(response.content && response.content.length > 0) {
+                        $.each(response.content, function(index, item) {
+                            console.log(item)
+                            let productHtml =
+                                '<div class="review-item">'
+                                +'<div class="review-header">'
+                                +'<div class="reviewer-info">'
+                                +'<img src="'+item.user.avatar +'" class="reviewer-avatar" />'
+                                +'<div>'
+                                +'<div class="reviewer-name">' + item.user.fullname + ' </div>'
+                                +'<div class="rating">'
+                                + renderRating(item.rate)
+                                +' </div>'
+                                +'</div>'
+                                +'  </div>'
+                                +' <div class="review-date">'+(new Date(item.createdDate)).toLocaleString()+'</div>'
+
+                                +' </div>'
+                                +' <div class="review-content">'
+                                +'     <strong>' + item.title+'</strong>'
+                                +'     <p>'+item.review+'</p>'
+                                +'  </div>'
+                                + showImageEvaluation(item.image)
+                                +'    </div>';
+                            container.append(productHtml);
+                        });
+                    }},
+                error: function(xhr, status, error) {
+                    console.error('Lỗi khi upload:', error);
+                }
+            })
+        }
+
+        function showImageEvaluation(url) {
+            if(url === '') return '';
+            return '<div class="review-images">'
+                +'   <img class="review-image" src="' + url + '"/>'
+                +'</div>';
+        }
 
         function getStarRating() {
             return $('.star-rating-input label.active').length;
@@ -309,12 +334,10 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log('Upload thành công:', response);
-                    alert("Lưu đánh giá thành công!");
+                    loadEvaluation(0);
                 },
                 error: function(xhr, status, error) {
                     console.error('Lỗi khi upload:', error);
-                    alert("Có lỗi xảy ra, vui lòng thử lại!");
                 }
             });
         }
@@ -327,10 +350,13 @@
 
     </script>
 
+    <script src="<c:url value="/client/js/addWishlist.js"/> " type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
-</body>
+
+    <%@ include file="footer/footer.jsp" %>
+
 </div>
 </body>
 

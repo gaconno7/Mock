@@ -2,7 +2,7 @@ package com.mock.taka.controller.api;
 
 import com.mock.taka.domain.WishlistItem;
 import com.mock.taka.dto.WishlistItemRequest;
-import com.mock.taka.service.WishlistService;
+import com.mock.taka.service.client.WishlistService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/wishlists")
@@ -28,7 +28,7 @@ public class WishlistAPIController {
     public ResponseEntity<Page<WishlistItem>>  getWishlistItems(
             @RequestParam long userId,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "8") int size ) {
+            @RequestParam(defaultValue = "4") int size ) {
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -42,7 +42,7 @@ public class WishlistAPIController {
             @RequestBody WishlistItemRequest request) {
             log.info(request.toString());
             var wishlistItem = wishlistService.save(request);
-        return ResponseEntity.ok(wishlistItem);
+        return ResponseEntity.ok(Objects.isNull(wishlistItem) ? "Sản phẩm đã tồn tại" : wishlistItem);
     }
 
     @DeleteMapping("/{id}")

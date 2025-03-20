@@ -1,7 +1,7 @@
 package com.mock.taka.controller.api;
 
 import com.mock.taka.domain.Product;
-import com.mock.taka.service.ProductService;
+import com.mock.taka.service.client.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 public class UserUpdatePasswordRequest {
-    String oldPassword;
+    String currentPassword;
     String newPassword;
     String reNewPassword;
 }

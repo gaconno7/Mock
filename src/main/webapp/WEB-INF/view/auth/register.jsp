@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký</title>
-    <link rel="stylesheet" href="<c:url value="/css/register.css"/> ">
+    <link rel="stylesheet" href="<c:url value="/client/css/register.css"/> ">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 
@@ -17,9 +18,9 @@
     <form class="form-section" method="post" action="<c:url value="/register"/> ">
         <h1 class="form-title">Đăng ký</h1>
         <c:if test="${not empty errorMessage}">
-            <p class="form-subtitle">${errorMessage}</p>
+            <p class="text-error">${errorMessage}</p>
         </c:if>
-
+        <p class="text-error" id="text-error"></p>
         <div class="form-control">
             <input type="text" placeholder="Họ và tên" name="full-name" required>
         </div>
@@ -29,19 +30,50 @@
         </div>
 
         <div class="form-control">
-            <input type="password" placeholder="Mật khẩu" name="password" required>
+            <input type="password" id="password" placeholder="Mật khẩu" name="password" required>
         </div>
 
         <div class="form-control">
-            <input type="password" placeholder="Nhập lại mật khẩu" name="re-password" required>
+            <input type="password" id="re-password" placeholder="Nhập lại mật khẩu" name="re-password" required>
         </div>
 
-        <button class="btn-primary" type="submit">OK</button>
+        <button class="btn-primary" id="btn-submit-password" type="submit">OK</button>
 
         <div class="login-link">
             Bạn đã có tài khoản? <a href="<c:url value="/login"/> ">Đăng nhập</a>
         </div>
     </form>
+
+    <script>
+        $(document).ready(function() {
+            function checkPassword() {
+                let password = $('#password').val();
+                let rePassword = $('#re-password').val();
+
+                if (password.length < 6) {
+                    $('#text-error').text("Mật khẩu phải lớn hơn hoặc bằng 6 ký tự!");
+                    return false;
+                } else if (password !== rePassword) {
+                    $('#text-error').text("Mật khẩu và mật khẩu nhập lại không trùng khớp!");
+                    return false;
+                } else {
+                    $('#text-error').text(""); // Xóa thông báo lỗi nếu hợp lệ
+                    return true;
+                }
+            }
+
+            $(".form-section").submit(function(event) {
+                if (!checkPassword()) {
+                    event.preventDefault();
+                }
+            });
+
+            $("#password, #re-password").on("input", function() {
+                checkPassword();
+            });
+        });
+
+    </script>
 </div>
 
 </body>

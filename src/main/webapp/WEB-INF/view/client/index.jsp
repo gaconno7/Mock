@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Trang chủ</title>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
           integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -21,76 +21,13 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="<c:url value="/css/style.css" />">
+  <link rel="stylesheet" href="<c:url value="/client/css/index.css" />">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <style>
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 5%;
-      border-bottom: 1px solid #eee;
-    }
-
-    .logo {
-      font-weight: bold;
-      font-size: 24px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 30px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #333;
-    }
-
-    .icons {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-
-    .ellipsis {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 19vh !important;
-    }
-
-  </style>
 </head>
 
 <body>
-<header>
-  <div class="logo">Taka</div>
-  <div class="nav-links">
-    <a href="<c:url value="/home"/> ">Trang chủ</a>
-    <a href="<c:url value="/product/all"/> ">Của hàng</a>
-    <a href="#">Thông tin</a>
-  </div>
-  <div class="icons">
-    <span><a class="btn btn-outline-info" href="<c:url value="/user/wishlist"/> "><i class="bi bi-bag-heart"></i></a></span>
-    <span><a class="btn btn-outline-info" href="<c:url value="/user/cart"/> "><i class="bi bi-cart"></i></a></span>
-    <div class="dropdown">
-      <div class="btn btn-outline-info dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-person-circle"></i>
-      </div>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <c:if test="${not empty sessionScope.user}" >
-          <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
-          <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
-        </c:if>
-        <c:if test="${empty sessionScope.user}" >
-          <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
-          <li><a class="dropdown-item" href="<c:url value="/register"/> ">Đăng ký</a></li>
-        </c:if>
-      </ul>
-    </div>
-  </div>
-</header>
+<%@ include file="header/header.jsp" %>
+
 <section>
   <div class="container">
     <div class="row mt-5">
@@ -101,18 +38,18 @@
             <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
             <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
           </ol>
-          <div class="carousel-inner" style="height: 50vh;">
+          <div class="carousel-inner" style="height: 60vh;">
             <div class="carousel-item active">
-              <img src="https://www.sliderrevolution.com/wp-content/uploads/2023/03/sr-avada-slider.jpg"
-                   class="d-block w-100 rounded" alt="...">
+              <img src="https://i.pinimg.com/originals/e9/6b/51/e96b5131186e23446e89b1a789475053.jpg"
+                   class="d-block w-100 rounded object-fit" alt="..." >
               <div class="carousel-caption d-none d-md-block">
-                <h5>First slide label</h5>
+                <h5>Dành cho bạn</h5>
                 <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
               </div>
             </div>
             <div class="carousel-item">
-              <img src="https://www.sliderrevolution.com/wp-content/uploads/2020/05/sroverviewthumb.jpg"
-                   class="d-block w-100 rounded" alt="...">
+              <img src="https://media.bizj.us/view/img/10732556/dhl18*1200xx4000-2257-0-0.jpg"
+                   class="d-block w-100 rounded object-fit" alt="...">
               <div class="carousel-caption d-none d-md-block">
                 <h5>Second slide label</h5>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -120,8 +57,8 @@
             </div>
             <div class="carousel-item">
               <img
-                      src="https://dt2sdf0db8zob.cloudfront.net/wp-content/uploads/2018/07/Best-REALLY-FREE-Landing-Page-Builders-image10.png"
-                      class="d-block w-100 rounded" alt="...">
+                      src="https://antimatter.vn/wp-content/uploads/2022/05/thiet-ke-anh-sale.jpg"
+                      class="d-block w-100 rounded object-fit" alt="...">
               <div class="carousel-caption d-none d-md-block">
                 <h5>Third slide label</h5>
                 <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
@@ -140,7 +77,7 @@
       </div>
     </div>
     <div class="d-flex justify-content-between align-items-center featured mt-5">
-      <h2 class="title border-start">Category</h2>
+      <h2 class="title border-start">Thể loại</h2>
       <div class="d-flex">
         <button id="scrollLeftCategory" class="btn btn-dark mr-3">←</button>
         <button id="scrollRightCategory" class="btn btn-dark">→</button>
@@ -154,7 +91,7 @@
           <div class="card" style="overflow: hidden; width: 20vh;">
             <img src="${item.image}" class="rounded" alt="..." style="object-fit: cover">
 
-              <a href="" class="card-title text-center ellipsis p-2 mt-2">${item.name}</a>
+              <a href="<c:url value="/product/all"/> " onclick="saveDataToLocalStorage(`${item.id}`)" class="card-title text-center ellipsis p-2 mt-2">${item.name}</a>
 
           </div>
         </div>
@@ -213,21 +150,27 @@
 
     </div>
     <div class="featured mt-5">
-      <h2 class="title border-start">Feature</h2>
+      <h2 class="title border-start">Dành cho bạn</h2>
     </div>
     <div class="banner container p-5 rounded">
       <div class="content">
-        <div class="title-banner">Enhance Your Music Experience</div>
-        <div class="countdown">
-          <div>23 <br> Hours</div>
-          <div>05 <br> Days</div>
-          <div>59 <br> Minutes</div>
-          <div>35 <br> Seconds</div>
+        <div class="title-banner ellipsis-60">${product.name}</div>
+        <div class="information" style="margin-top: 20px;">
+          <div class="info-item" style="margin-bottom: 10px;">
+            <h4 class="info-label">Giá:&nbsp;&nbsp;
+              <span class="info-value text-warning" style="color: orange;">${product.price - (product.discountPrice * product.price)/ 100}</span>
+              <span class="info-value text-danger" style="text-decoration: line-through; color: red;">${product.price}</span>
+            </h4>
+            </div>
+          <div class="info-item" style="margin-bottom: 10px;">
+            <h5 class="info-label">Danh mục:&nbsp; ${product.category.name}</h5>
+          </div>
         </div>
-        <a href="#" class="buy-btn">Buy Now!</a>
+        <a href="#" class="buy-btn">Mua ngay</a>
+        <a href="<c:url value="/product/${product.id}"/>" class="detail-btn">Xem chi tiết</a>
       </div>
       <div class="product-image">
-        <img class="rounded" src="https://www.insidehook.com/wp-content/uploads/2023/08/Hero-End-clothing-summer-sale.jpg?w=1200" alt="JBL Speaker">
+        <img class="rounded" src="${product.image}" alt="JBL Speaker">
       </div>
     </div>
     <div class="featured mt-5">
@@ -270,7 +213,7 @@
         </div>
       </div>
     </div>
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
 
       <!-- Nút bấm cuộn -->
       <div class="d-flex justify-content-between my-3">
@@ -324,7 +267,7 @@
   </div>
 </section>
 
-
+<%@ include file="footer/footer.jsp" %>
 
 <script>
   document.querySelectorAll('.action-button:first-child').forEach(button => {
@@ -340,13 +283,11 @@
     });
   });
 
-  // Add view functionality (just for demonstration)
-  document.querySelectorAll('.action-button:nth-child(2)').forEach(button => {
-    button.addEventListener('click', function () {
-      const productTitle = this.closest('.product-card').querySelector('.product-title').textContent;
-      alert(`Quick view for: ${productTitle}`);
-    });
-  });
+</script>
+<script>
+  function saveDataToLocalStorage(value) {
+    localStorage.setItem('categoryId', value);
+  }
 
 </script>
 <script>
@@ -394,7 +335,6 @@
       productId : productId
     };
     console.log(data);
-    alert("a")
     $.ajax({
       url: `${APIWishlist}`,
       type: 'POST',
@@ -410,6 +350,7 @@
   }
 </script>
 
+<script src="<c:url value="/client/js/addWishlist.js"/> " type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

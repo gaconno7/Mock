@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -31,6 +32,7 @@ public class User  implements Serializable {
     @NotNull
     String email;
 
+    @JsonIgnore
     @NotNull
     String password;
 
@@ -39,14 +41,17 @@ public class User  implements Serializable {
 
     String address;
 
+    @JsonIgnore
     String phone;
 
     String avatar;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id")
     Role role;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user")
     Store store;
 
@@ -61,9 +66,19 @@ public class User  implements Serializable {
     @Column(name = "deleted_date")
     Date deletedDate;
 
+    @JsonIgnore
     @Column(name = "status")
     boolean status;
 
+    @JsonIgnore
+    @Column(name = "otp")
+    String otp;
+
+    @JsonIgnore
+    @Column(name = "is_verified")
+    boolean isVerified;
+
+    @JsonIgnore
     @JsonManagedReference(value = "user_wishlist")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<WishlistItem> wishlistItems;

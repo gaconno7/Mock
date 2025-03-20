@@ -44,6 +44,9 @@ public class Order implements Serializable {
     @CreatedDate
     Date orderDate;
 
+    @Column(name = "total_price")
+    Double totalPrice;
+
     @Column(name = "update_date")
     @LastModifiedDate
     Date updateDate;
@@ -51,4 +54,5 @@ public class Order implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "transport_id")
     Transport transport;
+
 }

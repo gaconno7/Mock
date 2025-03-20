@@ -32,8 +32,7 @@ public class Evaluation  implements Serializable {
     @JoinColumn(name = "product_id")
     Product product;
 
-    @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     User user;
 

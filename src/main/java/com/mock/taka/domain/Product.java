@@ -37,7 +37,7 @@ public class Product implements Serializable {
     @Column(name = "price")
     double price;
 
-    @Column(name = "discount-price")
+    @Column(name = "discount_price")
     double discountPrice;
     
     @Column(name = "quantity")
@@ -46,7 +46,7 @@ public class Product implements Serializable {
     @Column(name = "image")
     String image;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     String description;
     
     @CreatedDate
@@ -63,6 +63,7 @@ public class Product implements Serializable {
 
     @Column(name = "is_deleted")
     boolean deleted = false;
+
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;

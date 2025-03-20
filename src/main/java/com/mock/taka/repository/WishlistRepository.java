@@ -9,9 +9,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface WishlistRepository extends JpaRepository<WishlistItem, String> {
 
     Page<WishlistItem> findAllByUserId(long userId, Pageable pageable);
+    boolean existsByProductIdAndUserId( String productId, long userId);
 }

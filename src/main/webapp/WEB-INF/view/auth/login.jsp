@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="<c:url value="/css/login.css"/> ">
+    <link rel="stylesheet" href="<c:url value="/client/css/login.css"/> ">
 </head>
+
 <body>
 
 
@@ -20,8 +21,9 @@
     <form class="form-section" action="<c:url value="/login"/> " method="post">
         <h1 class="form-title">Đăng nhập</h1>
      <c:if test="${param.error != null}">
-        <div class="error-message">
-            <c:out value="${sessionScope.errorMessage}" default="Đã xảy ra lỗi trong quá trình đăng nhập" />
+        <div class="error-message m-5">
+            <c:out value="${sessionScope.errorMessage}" />
+            <c:remove var="errorMessage" scope="session"/>
         </div>
     </c:if>
 
@@ -35,13 +37,13 @@
 
         <button class="btn-primary" type="submit">Đăng nhập</button>
 
-        <button class="btn-google">
+        <a href="<c:url value="/oauth2/authorization/google"/>" class="btn-google">
             <img src="https://th.bing.com/th/id/OIP.8QehHn1i3PEPr3ivNJP2fAHaHa?rs=1&pid=ImgDetMain" alt="Google logo" style="width: 20px; height: 20px;">
             Đăng nhập với Google
-        </button>
+        </a>
         <div class="d-flex justify-content-between">
             <a href="<c:url value="/register"/> " class="forgot-password">Đăng ký</a>
-            <a href="#" class="forgot-password">Quên mật khẩu?</a>
+            <a href="<c:url value="/confirm-email"/>" class="forgot-password">Quên mật khẩu?</a>
         </div>
     </form>
 </div>

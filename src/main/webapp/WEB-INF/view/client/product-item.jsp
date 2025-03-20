@@ -6,44 +6,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gaming Products Store</title>
+    <title>Cửa hàng</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="<c:url value="/css/product-item.css"/> ">
-    <link rel="stylesheet" href="<c:url value="/css/view-more.css"/> ">
+    <link rel="stylesheet" href="<c:url value="/client/css/product-item.css"/> ">
+    <link rel="stylesheet" href="<c:url value="/client/css/view-more.css"/> ">
 </head>
 <body>
 
 <!-- Header/Navigation -->
-<header class="main-header">
-    <div class="logo">Taka</div>
-    <div class="nav-links">
-        <a href="<c:url value="/home"/> ">Trang chủ</a>
-        <a href="<c:url value="/product/all"/> ">Của hàng</a>
-        <a href="#">Thông tin</a>
-    </div>
-    <div class="icons">
-        <span><a class="btn btn-outline-info" href="<c:url value="/user/wishlist"/> "><i class="bi bi-bag-heart"></i></a></span>
-        <span><a class="btn btn-outline-info" href="<c:url value="/user/cart"/> "><i class="bi bi-cart"></i></a></span>
-        <div class="dropdown">
-            <div class="btn btn-outline-info dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle"></i>
-            </div>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <c:if test="${not empty sessionScope.user}" >
-                    <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
-                    <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
-                </c:if>
-                <c:if test="${empty sessionScope.user}" >
-                    <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
-                    <li><a class="dropdown-item" href="<c:url value="/register"/> ">Đăng ký</a></li>
-                </c:if>
-            </ul>
-        </div>
-    </div>
-</header>
+<%@ include file="header/header.jsp" %>
 
 <!-- Main Content -->
 <div class="main-content">
@@ -103,9 +77,10 @@
     </div>
 </div>
 
-
+<%@ include file="footer/footer.jsp" %>
 <script>
-    let categoryId, sortBy, minPrice, maxPrice, searchValue;
+    let categoryId = null, sortBy = null, minPrice = null, maxPrice = null, searchValue = null;
+
     function setCategory(value) {
         categoryId = value;
         $(".category").removeClass("active-element-a")
@@ -187,7 +162,7 @@
 
         console.log(data)
         $.ajax({
-            url: '/api/products',  // Thay đổi URL endpoint phù hợp
+            url: '/api/products',
             type: 'GET',
             data: data,
             dataType: 'json',
@@ -201,11 +176,19 @@
                             '<div class="product-card">'
                             + ' <div class="product-image">'
                             + ' <img src="'+item.image+'" alt="HAVIT HV-G92 Gamepad">'
-                            + ' <div class="quick-view">'
+                            + ' <div class="quick-view mb-3">'
                             + '  <a href="/product/' +item.id +'">'
                             + '      <i class="bi bi-eye"></i>'
                             + '    </a>'
                             + '  </div>'
+                            + '<div class="quick-view mt-5">'
+                            +'<c:if test="${not empty sessionScope.user}">'
+                            +'<button class="action-button" onclick="addItemToWishlist(' + ${sessionScope.user.id}+','+ item.id +')">'
+                            + '<i class="bi bi-heart"></i>'
+                            +' </button>'
+                            +'  </c:if>'
+                            + '  </div>'
+
                             + '  </div>'
                             + '  <div class="product-info">'
                             + '     <h4 class="product-name ellipsis">'+item.name+'</h4>'
@@ -278,6 +261,13 @@
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        categoryId = localStorage.getItem('categoryId');
+
+        if (categoryId !== null) {
+            setCategory(categoryId);
+            localStorage.removeItem('categoryId');
+        }
+
         const toggleBtn = document.querySelector(".toggle-btn");
         const listContainer = document.querySelector(".list-container");
 
@@ -292,6 +282,8 @@
         });
     });
 </script>
+
+<script src="<c:url value="/client/js/addWishlist.js"/> " type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

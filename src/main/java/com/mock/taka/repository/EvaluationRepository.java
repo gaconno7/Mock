@@ -4,6 +4,8 @@ import com.mock.taka.domain.Evaluation;
 import com.mock.taka.domain.User;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,4 +16,5 @@ import java.util.List;
 public interface EvaluationRepository extends JpaRepository<Evaluation, String> {
     List<Evaluation> findAllByProductId(String id);
     int countByRateAndProductId(double rate, String productId);
+    Page<Evaluation> findAllByProductId(String productId, Pageable pageable);
 }
