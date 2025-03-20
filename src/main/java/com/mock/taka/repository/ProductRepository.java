@@ -2,6 +2,7 @@ package com.mock.taka.repository;
 
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Store;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -34,11 +35,12 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
             "JOIN Evaluation e ON e.product = p " +
             "WHERE p.name LIKE CONCAT('%', :keyword, '%') " +
             "AND p.id <> :productId AND p.deleted = false ")
-    List<Product> findRelatedProductsByName(@Param("keyword") String keyword, @Param("productId") String productId);
+    List<Product> findRelatedProductsByName(@Param("keyword") String keyword, @Param("productId") String productId, Pageable pageable);
 
-    @Query("SELECT p FROM Product p JOIN FETCH Evaluation e ON e.product = p " +
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.evaluations " +
             "WHERE p.id = :productId AND p.deleted = false ")
-    Product findProductById(@Param("productId") String productId);
+    Optional<Product> findProductById(@Param("productId") String productId);
+
 
     @Query("SELECT p " +
             "FROM Product p " +

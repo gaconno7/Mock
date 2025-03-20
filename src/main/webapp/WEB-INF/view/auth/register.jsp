@@ -40,8 +40,9 @@
         <button class="btn-primary" id="btn-submit-password" type="submit">OK</button>
 
         <div class="login-link">
-            Bạn đã có tài khoản? <a href="<c:url value="/login"/> ">Đăng nhập</a>
+                    Bạn đã có tài khoản? <a href="<c:url value="/login"/> ">Đăng nhập</a> - <a href="<c:url value="/"/>" class="forgot-password">Trang chủ</a>
         </div>
+
     </form>
 
     <script>

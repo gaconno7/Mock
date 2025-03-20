@@ -44,6 +44,7 @@
         <div class="d-flex justify-content-between">
             <a href="<c:url value="/register"/> " class="forgot-password">Đăng ký</a>
             <a href="<c:url value="/confirm-email"/>" class="forgot-password">Quên mật khẩu?</a>
+            <a href="<c:url value="/"/>" class="forgot-password">Trang chủ</a>
         </div>
     </form>
 </div>

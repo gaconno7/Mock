@@ -19,7 +19,15 @@
             </svg>
             <span onclick="returnBack()">Quay lại</span>
         </a>
-        <div class="return-status status-pending">${order.status}</div>
+        <div class="return-status status-pending">
+            ${order.status == 'cho-giao-hang' ? 'Chờ giao hàng' :
+                order.status == 'cho-xu-ly' ? 'Chờ xử lý'
+                    : order.status == 'da-huy' ? 'Đã huỷ'
+                    : order.status == 'tra-hang' ? 'Trả hàng'
+                    : order.status == 'hoan-thanh' ? 'Hoàn thành'
+                    : order.status == 'van-chuyen' ? 'Vận chuyển'
+                    : order.status == 'da-thanh-toan' ? 'Đã thanh toán'
+                    : order.status == 'chua-thanh-toan' ? 'Chưa thanhh toán' : '' }</div>
     </header>
 
     <div class="return-card">
@@ -58,7 +66,7 @@
             </div>
             <c:set var="totalPrice" value="0"/>
             <c:forEach var="item" items="${order.orderDetails}">
-                <c:set var="price" value="${totalPrice + item.product.price * item.product.discountPrice}"/>
+                <c:set var="price" value="${totalPrice + (item.product.price * item.product.discountPrice)/100}"/>
             </c:forEach>
             <div class="return-summary">
                 <h3>Tổng kết hoàn tiền</h3>
@@ -66,23 +74,50 @@
                     <span>Giá trị sản phẩm</span>
                     <span>${totalPrice}₫</span>
                 </div>
-                <div class="summary-row">
-                    <span>Phí vận chuyển</span>
-                    <span>30.000₫</span>
-                </div>
-                <div class="summary-row total">
-                    <span>Tổng hoàn tiền</span>
-                    <span>815.000₫</span>
-                </div>
             </div>
 
-
-
-            <div class="action-buttons">
-                <button class="btn btn-outline" onclick="cancelOrder()">Hủy yêu cầu</button>
-            </div>
+            <c:if test="${order.status == 'cho-xu-ly'}">
+                <div class="action-buttons">
+                    <button class="btn btn-outline" onclick="cancelOrder()">Hủy yêu cầu</button>
+                </div>
+            </c:if>
         </div>
     </div>
+
+    <c:if test="${not empty returnOrder}">
+        <div class="return-section">
+            <h2 class="section-title">Thông tin hoàn trả hàng</h2>
+
+            <div class="return-form">
+                <div class="form-group">
+                    <h4>Tiêu đề: ${returnOrder.title}</h4>
+                </div>
+
+                <div class="form-group">
+                    <p>Nội dung: ${returnOrder.content}</p>
+                </div>
+
+                <c:if test="${not empty returnOrder.firstImage}">
+                    <div class="form-group">
+                        <label class="form-label">Hình ảnh đính kèm:</label>
+                        <div class="image-upload">
+                            <c:if test="">
+                                <img src="${not empty returnOrder.firstImage}" alt="Hình ảnh" class="upload-icon">
+                            </c:if>
+                            <c:if test="">
+                                <img src="${not empty returnOrder.secondImage}" alt="Hình ảnh" class="upload-icon">
+                            </c:if>
+                            <c:if test="${not empty returnOrder.threeImage}">
+                                <img src="${returnOrder.threeImage}" alt="Tải lên hình ảnh" class="upload-icon">
+                            </c:if>
+                        </div>
+                    </div>
+                </c:if>
+
+
+            </div>
+        </div>
+    </c:if>
 </div>
 <script>
     function returnBack() {

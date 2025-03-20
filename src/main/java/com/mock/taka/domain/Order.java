@@ -44,9 +44,6 @@ public class Order implements Serializable {
     @CreatedDate
     Date orderDate;
 
-    @Column(name = "total_price")
-    Double totalPrice;
-
     @Column(name = "update_date")
     @LastModifiedDate
     Date updateDate;
@@ -55,4 +52,15 @@ public class Order implements Serializable {
     @JoinColumn(name = "transport_id")
     Transport transport;
 
+    @Column(name = "total_price")
+    double totalPrice;
+
+    @Column(name = "payment_method")
+    String paymentMethod;
+
+    @Column(name = "payment_ref")
+    String paymentRef;
+
+    @OneToOne(mappedBy = "order")
+    ReturnOrder returnOrder;
 }

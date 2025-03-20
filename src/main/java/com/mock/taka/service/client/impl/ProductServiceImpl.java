@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -42,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(String id) {
-        return productRepository.findProductById(id);
+        return productRepository.findProductById(id).orElse(null);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
             searchValue = arr[0];
         }
 
-        List<Product> products = productRepository.findRelatedProductsByName(searchValue, id);
+        List<Product> products = productRepository.findRelatedProductsByName(searchValue, id, PageRequest.of(0, 4));
 
         return CollectionUtils.isEmpty(products) ? null : products;
     }

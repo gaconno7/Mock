@@ -39,10 +39,12 @@ public class EvaluationAPIController {
 
     @GetMapping
     public ResponseEntity<Page<Evaluation>> getEvaluations(@RequestParam(name = "page",defaultValue = "1") int pageNum,
-                                                           @RequestParam(name = "size",defaultValue = "8") int pageSize,
-                                                           @RequestParam(name = "productId",defaultValue = "8") String productId
+                                                           @RequestParam(name = "size",defaultValue = "9") int pageSize,
+                                                           @RequestParam(name = "productId") String productId,
+                                                           @RequestParam(name = "rate",defaultValue = "0") int rate
+
                                                            ) {
-        Page<Evaluation> evaluationPage = evaluationService.findAllByProductIdAndPageable(pageSize, pageNum, productId);
+        Page<Evaluation> evaluationPage = evaluationService.findAllByProductIdAndPageable(pageSize, pageNum, productId, rate);
         return ResponseEntity.ok(evaluationPage);
     }
 }

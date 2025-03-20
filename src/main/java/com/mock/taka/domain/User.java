@@ -78,6 +78,9 @@ public class User  implements Serializable {
     @Column(name = "is_verified")
     boolean isVerified;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<CartItem> cartItems;
+
     @JsonIgnore
     @JsonManagedReference(value = "user_wishlist")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

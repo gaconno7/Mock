@@ -66,8 +66,6 @@
         <!-- Products Grid -->
         <div class="products-grid" id="productContainer">
 
-
-
         </div>
 
         <!-- Pagination -->
@@ -80,6 +78,7 @@
 <%@ include file="footer/footer.jsp" %>
 <script>
     let categoryId = null, sortBy = null, minPrice = null, maxPrice = null, searchValue = null;
+
 
     function setCategory(value) {
         categoryId = value;
@@ -175,33 +174,33 @@
                         let productHtml =
                             '<div class="product-card">'
                             + ' <div class="product-image">'
-                            + ' <img src="'+item.image+'" alt="HAVIT HV-G92 Gamepad">'
+                            + ' <img src="' + item.image + '" alt="HAVIT HV-G92 Gamepad">'
                             + ' <div class="quick-view mb-3">'
-                            + '  <a href="/product/' +item.id +'">'
+                            + '  <a href="/product/' + item.id + '">'
                             + '      <i class="bi bi-eye"></i>'
                             + '    </a>'
                             + '  </div>'
+                            + '<c:if test="${not empty sessionScope.user}">'
                             + '<div class="quick-view mt-5">'
-                            +'<c:if test="${not empty sessionScope.user}">'
-                            +'<button class="action-button" onclick="addItemToWishlist(' + ${sessionScope.user.id}+','+ item.id +')">'
+                            + '<button class="action-button" onclick="addItemToWishlist(\'' + ${sessionScope.user.id}+'\',\'' + item.id + '\')">'
                             + '<i class="bi bi-heart"></i>'
-                            +' </button>'
-                            +'  </c:if>'
+                            + ' </button>'
                             + '  </div>'
-
+                            + '  </c:if>'
                             + '  </div>'
                             + '  <div class="product-info">'
-                            + '     <h4 class="product-name ellipsis">'+item.name+'</h4>'
+                            + '     <h4 class="product-name ellipsis">' + item.name + '</h4>'
                             + '     <div class="product-price">'
-                            + '           <span class="current-price">'+item.price+'</span>'
-                            + '           <span class="original-price">'+item.discountPrice+'</span>'
+                            + '           <span class="current-price">' + item.price + '</span>'
+                            + '           <span class="original-price">' + item.discountPrice + '</span>'
                             + '     </div>'
                             + renderRating(item.evaluations)
-                            + '     <button class="btn btn-primary">'
+                            + '     <button class="btn btn-primary" onclick="addToCart(\'' + item.id.toString() + '\', \'' + item.productVariants[0].id.toString() + '\')">'
                             + '         Thêm vào giỏ hàng   <i class="bi bi-cart"></i>'
                             + '     </button>'
                             + '   </div>'
                             + '</div> ';
+
 
                         container.append(productHtml);
                     });
@@ -217,6 +216,24 @@
             }
         });
     }
+    function addToCart(productId, selectedVariantId) {
+        $.ajax({
+            url: "/user/cart/add",
+            type: "POST",
+            data: {
+                productId: productId,
+                productVariantId: selectedVariantId,
+                quantity: 1
+            },
+            success: function (response) {
+                alert(response.message);
+            },
+            error: function () {
+                alert("Lỗi khi thêm vào giỏ hàng!");
+            }
+        });
+    }
+
 
     function createPagination(data) {
         let paginationDiv = $('#pagination');

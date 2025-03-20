@@ -40,29 +40,20 @@
           </ol>
           <div class="carousel-inner" style="height: 60vh;">
             <div class="carousel-item active">
-              <img src="https://i.pinimg.com/originals/e9/6b/51/e96b5131186e23446e89b1a789475053.jpg"
+              <img src="https://spillmancrane.com/wp-content/uploads/2023/07/The-Importance-of-Professional-Tax-Planning-for-Small-Businesses.png"
                    class="d-block w-100 rounded object-fit" alt="..." >
-              <div class="carousel-caption d-none d-md-block">
-                <h5>Dành cho bạn</h5>
-                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-              </div>
+
             </div>
             <div class="carousel-item">
               <img src="https://media.bizj.us/view/img/10732556/dhl18*1200xx4000-2257-0-0.jpg"
                    class="d-block w-100 rounded object-fit" alt="...">
-              <div class="carousel-caption d-none d-md-block">
-                <h5>Second slide label</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
+
             </div>
             <div class="carousel-item">
               <img
                       src="https://antimatter.vn/wp-content/uploads/2022/05/thiet-ke-anh-sale.jpg"
                       class="d-block w-100 rounded object-fit" alt="...">
-              <div class="carousel-caption d-none d-md-block">
-                <h5>Third slide label</h5>
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-              </div>
+
             </div>
           </div>
           <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
@@ -139,7 +130,9 @@
                   <i class="bi bi-star-fill"></i>
                 </div>
                 <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ hàng   <i class="bi bi-cart"></i></a>
+                  <button class="btn btn-primary" onclick="addToCart('${item.id}', '${item.productVariants[0].id}')">
+                    Thêm vào giỏ hàng   <i class="bi bi-cart"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -174,42 +167,37 @@
       </div>
     </div>
     <div class="featured mt-5">
-      <h2 class="title border-start">Feature</h2>
+      <h2 class="title border-start">Đặc biệt</h2>
     </div>
     <div class="products">
       <div class="product large">
-        <img src="https://www.insidehook.com/wp-content/uploads/2023/08/Hero-End-clothing-summer-sale.jpg?w=1200" alt="PlayStation 5">
+        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/cfc06c131557391.61971f5fe8da4.png" alt="Hình ảnh">
         <div class="info">
-          <h2>PlayStation 5</h2>
-          <a href="#">Shop Now</a>
+          <h2>Sản phẩm chất lượng</h2>
         </div>
       </div>
       <div class="product small">
-        <img src="https://www.insidehook.com/wp-content/uploads/2023/08/Hero-End-clothing-summer-sale.jpg?w=1200" alt="Women's Collections">
+        <img src="https://www.lalamove.com/hs-fs/hubfs/driver%20lalamove%20angkat%20barang%20keluar%20dari%20van.jpeg?width=1800&height=1200&name=driver%20lalamove%20angkat%20barang%20keluar%20dari%20van.jpeg" alt="Hình ảnh">
         <div class="info">
-          <h2>Women's Collections</h2>
-          <a href="#">Shop Now</a>
+          <h2>Giao hàng nhanh</h2>
         </div>
       </div>
       <div class="product small">
-        <img src="https://www.insidehook.com/wp-content/uploads/2023/08/Hero-End-clothing-summer-sale.jpg?w=1200" alt="Speakers">
+        <img src="https://th.bing.com/th/id/R.9072995a50497d67844d118babed3c62?rik=xQd3v4VWu9PSIA&riu=http%3a%2f%2ftamvuong.com%2fMedia%2fimages%2ftamvuong%2ftin-tuc%2fnhan-vien-cham-soc-khach-hang.jpg&ehk=2kbFgQLbAYKq158b2hb6mqKFnh3C8KNNMhLQmuGXPwM%3d&risl=&pid=ImgRaw&r=0" alt="Hình ảnh">
         <div class="info">
-          <h2>Speakers</h2>
-          <a href="#">Shop Now</a>
+          <h2>Hỗ trợ 24/24</h2>
         </div>
       </div>
       <div class="product small">
-        <img src="https://www.insidehook.com/wp-content/uploads/2023/08/Hero-End-clothing-summer-sale.jpg?w=1200" alt="Gucci Perfume">
+        <img src="https://lamvugroup.vn/userfiles/files/cac-thuong-hieu-nhuong-quyen-viet-nam-3.jpg.jpg" alt="Hình ảnh">
         <div class="info">
-          <h2>Gucci Perfume</h2>
-          <a href="#">Shop Now</a>
+          <h2>Thương hiệu độc quyền</h2>
         </div>
       </div>
       <div class="product small">
-        <img src="https://www.insidehook.com/wp-content/uploads/2023/08/Hero-End-clothing-summer-sale.jpg?w=1200" alt="Gucci Perfume">
+        <img src="https://logodix.com/logo/1764723.jpg" alt="Hình ảnh">
         <div class="info">
-          <h2>Gucci Perfume</h2>
-          <a href="#">Shop Now</a>
+          <h2>Giá cả ưu đãi</h2>
         </div>
       </div>
     </div>
@@ -233,7 +221,7 @@
               </c:if>
               <div class="action-buttons">
                 <c:if test="${not empty sessionScope.user}">
-                  <button class="action-button" onclick="addItemToWishlist(`${sessionScope.user.id}`, `${item.id}`)">
+                  <button class="action-button" onclick="addItemToWishlist('${sessionScope.user.id}', '${item.id}')">
                     <i class="bi bi-heart"></i>
                   </button>
                 </c:if>
@@ -254,7 +242,9 @@
                   <i class="bi bi-star-fill"></i>
                 </div>
                 <div class="d-flex justify-content-between my-3 align-items-center">
-                  <a href="#" class="btn btn-primary">Thêm vào giỏ hàng   <i class="bi bi-cart"></i></a>
+                 <button class="btn btn-primary" onclick="addToCart('${item.id}', '${item.productVariants[0].id}')">
+                   Thêm vào giỏ hàng   <i class="bi bi-cart"></i>
+                   </button>
                 </div>
               </div>
             </div>
@@ -347,6 +337,24 @@
         console.log(error)
       }
     })
+  }
+
+  function addToCart(productId, selectedVariantId) {
+    $.ajax({
+      url: "/user/cart/add",
+      type: "POST",
+      data: {
+        productId: productId,
+        productVariantId: selectedVariantId,
+        quantity: 1
+      },
+      success: function (response) {
+        alert(response.message);
+      },
+      error: function () {
+        alert("Lỗi khi thêm vào giỏ hàng!");
+      }
+    });
   }
 </script>
 

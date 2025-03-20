@@ -20,20 +20,27 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartItem  implements Serializable {
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    String id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "product_variant_id")
+    ProductVariant productVariant;
 
     @Column(nullable = false)
-    private Integer quantity;
-}
+    Integer quantity;
 
+    public double getTotalPrice() {
+        return product.getPrice() * quantity;
+    }
+}

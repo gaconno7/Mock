@@ -37,6 +37,8 @@
                 <a href="<c:url value="/user/order/history/van-chuyen"/> " class="sidebar-link">Vận chuyển</a>
                 <a href="<c:url value="/user/order/history/cho-giao-hang"/> " class="sidebar-link">Chờ giao hàng</a>
                 <a href="<c:url value="/user/order/history/hoan-thanh"/> " class="sidebar-link">Hoàn thành</a>
+                <a href="<c:url value="/user/order/history/chua-thanh-toan"/> " class="sidebar-link">Chưa thanh toán</a>
+                <a href="<c:url value="/user/order/history/da-thanh-toan"/> " class="sidebar-link">Đã thanh toán</a>
                 <a href="<c:url value="/user/order/history/da-huy"/> " class="sidebar-link">Đã huỷ</a>
                 <a href="<c:url value="/user/order/history/tra-hang"/> " class="sidebar-link">Trả hàng/ hoàn tiền</a>
             </div>

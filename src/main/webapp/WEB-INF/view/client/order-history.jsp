@@ -35,6 +35,8 @@
                 <a href="<c:url value="/user/order/history/van-chuyen"/> " class="sidebar-link">Vận chuyển</a>
                 <a href="<c:url value="/user/order/history/cho-giao-hang"/> " class="sidebar-link">Chờ giao hàng</a>
                 <a href="<c:url value="/user/order/history/hoan-thanh"/> " class="sidebar-link">Hoàn thành</a>
+                <a href="<c:url value="/user/order/history/chua-thanh-toan"/> " class="sidebar-link">Chưa thanh toán</a>
+                <a href="<c:url value="/user/order/history/da-thanh-toan"/> " class="sidebar-link">Đã thanh toán</a>
                 <a href="<c:url value="/user/order/history/da-huy"/> " class="sidebar-link">Đã huỷ</a>
                 <a href="<c:url value="/user/order/history/tra-hang"/> " class="sidebar-link">Trả hàng/ hoàn tiền</a>
             </div>
@@ -60,7 +62,14 @@
                 <tr>
                     <td class="return-id">${item.id}</td>
                     <td>${item.orderDate.toString().substring(0,19)}</td>
-                    <td><span class="return-status status-approved">${item.status}</span></td>
+                    <td><span class="return-status status-approved">${item.status == 'cho-giao-hang' ? 'Chờ giao hàng' :
+                            item.status == 'cho-xu-ly' ? 'Chờ xử lý'
+                                    : item.status == 'da-huy' ? 'Đã huỷ'
+                                    : item.status == 'tra-hang' ? 'Trả hàng'
+                                    : item.status == 'hoan-thanh' ? 'Hoàn thành'
+                                    : item.status == 'van-chuyen' ? 'Vận chuyển'
+                                    : item.status == 'da-thanh-toan' ? 'Đã thanh toán'
+                                    : item.status == 'chua-thanh-toan' ? 'Chưa thanhh toán' : '' }</span></td>
                     <td><a href="<c:url value="/user/order/${item.id}"/> " class="action-btn">Xem chi tiết</a></td>
                 </tr>
             </c:forEach>

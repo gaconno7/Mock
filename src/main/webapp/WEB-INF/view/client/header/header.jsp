@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header>
-    <div class="logo">Taka</div>
+    <div class="logo"><a href="<c:url value="/"/> ">Taka</a> </div>
     <div class="nav-links">
         <a href="<c:url value='/home'/>" class="home">Trang chủ</a>
-        <a href="<c:url value='/product/all'/>" class="store">Cửa hàng</a>
+        <a href="<c:url value='/product/all'/>" class="product-list">Danh sách sản phẩm</a>
         <a href="#" class="about">Thông tin</a>
     </div>
     <div class="icons">
@@ -30,10 +30,10 @@
         $(document).ready(function () {
             let url = window.location.href;
 
-            $(".home, .store, .about").removeClass("active");
+            $(".home, .product-list, .about").removeClass("active");
 
             if (url.includes('product')) {
-                $(".store").addClass("active");
+                $(".product-list").addClass("active");
             } else if (url.includes('about')) {
                 $(".about").addClass("active");
             } else {

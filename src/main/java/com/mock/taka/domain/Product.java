@@ -84,7 +84,6 @@ public class Product implements Serializable {
     @JoinColumn(name = "store_id")
     Store store;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     List<ProductVariant> productVariants;
 

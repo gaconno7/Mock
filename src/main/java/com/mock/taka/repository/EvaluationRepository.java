@@ -16,5 +16,6 @@ import java.util.List;
 public interface EvaluationRepository extends JpaRepository<Evaluation, String> {
     List<Evaluation> findAllByProductId(String id);
     int countByRateAndProductId(double rate, String productId);
+    Page<Evaluation> findAllByProductIdAndRate(String productId, int rate, Pageable pageable);
     Page<Evaluation> findAllByProductId(String productId, Pageable pageable);
 }

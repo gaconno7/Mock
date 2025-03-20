@@ -50,8 +50,10 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public Page<Evaluation> findAllByProductIdAndPageable(int pageSize, int pageNum, String productId) {
+    public Page<Evaluation> findAllByProductIdAndPageable(int pageSize, int pageNum, String productId, int rate) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return evaluationRepository.findAllByProductId(productId,pageable);
+        if(rate == 0)
+            return evaluationRepository.findAllByProductId(productId, pageable);
+        return evaluationRepository.findAllByProductIdAndRate(productId, rate, pageable);
     }
 }

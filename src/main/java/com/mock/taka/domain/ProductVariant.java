@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "product_variants")
@@ -19,8 +21,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductVariant implements Serializable {
-    
+public class ProductVariant {
+
     @Id
     @GeneratedValue(strategy=GenerationType.UUID)
     @Column(name = "product_variant_id")
@@ -32,6 +34,7 @@ public class ProductVariant implements Serializable {
     @Column(name = "value")
     String value;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     Product product;
@@ -49,4 +52,13 @@ public class ProductVariant implements Serializable {
 
     @Column(name = "status")
     boolean status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "productVariant", fetch = FetchType.LAZY)
+    List<CartItem> cartItems;
+
+    public String getId() {
+        return this.productVariantId;
+    }
+
 }

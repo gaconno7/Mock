@@ -53,25 +53,32 @@
                 <span>(${product.evaluations.size()} lượt đánh giá)</span>
             </div>
         </div>
+        <div class="options-label">Đặc điểm:</div>
         <div class="size-options">
-            <c:forEach var="item" items="${product.productVariants}">
-                <div class="size-option selected">${item.attribute} - ${item.value}</div>
+            <c:forEach var="variant" items="${product.productVariants}">
+                <div class="size-option" data-variant-id="${variant.productVariantId}">
+                        ${variant.attribute} - ${variant.value}
+                </div>
             </c:forEach>
         </div>
         <div class="quantity">
-            <div class="quantity-input">
-                <button>-</button>
-                <input type="text" value="0">
-                <button>+</button>
+            <div class="quantity">
+                <div class="quantity-input">
+                    <button onclick="changeQuantity(-1)">-</button>
+                    <input type="text" id="quantity" value="1">
+                    <button onclick="changeQuantity(1)">+</button>
+                </div>
             </div>
-            <button class="buy-now">Mua ngay</button>
+
+            <!-- Nút thêm vào giỏ hàng -->
+            <button class="buy-now" onclick="addToCart('${product.id}')">Mua ngay</button>
             <button class="wishlist" onclick="addItemToWishlist(`${sessionScope.user.id}`, `${product.id}`)"><i class="bi bi-heart"></i></button>
         </div>
     </div>
 </div>
 <div class="reviews-section">
     <div class="section-heading">
-        <h2>Đặc điểm</h2>
+        <h2>Mô tả</h2>
     </div>
 
     <div class="review-summary">
@@ -177,17 +184,21 @@
     </c:if>
 
     <div class="review-filters">
-        <div class="review-filter active">All</div>
-        <div class="review-filter">5 ★</div>
-        <div class="review-filter">4 ★</div>
-        <div class="review-filter">3 ★</div>
-        <div class="review-filter">2 ★</div>
-        <div class="review-filter">1 ★</div>
+        <div class="review-filter filter-0 active" onclick="setRate('0')">All</div>
+        <div class="review-filter filter-5" onclick="setRate('5')">5 ★</div>
+        <div class="review-filter filter-4" onclick="setRate('4')">4 ★</div>
+        <div class="review-filter filter-3" onclick="setRate('3')">3 ★</div>
+        <div class="review-filter filter-2" onclick="setRate('2')">2 ★</div>
+        <div class="review-filter filter-1" onclick="setRate('1')">1 ★</div>
     </div>
 
     <div class="review-list mb-5" id="review-list-item">
 
     </div>
+    <div id="pagination" class="pagination-page">
+
+    </div>
+
     <c:if test="${not empty relatedProducts}">
     <div class="related-products" style="border-top: 1px solid #eee;">
         <div class="related-title">
@@ -220,7 +231,7 @@
                             <span>(${item.evaluations.size()} lượt đánh giá)</span>
                         </div>
                         <div class="product-card-rating">
-                            <button type="button" class="btn-add-cart">Thêm giỏ hàng</button>
+                            <button class="buy-now" onclick="setVariant(`${item.productVariants[0].id}`);addToCart('${item.id}')">Mua ngay</button>
                         </div>
                     </div>
                 </c:forEach>
@@ -228,6 +239,20 @@
     </div>
     </c:if>
     <script>
+        let rate;
+        let selectedVariantId = null;
+
+        function setRate(value) {
+            rate = value;
+            $('.filter-0').removeClass('active');
+            $('.filter-1').removeClass('active');
+            $('.filter-2').removeClass('active');
+            $('.filter-3').removeClass('active');
+            $('.filter-4').removeClass('active');
+            $('.filter-5').removeClass('active');
+            $('.filter-' + value).removeClass('active').addClass('active');
+            loadEvaluation(0);
+        }
         function renderRating(rate) {
              let ratingHtml = '';
             for (let i = 1; i <= rate; i++) {
@@ -236,6 +261,11 @@
 
             return ratingHtml;
         }
+
+        function setVariant(value) {
+            selectedVariantId = value;
+        }
+
         $(document).ready(function() {
 
             $('.star-rating-input label').on('click', function() {
@@ -258,12 +288,71 @@
             });
 
             loadEvaluation(0);
+        //
+
+
+
+            // Chọn phiên bản sản phẩm
+            $(".size-option").click(function () {
+                $(".size-option").removeClass("selected");
+                $(this).addClass("selected");
+                selectedVariantId = $(this).data("variant-id");
+            });
+
+            // Thay đổi ảnh chính khi chọn ảnh nhỏ
+            function changeImage(imageUrl) {
+                $("#main-product-image").attr("src", imageUrl);
+            }
+
+            // Thay đổi số lượng
+            function changeQuantity(change) {
+                let quantityInput = $("#quantity");
+                let currentQuantity = parseInt(quantityInput.val());
+
+                if (!isNaN(currentQuantity) && currentQuantity + change > 0) {
+                    quantityInput.val(currentQuantity + change);
+                }
+            }
+
+            // Thêm vào giỏ hàng AJAX
+            function addToCart(productId) {
+                let quantity = $("#quantity").val();
+                if(quantity === null) quantity = 1
+                if (!selectedVariantId) {
+                    alert("Vui lòng chọn phiên bản sản phẩm!");
+                    return;
+                }
+
+                $.ajax({
+                    url: "/user/cart/add",
+                    type: "POST",
+                    data: {
+                        productId: productId,
+                        productVariantId: selectedVariantId,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        alert(response.message);
+                        $("#totalCartPrice").text(response.totalCartPrice);
+                    },
+                    error: function () {
+                        alert("Lỗi khi thêm vào giỏ hàng!");
+                    }
+                });
+            }
+
+            window.changeImage = changeImage;
+            window.changeQuantity = changeQuantity;
+            window.addToCart = addToCart;
 
         });
 
         function loadEvaluation(page) {
             let data = { page: page };
             data.productId = '${product.id}';
+            if(rate !== null) {
+                data.rate = rate;
+            }
 
             $.ajax({
                 url : '${urlEvaluation}',
@@ -299,7 +388,9 @@
                                 +'    </div>';
                             container.append(productHtml);
                         });
-                    }},
+                    }
+                    createPagination(response);
+                },
                 error: function(xhr, status, error) {
                     console.error('Lỗi khi upload:', error);
                 }
@@ -347,9 +438,53 @@
         }
 
 
+        function createPagination(data) {
+            let paginationDiv = $('#pagination');
+            paginationDiv.empty();
+
+            let totalPages = data.totalPages;
+            let currentPage = data.number;
+
+            // Nút "Trước"
+            if (currentPage > 0) {
+                paginationDiv.append(
+                    '<a href="#" data-page="' + (currentPage - 1) + '">&laquo;</a>'
+                );
+            }
+
+            // Hiển thị các trang phân trang
+            for (let i = 0; i < totalPages; i++) {
+                let activeClass = (i === currentPage) ? 'active' : '';
+                paginationDiv.append(
+                    '<a href="#" class="' + activeClass + '" data-page="' + i + '">' + (i + 1) + '</a>'
+                );
+            }
+
+            // Nút "Tiếp theo"
+            if (currentPage < totalPages - 1) {
+                paginationDiv.append(
+                    '<a href="#" data-page="' + (currentPage + 1) + '">&raquo;</a>'
+                );
+            }
+        }
+
+        $(document).on('click', '#pagination a', function(e) {
+            e.preventDefault();
+            let page = $(this).data('page');
+            loadEvaluation(page);
+        });
 
     </script>
+    <script>
+        $(document).ready(function () {
 
+        });
+
+
+
+
+
+    </script>
     <script src="<c:url value="/client/js/addWishlist.js"/> " type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

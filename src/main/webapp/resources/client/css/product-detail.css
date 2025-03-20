@@ -597,7 +597,7 @@ footer {
     flex-direction: column;
     gap: 20px;
     overflow-y: scroll;
-    height: 50vh;
+    max-height: 80vh;
 }
 
 .review-item {
@@ -783,4 +783,22 @@ input[type="file"]::-webkit-file-upload-button {
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
+}
+.pagination-page {
+    margin: 20px 0;
+    text-align: center;
+}
+.pagination-page a {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+.pagination-page a.active {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
 }

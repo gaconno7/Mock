@@ -63,7 +63,7 @@
                     </c:forEach>
                     <span>(${item.evaluations.size()} lượt đánh giá)</span>
                 </div>
-                <button class="add-to-cart-btn">
+                <button class="add-to-cart-btn" onclick="addToCart('${item.id}', '${item.productVariants[0].id}')">
                     Thêm vào giỏ hàng   <i class="bi bi-cart"></i>
                 </button>
             </div>
@@ -139,7 +139,7 @@
                                 +' <span class="original-price"> ' + item.product.discountPrice + '</span>'
                             +'</div>'
                             + renderRating(item.product.evaluations)
-                                +'<button class="add-to-cart-btn">Thêm vào giỏ hàng <i class="bi bi-cart"></i></button>'
+                                +'<button class="add-to-cart-btn" onclick="addToCart(\'' + item.product.id.toString() + '\', \'' + item.product.productVariants[0].id.toString() + '\')">Thêm vào giỏ hàng <i class="bi bi-cart"></i></button>'
                             +'</div></div>';
 
                         container.append(productHtml);
@@ -234,6 +234,25 @@
             });
 
         }
+    }
+
+
+    function addToCart(productId, selectedVariantId) {
+        $.ajax({
+            url: "/user/cart/add",
+            type: "POST",
+            data: {
+                productId: productId,
+                productVariantId: selectedVariantId,
+                quantity: 1
+            },
+            success: function (response) {
+                alert(response.message);
+            },
+            error: function () {
+                alert("Lỗi khi thêm vào giỏ hàng!");
+            }
+        });
     }
 </script>
 
