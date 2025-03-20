@@ -11,4 +11,5 @@ public interface AdminStoreService {
     void deleteStore(String id);
     List<Store> fetchStore();
     List<Store> fetchDeletedStores();
+    Store findByUserId(long userId);
 }

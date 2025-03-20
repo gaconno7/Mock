@@ -17,6 +17,12 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <c:if test="${not empty sessionScope.user}" >
                     <li><a class="dropdown-item" href="<c:url value="/user/profile"/>">Hồ sơ</a></li>
+                    <c:if test="${empty sessionScope.user.store}">
+                        <li><a class="dropdown-item" href="<c:url value="/store/create"/>">Đăng ký cửa hàng</a></li>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.user.store}">
+                        <li><a class="dropdown-item" href="<c:url value="/store/product"/>">Quản lý sản phẩm</a></li>
+                    </c:if>
                     <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
                 </c:if>
                 <c:if test="${empty sessionScope.user}" >

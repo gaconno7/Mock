@@ -19,7 +19,7 @@
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Tôi không
                             muốn</button>
-                        <form method="post" action="/admin/${param.actionSubfolder}/delete"
+                        <form method="post" action="/store/${param.actionSubfolder}/delete"
                             modelAttribute="${param.modalAttribute}">
                             <input type="hidden" name="id" value="" class="form-control" path="id" />
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

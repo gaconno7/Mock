@@ -120,8 +120,8 @@
               <div class="card-body">
                 <h5 class="card-title">${item.name}</h5>
                 <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">${item.price}</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">${item.discountPrice}</h5>
+                  <h4 class="card-text text-warning" style="font-size :18px">${item.price - (item.discountPrice * item.price)/100} đ</h4>
+                  <h5 class="card-text text-danger" style="text-decoration: line-through;; font-size :18px">${item.price} đ</h5>
                 </div>
                 <div><i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-fill"></i>
@@ -134,6 +134,7 @@
                     Thêm vào giỏ hàng   <i class="bi bi-cart"></i>
                   </button>
                 </div>
+                <a href="<c:url value="/over-view-store/${item.store.id}"/> " class="card-title"><i class="bi bi-shop"></i> ${item.store.name} </a>
               </div>
             </div>
           </div>
@@ -151,12 +152,13 @@
         <div class="information" style="margin-top: 20px;">
           <div class="info-item" style="margin-bottom: 10px;">
             <h4 class="info-label">Giá:&nbsp;&nbsp;
-              <span class="info-value text-warning" style="color: orange;">${product.price - (product.discountPrice * product.price)/ 100}</span>
-              <span class="info-value text-danger" style="text-decoration: line-through; color: red;">${product.price}</span>
+              <span class="info-value text-warning" style="color: orange; font-size :18px">${product.price - (product.discountPrice * product.price)/ 100}</span>
+              <span class="info-value text-danger" style="text-decoration: line-through; color: red;; font-size :18px">${product.price}</span>
             </h4>
             </div>
           <div class="info-item" style="margin-bottom: 10px;">
             <h5 class="info-label">Danh mục:&nbsp; ${product.category.name}</h5>
+            <h5 class="info-label"><i class="bi bi-shop"></i> ${product.store.name}</h5>
           </div>
         </div>
         <a href="#" class="buy-btn">Mua ngay</a>
@@ -246,6 +248,7 @@
                    Thêm vào giỏ hàng   <i class="bi bi-cart"></i>
                    </button>
                 </div>
+                <a href="<c:url value="/over-view-store/${item.store.id}"/> " class="card-title"><i class="bi bi-shop"></i> ${item.store.name} </a>
               </div>
             </div>
           </div>

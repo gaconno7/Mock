@@ -79,7 +79,6 @@ public class Product implements Serializable {
     Category category;
 
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id")
     Store store;

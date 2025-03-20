@@ -87,6 +87,12 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
+                        <label class="form-label" for="old-address"> Địa chỉ hiện tại</label>
+                        <input type="text" id="old-address"  class="form-input" value="${sessionScope.user.address}" disabled >
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
                         <input type="hidden" id="province" name="province" class="form-input" >
                         <input type="hidden" id="district" name="district" class="form-input" >
                         <input type="hidden" id="ward" name="ward" class="form-input" >

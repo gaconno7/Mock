@@ -37,4 +37,15 @@ public class ProductApiController {
         Page<Product> products = productService.findProductByFilter(pageSize, pageNum + 1, categoryId, minPrice, maxPrice, sortBy, searchValue);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/store")
+    public ResponseEntity<Page<Product>> getProductInStore(
+            @RequestParam(name = "page",defaultValue = "1") int pageNum,
+            @RequestParam(name = "size",defaultValue = "8") int pageSize,
+            @RequestParam(name = "storeId") String storeId,
+            @RequestParam(name = "name") String name) {
+
+        Page<Product> products = productService.findByStoreIdAndNameLike(pageSize, pageNum + 1, name, storeId);
+        return ResponseEntity.ok(products);
+    }
 }

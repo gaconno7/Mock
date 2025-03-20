@@ -185,6 +185,12 @@ body {
     font-weight: bold;
     text-align: center;
 }
+
+.bi-star-fill {
+    color: yellow;
+    font-size: 16px;
+}
+
 .buy-btn {
     display: inline-block;
     background: #00ff7f;

@@ -2,6 +2,7 @@ package com.mock.taka.repository;
 
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Store;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -48,8 +49,10 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
             "LIMIT 1")
     Product findByDiscountMax();
 
+    Page<Product> findByStoreIdAndNameLike(String storeId ,String name, Pageable pageable);
 
     List<Product> findByDeletedFalse();
+    List<Product> findByStoreId(String id);
     List<Product> findByStoreAndDeletedFalse(Store store);
     List<Product> findByCategoryAndDeletedFalse(Category category);
     List<Product> findByStoreAndCategoryAndDeletedFalse(Store store, Category category);

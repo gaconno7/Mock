@@ -1,13 +1,13 @@
 package com.mock.taka.controller.admin;
 
-import com.mock.taka.service.admin.AdminProductService;
-import com.mock.taka.service.admin.AdminUserService;
-import com.mock.taka.service.client.StoreService;
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
 import com.mock.taka.domain.User;
+import com.mock.taka.service.admin.AdminProductService;
+import com.mock.taka.service.admin.AdminUserService;
 import com.mock.taka.service.client.CategoryService;
+import com.mock.taka.service.client.StoreService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 @Controller
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -29,14 +30,8 @@ public class AdminStoreController {
     CategoryService categoryService;
     AdminUserService userService;
 
-    @GetMapping("/admin/store")
-    public String getStore(Model model, HttpServletRequest active) {
-        active.setAttribute("activePage", "store");
-        List<Store> str = storeService.fetchStore();
-        model.addAttribute("store", str);
-        return "admin/store/show";
-    }
-    @GetMapping("/admin/user/{userId}/store/create")
+
+    @GetMapping("/store/{userId}/create")
     public String getCreateStoreForUserPage(@PathVariable Long userId, Model model, HttpServletRequest active) {
         active.setAttribute("activePage", "store");
 
@@ -47,13 +42,12 @@ public class AdminStoreController {
             model.addAttribute("newStore", newStore);
             model.addAttribute("selectedUserId", userId);
             model.addAttribute("isUserPreselected", true);
-            return "admin/store/create";
-        } else {
-            return "redirect:/admin/user";
+
         }
+        return "store/create";
     }
 
-    @PostMapping("/admin/store/create")
+    @PostMapping("/store/create")
     public String handleCreateStore(
             @ModelAttribute("newStore") @Valid Store str,
             @RequestParam(value = "userId", required = false) Long userId,
@@ -72,13 +66,13 @@ public class AdminStoreController {
             } else {
                 model.addAttribute("users", userService.getUserByRole("ROLE_USER"));
             }
-            return "admin/store/create";
+            return "store/create";
         }
 
         if (userId == null) {
             newStoreBindingResult.rejectValue("user", "error.user", "Vui lòng chọn người dùng");
             model.addAttribute("users", userService.getUserByRole("ROLE_USER"));
-            return "admin/store/create";
+            return "store/create";
         }
 
         Optional<User> selectedUser = userService.findUserById(userId);
@@ -89,12 +83,12 @@ public class AdminStoreController {
         } else {
             newStoreBindingResult.rejectValue("user", "error.user", "Người dùng không tồn tại");
             model.addAttribute("users", userService.getUserByRole("ROLE_USER"));
-            return "admin/store/create";
+            return "store/create";
         }
 
-        storeService.createStore(str);
+        var store = storeService.createStore(str);
 
-        return "redirect:/admin/store";
+        return "redirect:/over-view-store/" + store.getId();
     }
 
     @GetMapping("/admin/store/update/{id}")
@@ -102,16 +96,16 @@ public class AdminStoreController {
         active.setAttribute("activePage", "store");
         Optional<Store> currentStore = storeService.fetchStoreById(id);
         model.addAttribute("newStore", currentStore.get());
-        return "admin/store/update";
+        return "store/update";
     }
 
-    @PostMapping("/admin/store/update")
+    @PostMapping("/store/update")
     public String handleUpdateStore(@ModelAttribute("newStore") @Valid Store str,
                                     BindingResult newStoreBindingResult) {
 
         // validate
         if (newStoreBindingResult.hasErrors()) {
-            return "admin/store/update";
+            return "store/update";
         }
 
         Store currentStore = storeService.fetchStoreById(str.getId()).get();
@@ -121,18 +115,18 @@ public class AdminStoreController {
 
         storeService.createStore(currentStore);
 
-        return "redirect:/admin/store";
+        return "redirect:/store";
     }
 
-    @GetMapping("/admin/store/delete/{id}")
+    @GetMapping("/store/delete/{id}")
     public String getDeleteStorePage(Model model, @PathVariable long id, HttpServletRequest active) {
         active.setAttribute("activePage", "store");
         model.addAttribute("id", id);
         model.addAttribute("newStore", new Store());
-        return "admin/store/delete";
+        return "store/delete";
     }
 
-    @PostMapping("/admin/store/delete")
+    @PostMapping("/store/delete")
     public String postDeleteStore(Model model, @ModelAttribute("newStore") Store str) {
         Optional<Store> storeOpt = storeService.fetchStoreById(str.getId());
         if (storeOpt.isPresent()) {
@@ -142,10 +136,10 @@ public class AdminStoreController {
             userService.updateUserRole(user, "ROLE_USER");
         }
 
-        return "redirect:/admin/store";
+        return "redirect:/store";
     }
 
-    @GetMapping("/admin/store/{id}/products")
+    @GetMapping("/store/{id}/products")
     public String getProductsByStore(
             Model model,
             @PathVariable String id,
@@ -180,22 +174,22 @@ public class AdminStoreController {
             model.addAttribute("categories", storeCategories);
             model.addAttribute("storeId", id);
 
-            return "admin/product/show";
+            return "product/show";
         }
 
-        return "redirect:/admin/store";
+        return "redirect:/store";
     }
 
     // ===== Các phương thức liên quan đến khôi phục cửa hàng =====
-    @GetMapping("/admin/store/deleted")
+    @GetMapping("/store/deleted")
     public String getDeletedStores(Model model, HttpServletRequest active) {
         active.setAttribute("activePage", "store");
         List<Store> deletedStores = storeService.fetchDeletedStores();
         model.addAttribute("deletedStores", deletedStores);
-        return "admin/store/deleted";
+        return "store/deleted";
     }
 
-    @GetMapping("/admin/store/restore/{id}")
+    @GetMapping("/store/restore/{id}")
     public String getRestoreStore(Model model, @PathVariable String id, HttpServletRequest request) {
         request.setAttribute("activePage", "store");
 
@@ -204,13 +198,13 @@ public class AdminStoreController {
             Store store = storeOptional.get();
             if (store.isDeleted()) {
                 model.addAttribute("restoreStore", store);
-                return "admin/store/restore";
+                return "store/restore";
             }
         }
-        return "redirect:/admin/store?error=Không tìm thấy cửa hàng cần khôi phục";
+        return "redirect:/store?error=Không tìm thấy cửa hàng cần khôi phục";
     }
 
-    @PostMapping("/admin/store/restore")
+    @PostMapping("/store/restore")
     public String postRestoreStore(@ModelAttribute("restoreStore") Store storeForm) {
         Optional<Store> storeOptional = storeService.fetchStoreById(storeForm.getId());
         if (storeOptional.isPresent()) {
@@ -226,9 +220,9 @@ public class AdminStoreController {
                 }
 
                 storeService.createStore(store);
-                return "redirect:/admin/store";
+                return "redirect:/store";
             }
         }
-        return "redirect:/admin/store?error=Không thể khôi phục cửa hàng";
+        return "redirect:/store?error=Không thể khôi phục cửa hàng";
     }
 }

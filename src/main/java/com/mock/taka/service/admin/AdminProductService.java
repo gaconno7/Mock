@@ -14,6 +14,7 @@ public interface AdminProductService {
     List<Product> fetchProducts();
     List<Product> findByStoreAndIsDeletedFalse(Store store);
     List<Product> findByCategoryAndDeletedFalse(Category category);
+    List<Product> findByStoreId(String storeId);
     List<Product> findByStoreAndCategoryAndDeletedFalse(Store store, Category category);
     List<Category> findCategoriesByStore(Store store);
     long getCountProduct();

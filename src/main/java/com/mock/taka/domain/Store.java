@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -36,6 +37,7 @@ public class Store  implements Serializable {
     @Column(name = "description", columnDefinition = "TEXT")
     String description;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     User user;
@@ -62,6 +64,7 @@ public class Store  implements Serializable {
         }
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "store")
     List<Product> products;
 }

@@ -71,7 +71,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req-> {
                         req.requestMatchers("/admin/**").hasRole("ADMIN");
                         req.requestMatchers("/user/**").hasAnyAuthority("OIDC_USER", "SCOPE_openid", "ROLE_USER", "ROLE_ADMIN", "ROLE_SUPPLIER");
-                        req.requestMatchers("/store/**").hasAnyAuthority("ROLE_SUPPLIER");
+                        req.requestMatchers("/store/**").hasAnyAuthority("ROLE_SUPPLIER", "ROLE_ADMIN");
                         req.requestMatchers("/**", "/api/**").permitAll();
                         req.anyRequest().authenticated();})
                 .formLogin(form->form.loginPage("/login")
@@ -89,8 +89,8 @@ public class SecurityConfig {
 
                                         if (roles.contains("ADMIN")) {
                                             response.sendRedirect("/admin/");
-                                        } else if (roles.contains("DELIVERY")) {
-                                            response.sendRedirect("/delivery/");
+                                        } else if (roles.contains("SUPPLIER")) {
+                                            response.sendRedirect("/store/");
                                         } else {
                                             response.sendRedirect("/home");
                                         }

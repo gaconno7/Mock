@@ -53,6 +53,8 @@ public class ClientUserController {
         } else {
             attributes.addFlashAttribute("messageError", "Lỗi cập nhật!");
         }
+        session.removeAttribute("user");
+        session.setAttribute("user", user);
         return "redirect:/user/update-address";
     }
 

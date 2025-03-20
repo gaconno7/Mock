@@ -26,6 +26,7 @@
             <div class="sidebar-title">Quản lý tài khoản</div>
             <div class="sidebar-links">
                 <a href="<c:url value="/user/update-address"/>" class="sidebar-link">Cập nhật địa chỉ</a>
+                <a href="<c:url value="/user/update-password"/>" class="sidebar-link">Cập nhật mật khẩu</a>
                 <a href="<c:url value="/user/profile"/> " class="sidebar-link">Cập nhật thông tin</a>
             </div>
             <div class="sidebar-title mt-3">Đơn hàng của tôi</div>

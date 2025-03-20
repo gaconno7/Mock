@@ -19,4 +19,6 @@ public interface ProductService {
                                                          double minPrice, double maxPrice, String sortBy,
                                                          String searchValue);
     Product findByDiscountMax();
+
+    Page<Product> findByStoreIdAndNameLike(int pageSize, int pageNum, String name, String id);
 }

@@ -12,6 +12,7 @@ public interface StoreRepository extends JpaRepository<Store, String>, JpaSpecif
   List<Store> findByDeletedFalse();
   List<Store> findByDeletedTrue();
 
+  Store findByUserId(long userId);
     default Specification<Store> notDeleted() {
         return (root, query, criteriaBuilder) -> 
             criteriaBuilder.isFalse(root.get("deleted"));

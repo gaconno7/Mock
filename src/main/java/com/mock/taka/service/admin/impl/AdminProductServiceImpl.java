@@ -50,6 +50,11 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
     @Override
+    public List<Product> findByStoreId(String storeId) {
+        return productRepository.findByStoreId(storeId);
+    }
+
+    @Override
     public List<Product> findByCategoryAndDeletedFalse(Category category) {
         return productRepository.findByCategoryAndDeletedFalse(category);
     }

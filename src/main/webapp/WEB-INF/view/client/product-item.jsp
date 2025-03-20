@@ -191,13 +191,15 @@
                             + '  <div class="product-info">'
                             + '     <h4 class="product-name ellipsis">' + item.name + '</h4>'
                             + '     <div class="product-price">'
-                            + '           <span class="current-price">' + item.price + '</span>'
-                            + '           <span class="original-price">' + item.discountPrice + '</span>'
+                            + '           <span class="current-price">' + (item.price - (item.price * item.discountPrice) /100) + 'đ </span>'
+                            + '           <span class="original-price">' + item.price + 'đ </span>'
                             + '     </div>'
                             + renderRating(item.evaluations)
-                            + '     <button class="btn btn-primary" onclick="addToCart(\'' + item.id.toString() + '\', \'' + item.productVariants[0].id.toString() + '\')">'
+                            + '     <button class="btn btn-primary mb-2" onclick="addToCart(\'' + item.id.toString() + '\', \'' + item.productVariants[0].id.toString() + '\')">'
                             + '         Thêm vào giỏ hàng   <i class="bi bi-cart"></i>'
-                            + '     </button>'
+                            + '     </button><br/>'
+                            +'      <a href="/over-view-store/' + item.store.id + '" class="p-3 mb-5" ><i class="bi bi-shop"></i> ' + item.store.name + ' </a>'
+
                             + '   </div>'
                             + '</div> ';
 
@@ -270,8 +272,13 @@
         let page = $(this).data('page');
         loadProducts(page);
     });
-
+    $("#search-value").keydown(function(event) {
+        if (event.key === "Enter") {
+            setSearchValue($("#search-value").val());
+        }
+    });
     $(document).ready(function() {
+
         loadProducts(0);
     });
 

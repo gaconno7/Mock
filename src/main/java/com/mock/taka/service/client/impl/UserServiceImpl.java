@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public User updateAddress(String province, String district, String ward, String street, long userId) {
         var user = userRepository.findById(userId).orElse(null);
         assert user != null;
-        user.setAddress(street + ", " + province + ", " + district + ", " + ward);
+        user.setAddress(street + ", " + ward + ", " + district + ", " + province);
         return userRepository.save(user);
     }
 

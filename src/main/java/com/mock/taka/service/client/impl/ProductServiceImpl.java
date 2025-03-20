@@ -37,6 +37,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> findByStoreIdAndNameLike(int pageSize, int pageNum, String name, String storeId) {
+        return productRepository.findByStoreIdAndNameLike(storeId,"%" + name + "%", PageRequest.of(pageNum - 1, pageSize));
+    }
+
+    @Override
     public List<Product> findTopSellingProducts() {
         return productRepository.findTopSellingProducts();
     }

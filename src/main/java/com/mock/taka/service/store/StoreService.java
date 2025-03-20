@@ -41,4 +41,7 @@ public class StoreService {
     public List<Store> fetchDeletedStores() {
         return storeRepository.findByDeletedTrue();
     }
+    public Store findByUserId(long userId) {
+        return storeRepository.findByUserId(userId);
+    }
 }

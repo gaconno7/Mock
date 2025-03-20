@@ -64,6 +64,10 @@ body {
 .action-button{
     border: none;
 }
+
+.mb-5 {
+    margin-bottom: 5px  !important;
+}
 /* Main Content */
 .main-content {
     display: flex;

@@ -39,6 +39,9 @@
     </div>
     <div class="product-details">
         <h1 class="product-title">${product.name}</h1>
+
+        <div class="pb-3"><a href="<c:url value="/over-view-store/${product.store.id}"/> " class="card-title"><i class="bi bi-shop"></i> ${product.store.name} </a></div>
+
         <div class="original-price">${product.price} đ</div>
         <div class="price">${product.price - (product.price * product.discountPrice)/100} đ</div>
         <div class="size-options">
@@ -233,6 +236,8 @@
                         <div class="product-card-rating">
                             <button class="buy-now" onclick="setVariant(`${item.productVariants[0].id}`);addToCart('${item.id}')">Mua ngay</button>
                         </div>
+                        <div class="pb-3"><a href="<c:url value="/over-view-store/${product.store.id}"/> " class="card-title"><i class="bi bi-shop"></i> ${product.store.name} </a></div>
+
                     </div>
                 </c:forEach>
         </div>

@@ -66,6 +66,8 @@
                 <button class="add-to-cart-btn" onclick="addToCart('${item.id}', '${item.productVariants[0].id}')">
                     Thêm vào giỏ hàng   <i class="bi bi-cart"></i>
                 </button>
+                <div class="mt-3"><a href="<c:url value="/over-view-store/${item.store.id}"/> " class="card-title"><i class="bi bi-shop"></i> ${item.store.name} </a></div>
+
             </div>
         </div>
         </c:forEach>
@@ -140,7 +142,9 @@
                             +'</div>'
                             + renderRating(item.product.evaluations)
                                 +'<button class="add-to-cart-btn" onclick="addToCart(\'' + item.product.id.toString() + '\', \'' + item.product.productVariants[0].id.toString() + '\')">Thêm vào giỏ hàng <i class="bi bi-cart"></i></button>'
-                            +'</div></div>';
+                            + '<div class="pb-3"><a href="/over-view-store/' + item.product.store.id + '" class="card-title"><i class="bi bi-shop"></i> ' +  item.product.store.name + '</a></div>'
+                            +'</div>'
+                            +    '</div>';
 
                         container.append(productHtml);
                     });

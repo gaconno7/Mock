@@ -41,4 +41,9 @@ public class AdminStoreServiceImpl implements AdminStoreService {
     public List<Store> fetchDeletedStores() {
         return storeRepository.findByDeletedTrue();
     }
+
+    @Override
+    public Store findByUserId(long userId) {
+        return storeRepository.findByUserId(userId);
+    }
 }
