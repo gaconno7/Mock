@@ -64,58 +64,58 @@ public class ProductController {
     }
    
     @PostMapping("/admin/product/create")
-public String handleCreateProduct(
+    public String handleCreateProduct(
         @ModelAttribute("newProduct") @Valid Product pr,
         BindingResult newProductBindingResult,
         @RequestParam("imageFile") MultipartFile[] files,
         @RequestParam("storeId") String storeId,
         @RequestParam(value = "categoryId", required = false) String categoryId,
         Model model) throws IOException {
-    // validate     
-    if (newProductBindingResult.hasErrors()) {
-        model.addAttribute("stores", storeService.fetchStore());
-        model.addAttribute("category", categoryService.fetchCategory());
-        return "admin/product/create";
-    }
-    
-    Optional<Store> selectedStore = this.storeService.fetchStoreById(storeId);
-    if (selectedStore.isPresent()) {
-        pr.setStore(selectedStore.get());
-    } else {
-        newProductBindingResult.rejectValue("store", "error.product", "Cửa hàng không tồn tại");
-        model.addAttribute("stores", storeService.fetchStore());
-        model.addAttribute("category", categoryService.fetchCategory());
-        return "admin/product/create";
-    }
-    
-    Optional<Category> selectedCategory = this.categoryService.fetchCategoryById(categoryId);
-    if (selectedCategory.isPresent()) {
-        pr.setCategory(selectedCategory.get());
-    } else {
-        newProductBindingResult.rejectValue("category", "error.product", "Loại sản phẩm không tồn tại");
-        model.addAttribute("stores", storeService.fetchStore());
-        model.addAttribute("category", categoryService.fetchCategory());
-        return "admin/product/create";
-    }
-    
-    // Lưu sản phẩm trước
-    Product savedProduct = this.productService.createProduct(pr);
-    
-    // Xử lý upload file
-    if (files != null && files.length > 0) {
-        try {
-            productImageService.uploadAndSaveProductImages(files, savedProduct);
-        } catch (Exception e) {
-            e.printStackTrace();
+        // validate     
+        if (newProductBindingResult.hasErrors()) {
             model.addAttribute("stores", storeService.fetchStore());
             model.addAttribute("category", categoryService.fetchCategory());
-            model.addAttribute("uploadError", "Không thể tải lên hình ảnh: " + e.getMessage());
             return "admin/product/create";
         }
-    }
+        
+        Optional<Store> selectedStore = this.storeService.fetchStoreById(storeId);
+        if (selectedStore.isPresent()) {
+            pr.setStore(selectedStore.get());
+        } else {
+            newProductBindingResult.rejectValue("store", "error.product", "Cửa hàng không tồn tại");
+            model.addAttribute("stores", storeService.fetchStore());
+            model.addAttribute("category", categoryService.fetchCategory());
+            return "admin/product/create";
+        }
+        
+        Optional<Category> selectedCategory = this.categoryService.fetchCategoryById(categoryId);
+        if (selectedCategory.isPresent()) {
+            pr.setCategory(selectedCategory.get());
+        } else {
+            newProductBindingResult.rejectValue("category", "error.product", "Loại sản phẩm không tồn tại");
+            model.addAttribute("stores", storeService.fetchStore());
+            model.addAttribute("category", categoryService.fetchCategory());
+            return "admin/product/create";
+        }
+        
+        // Lưu sản phẩm trước
+        Product savedProduct = this.productService.createProduct(pr);
+        
+        // Xử lý upload file
+        if (files != null && files.length > 0) {
+            try {
+                productImageService.uploadAndSaveProductImages(files, savedProduct);
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("stores", storeService.fetchStore());
+                model.addAttribute("category", categoryService.fetchCategory());
+                model.addAttribute("uploadError", "Không thể tải lên hình ảnh: " + e.getMessage());
+                return "admin/product/create";
+            }
+        }
     
-    return "redirect:/admin/product";
-}
+        return "redirect:/admin/product";
+    }
     
     @GetMapping("/admin/product/update/{id}")
     public String getUpdateProductPage(Model model, @PathVariable String id, HttpServletRequest active) {
