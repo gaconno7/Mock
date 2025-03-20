@@ -54,4 +54,10 @@ public class Order implements Serializable {
 
     @Column(name = "total_price")
     double totalPrice;
+
+    @Column(name = "payment_method")
+    String paymentMethod;
+
+    @Column(name = "payment_ref")
+    String paymentRef;
 }

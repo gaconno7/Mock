@@ -8,9 +8,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="<c:url value="/css/style.css" />">
     <style>
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            border-bottom: 1px solid #eee;
+          }
+      
+          .logo {
+            font-weight: bold;
+            font-size: 24px;
+          }
+      
+          .nav-links {
+            display: flex;
+            gap: 30px;
+          }
+      
+          .nav-links a {
+            text-decoration: none;
+            color: #333;
+          }
+      
+          .icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+          }
+      
+          .ellipsis {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 19vh !important;
+          }
         body { background-color: #f8f9fa; }
         .cart-container { max-width: 900px; margin: auto; padding: 20px; }
         .cart-table img { width: 50px; margin-right: 10px; }
@@ -23,80 +60,106 @@
     </style>
 </head>
 <body>
+    <header>
+        <div class="logo">Taka</div>
+        <div class="nav-links">
+            <a href="<c:url value="/home"/> ">Trang chủ</a>
+            <a href="<c:url value="/product/all"/> ">Của hàng</a>
+            <a href="#">Thông tin</a>
+        </div>
+        <div class="icons">
+            <span><a class="btn btn-outline-info" href="<c:url value="/user/wishlist"/> "><i class="bi bi-bag-heart"></i></a></span>
+            <span><a class="btn btn-outline-info" href="<c:url value="/user/cart"/> "><i class="bi bi-cart"></i></a></span>
+            <div class="dropdown">
+            <div class="btn btn-outline-info dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <c:if test="${not empty sessionScope.user}" >
+                <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
+                </c:if>
+                <c:if test="${empty sessionScope.user}" >
+                <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
+                <li><a class="dropdown-item" href="<c:url value="/register"/> ">Đăng ký</a></li>
+                </c:if>
+            </ul>
+            </div>
+        </div>
+    </header>
+    <div class="cart-container">
+        <h2 class="mb-4">Shopping Cart</h2>
 
-<div class="cart-container">
-    <h2 class="mb-4">Shopping Cart</h2>
+        <!-- Bảng sản phẩm -->
+        <table class="table cart-table">
+            <thead class="table-light">
+                <tr>
+                    <th>Select</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            
 
-    <!-- Bảng sản phẩm -->
-    <table class="table cart-table">
-        <thead class="table-light">
-            <tr>
-                <th>Select</th>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        
+            <tbody>
+                <c:choose>
+                    <c:when test="${not empty cartItems}">
+                        <c:forEach var="item" items="${cartItems}">
+                            <tr id="cart-item-${item.id}">
+                                <td>
+                                    <input type="checkbox" class="cart-checkbox" name="cartItemCheckbox" value="${item.id}" onchange="updateTotalCart()">
+                                </td>
 
-        <tbody>
-            <c:choose>
-                <c:when test="${not empty cartItems}">
-                    <c:forEach var="item" items="${cartItems}">
-                        <tr id="cart-item-${item.id}">
-                            <td>
-                                <input type="checkbox" class="cart-checkbox" name="cartItemCheckbox" value="${item.id}" onchange="updateTotalCart()">
-                            </td>
+                                <td>
+                                    <img src="${item.product.image}" alt="Ảnh sản phẩm">
+                                    <div>
+                                        <span>${item.product.name}</span>
+                                        <c:if test="${not empty item.productVariant}">
+                                            <br>
+                                            <small class="text-muted">
+                                                ${item.productVariant.attribute}: ${item.productVariant.value}
+                                            </small>
+                                        </c:if>
+                                    </div>
+                                </td>
 
-                            <td>
-                                <img src="${item.product.image}" alt="Ảnh sản phẩm">
-                                <div>
-                                    <span>${item.product.name}</span>
-                                    <c:if test="${not empty item.productVariant}">
-                                        <br>
-                                        <small class="text-muted">
-                                            ${item.productVariant.attribute}: ${item.productVariant.value}
-                                        </small>
-                                    </c:if>
-                                </div>
-                            </td>
-
-                            <td><span id="price-${item.id}" class="price">${item.product.price}</span></td>
-                            
-                            <td>
-                                <div class="quantity-control">
-                                    <button onclick="updateCart('${item.id}', -1)">-</button>
-                                    <input type="text" id="quantity-${item.id}" value="${item.quantity}" readonly> 
-                                    <button onclick="updateCart('${item.id}', 1)">+</button>
-                                </div>
-                            </td>
-                            <td><span class="subtotal" id="subtotal-${item.id}">${item.product.price * item.quantity}</span><span>  VNĐ</span></td>
-                            <td><span class="btn-remove" onclick="removeFromCart('${item.id}')">&times;</span></td>
+                                <td><span id="price-${item.id}" class="price"><fmt:formatNumber type="number" value="${item.product.price}"/> VNĐ</span></td>
+                                
+                                <td>
+                                    <div class="quantity-control">
+                                        <button onclick="updateCart('${item.id}', -1)">-</button>
+                                        <input type="text" id="quantity-${item.id}" value="${item.quantity}" readonly> 
+                                        <button onclick="updateCart('${item.id}', 1)">+</button>
+                                    </div>
+                                </td>
+                                <td><span class="subtotal" id="subtotal-${item.id}"><fmt:formatNumber type="number" value="${item.product.price * item.quantity}"/></span><span> VNĐ</span></td>
+                                <td><span class="btn-remove" onclick="removeFromCart('${item.id}')">&times;</span></td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="5" class="text-center">Your cart is empty!</td>
                         </tr>
-                    </c:forEach>
-                </c:when>
-                <c:otherwise>
-                    <tr>
-                        <td colspan="5" class="text-center">Your cart is empty!</td>
-                    </tr>
-                </c:otherwise>
-            </c:choose>
-        </tbody>        
-    </table>
+                    </c:otherwise>
+                </c:choose>
+            </tbody>        
+        </table>
 
-    <!-- Tổng tiền -->
-    <div class="cart-total mt-4">
-        <h5>Cart Total</h5>
-        <!-- <p>Subtotal: <strong><span id="subtotal-price">${totalCartPrice}</span> VNĐ</strong></p> -->
-        <p>Shipping: <strong>Free</strong></p>
-        <p>Selected Total: <strong><span id="selectedTotalPrice">0 VNĐ</span></strong></p>
-        <button type="button" class="btn btn-danger w-100" onclick="proceedToCheckout();">
-            Proceed to Checkout
-        </button>
+        <!-- Tổng tiền -->
+        <div class="cart-total mt-4">
+            <h5>Cart Total</h5>
+            <!-- <p>Subtotal: <strong><span id="subtotal-price">${totalCartPrice}</span> VNĐ</strong></p> -->
+            <p>Shipping: <strong>Free</strong></p>
+            <p>Selected Total: <strong><span id="selectedTotalPrice">0</span> VNĐ</strong></p>
+            <button type="button" class="btn btn-danger w-100" onclick="proceedToCheckout();">
+                Proceed to Checkout
+            </button>
+        </div>
     </div>
-</div>
 
 <script>
     function updateTotalCart() {
@@ -114,7 +177,8 @@
             data: { selectedItems: selectedItems.join(",") }, // Gửi như form data
             success: function (response) {
                 console.log("Response từ server:", response);
-                $("#selectedTotalPrice").text(response.totalSelectedCartPrice + " VNĐ");
+                //$("#selectedTotalPrice").text(response.totalSelectedCartPrice + " VNĐ");
+                $("#selectedTotalPrice").text(parseFloat(response.totalSelectedCartPrice).toLocaleString("en-US"));
             },
             error: function (xhr) {
                 console.error("Lỗi khi cập nhật tổng tiền:", xhr.status, xhr.responseText);
@@ -148,8 +212,10 @@
             },
             success: function (response) {
                 quantityInput.val(newQuantity);
-                $('#subtotal-' + cartItemId).text(subtotal);
-                $("#totalCartPrice").text(response.totalCartPrice);
+                //$('#subtotal-' + cartItemId).text(subtotal);
+                //$("#totalCartPrice").text(response.totalCartPrice);
+                $('#subtotal-' + cartItemId).text(parseFloat(subtotal).toLocaleString("en-US"));
+                $("#selectedTotalPrice").text(parseFloat(response.totalCartPrice).toLocaleString("en-US"));
 
                 updateTotalCart();
             },
@@ -166,6 +232,7 @@
             data: { cartItemId: cartItemId },
             success: function () {
                 $("#cart-item-" + cartItemId).remove();
+                updateTotalCart()
             },
             error: function () {
                 alert("Lỗi khi xóa sản phẩm khỏi giỏ hàng!");
@@ -198,9 +265,6 @@
             }
         });
     }
-    
-    
 </script>
-
 </body>
 </html>

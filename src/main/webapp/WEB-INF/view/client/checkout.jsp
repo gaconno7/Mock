@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -7,11 +9,48 @@
     <title>Billing Details</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
+        
         body {
             font-family: Arial, sans-serif;
             background-color: #ffffff;
         }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            border-bottom: 1px solid #eee;
+          }
+      
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+        }
+    
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+    
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+        }
+    
+        .icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+      
+          .ellipsis {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 19vh !important;
+          }
         .container {
             max-width: 900px;
             margin: 30px auto;
@@ -42,10 +81,37 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <header>
+        <div class="logo">Taka</div>
+        <div class="nav-links">
+            <a href="<c:url value="/home"/> ">Trang chủ</a>
+            <a href="<c:url value="/product/all"/> ">Của hàng</a>
+            <a href="#">Thông tin</a>
+        </div>
+        <div class="icons">
+            <span><a class="btn btn-outline-info" href="<c:url value="/user/wishlist"/> "><i class="bi bi-bag-heart"></i></a></span>
+            <span><a class="btn btn-outline-info" href="<c:url value="/user/cart"/> "><i class="bi bi-cart"></i></a></span>
+            <div class="dropdown">
+            <div class="btn btn-outline-info dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <c:if test="${not empty sessionScope.user}" >
+                <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
+                </c:if>
+                <c:if test="${empty sessionScope.user}" >
+                <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
+                <li><a class="dropdown-item" href="<c:url value="/register"/> ">Đăng ký</a></li>
+                </c:if>
+            </ul>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid px-5">
         <div class="row">
             <!-- Billing Details -->
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-lg-5">
                 <h2 class="fw-bold">Billing Details</h2>
                 <form id="checkoutForm">
                     <div class="mb-3">
@@ -82,43 +148,53 @@
             </div>
     
             <!-- Order Summary -->
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-lg-7">
                 <!-- Bảng danh sách sản phẩm -->
-                <table class="table">
+                <table class="table align-middle">
                     <thead class="table-light">
                         <tr>
                             <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Subtotal</th>
+                            <th class="text-end">Price</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-end">Subtotal</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="item" items="${orderItems}">
                             <tr>
+                                <!-- Ảnh và tên sản phẩm trên cùng hàng -->
                                 <td>
-                                    <img src="${item.product.image}" width="50px" alt="Ảnh sản phẩm">
-                                    ${item.product.name}
-                                    <c:if test="${not empty item.productVariant}">
-                                        <br>
-                                        <small class="text-muted">
-                                            ${item.productVariant.attribute}: ${item.productVariant.value}
-                                        </small>
-                                    </c:if>
+                                    <div class="d-flex align-items-center">
+                                        <img src="${item.product.image}" class="rounded me-2" width="50px" height="50px" alt="Ảnh sản phẩm">
+                                        <div>
+                                            <strong>${item.product.name}</strong><br>
+                                            <c:if test="${not empty item.productVariant}">
+                                                <small class="text-muted">${item.productVariant.attribute}: ${item.productVariant.value}</small>
+                                            </c:if>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td>${item.product.price} VNĐ</td>
-                                <td>${item.quantity}</td>
-                                <td>${item.product.price * item.quantity} VNĐ</td>
+                                <!-- Giá sản phẩm -->
+                                <td class="text-end">
+                                    <fmt:formatNumber type="number" value="${item.product.price}" pattern="#,##0"/> VNĐ
+                                </td>
+                                <!-- Số lượng -->
+                                <td class="text-center">${item.quantity}</td>
+                                <!-- Thành tiền -->
+                                <td class="text-end">
+                                    <fmt:formatNumber type="number" value="${item.product.price * item.quantity}" pattern="#,##0"/> VNĐ
+                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
+                
 
                 <div class="order-summary mt-4">
                     <h5>Order Summary</h5>
                     <p>Shipping: <strong>Free</strong></p>
                     <p id="couponMessage" class="text-danger"></p>
-                    <p class="total-price">Total: ${totalPrice} VNĐ</p>
+                    <p class="total-price">Total: <fmt:formatNumber type="number" value="${totalPrice}"/> VNĐ</p>
                 </div>
 
                 <div class="form-check mt-3">
@@ -232,51 +308,68 @@
             }
         });
 
-        $("#confirmOrderBtn").click(function() {
-            // Get address components
-            var street = $("#address").val();
-            var provinceText = $("#province option:selected").text();
-            var districtText = $("#district option:selected").text();
-            var wardText = $("#ward option:selected").text();
-            var totalPrice = parseFloat($(".total-price").text().replace("Total: ", "").replace(" VNĐ", "").replace(/,/g, ""));
-
-            var fullAddress = street;
-            // Combine address components into a single string
-            fullAddress += ", " + wardText + ", " + districtText + ", " + provinceText;
-            
-            // Get payment method
-            // var paymentMethod = $("input[name='paymentMethod']:checked").val();
-            
-            // Prepare data to send
-            var orderData = {
-                address: fullAddress,
-                totalPrice: totalPrice
-                // We don't need to send orderItems because they are already in the session/controller
-            };
-            
-            // Send AJAX request
-            $.ajax({
-                url: "/order/confirm",
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(orderData),
-                success: function(response) {
-                    // Successful response handling
-                    if (response.success) {
-                        // Redirect to order confirmation page
-                        window.location.href = response.redirectUrl || "/order/success";
-                    } else {
-                        // Show error message
-                        alert(response.message || "An error occurred processing your order. Please try again.");
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Error handling
-                    console.error("Error submitting order:", error);
-                    alert("An error occurred while processing your order. Please try again.");
+        $(document).ready(function () {
+            $("#confirmOrderBtn").click(function () {
+                // Lấy dữ liệu địa chỉ
+                var street = $("#address").val().trim();
+                var provinceText = $("#province option:selected").text().trim();
+                var districtText = $("#district option:selected").text().trim();
+                var wardText = $("#ward option:selected").text().trim();
+                var totalPriceText = $(".total-price").text().replace("Total: ", "").replace(" VNĐ", "").replace(/,/g, "").trim();
+                var totalPrice = parseFloat(totalPriceText) || 0;
+        
+                // Kiểm tra dữ liệu hợp lệ
+                if (!street || !provinceText || !districtText || !wardText || totalPrice <= 0) {
+                    alert("Vui lòng nhập đầy đủ thông tin và kiểm tra tổng giá trị đơn hàng!");
+                    return;
                 }
+        
+                var fullAddress = street + ',' + wardText + ',' + districtText + ',' + provinceText;
+        
+                // Lấy phương thức thanh toán
+                var paymentMethod = $("input[name='paymentMethod']:checked").val();
+                console.log("Payment Method:", paymentMethod);
+                if (!paymentMethod) {
+                    alert("Vui lòng chọn phương thức thanh toán!");
+                    return;
+                }
+        
+                // Dữ liệu gửi đến server
+                var orderData = {
+                    address: fullAddress,
+                    totalPrice: totalPrice,
+                    paymentMethod: paymentMethod
+                };
+        
+                // Gửi AJAX request
+                $.ajax({
+                    url: "/order/confirm",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(orderData),
+                    success: function (response) {
+                        console.log("Response từ server:", response);  // Kiểm tra response
+                    
+                        if (response.success) {
+                            if (paymentMethod === "bank") {
+                                alert("Chuyển đến cổng thanh toán VNPAY...");
+                                window.location.href = response.redirectUrl;
+                            } else {
+                                alert("Đơn hàng đã được xác nhận. Bạn sẽ thanh toán khi nhận hàng.");
+                                window.location.href = "/order/success";
+                            }
+                        } else {
+                            alert(response.message || "Đã xảy ra lỗi khi xử lý đơn hàng. Vui lòng thử lại.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi gửi đơn hàng:", error);
+                        alert("Có lỗi xảy ra khi gửi đơn hàng. Vui lòng thử lại.");
+                    }
+                });
             });
         });
+        
 
         $(document).ready(function () {
             $("#applyCouponBtn").click(function () {
