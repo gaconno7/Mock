@@ -60,7 +60,7 @@
         <div class="size-options">
             <c:forEach var="variant" items="${product.productVariants}">
                 <div class="size-option" data-variant-id="${variant.productVariantId}">
-                        ${variant.attribute} - ${variant.value}
+                        ${variant.attribute}
                 </div>
             </c:forEach>
         </div>

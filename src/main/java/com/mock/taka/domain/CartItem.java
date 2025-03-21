@@ -20,7 +20,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartItem {
+public class CartItem  implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;

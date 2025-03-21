@@ -182,8 +182,8 @@ public class ClientOrderController {
         if (vnpayResponseCode.isPresent() && paymentRef.isPresent()) {
             // thanh toán qua VNPAY, cập nhật trạng thái order
             String paymentStatus = vnpayResponseCode.get().equals("00")
-                    ? "paid"
-                    : "fail";
+                    ? "da-thanh-toan"
+                    : "chua-thanh-toan";
             orderService.updatePaymentStatus(paymentRef.get(), paymentStatus);
         }
         return "client/thanks";
@@ -222,7 +222,7 @@ public class ClientOrderController {
         // Trả về JSON
         response.put("success", true);
         response.put("newTotalPrice", newTotalPrice);
-        response.put("message", "Voucher applied successfully! Discount: " + df.format(discountAmount) + " VNĐ");
+        response.put("message", "Áp dụng thành công! Giảm: " + df.format(discountAmount) + " đ");
         return ResponseEntity.ok(response);
     }
 }

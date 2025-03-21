@@ -30,6 +30,10 @@ public class SendEmailServiceImpl implements SendEmailService {
     @NonFinal
     String sender;
 
+    @Value("${server.port}")
+    @NonFinal
+    String port;
+
     @Override
     public String sendEmailResetPassword(String email) {
         try {
@@ -49,7 +53,7 @@ public class SendEmailServiceImpl implements SendEmailService {
                     "<body>" +
                     "<p>Vui lòng truy cập vào đường dẫn bên dưới để thay đổi mật khẩu:</p>" +
                     "<br>" +
-                    "<a href='http://localhost:8088/reset-password/%s'>Đổi mật khẩu</a>" +
+                    "<a href='http://localhost:" + port + "/reset-password/%s'>Đổi mật khẩu</a>" +
                     "</body>" +
                     "</html>", otp);
 

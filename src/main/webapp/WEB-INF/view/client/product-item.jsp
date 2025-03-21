@@ -195,7 +195,7 @@
                             + '           <span class="original-price">' + item.price + 'đ </span>'
                             + '     </div>'
                             + renderRating(item.evaluations)
-                            + '     <button class="btn btn-primary mb-2" onclick="addToCart(\'' + item.id.toString() + '\', \'' + item.productVariants[0].id.toString() + '\')">'
+                            + '     <button class="btn btn-primary mb-2" onclick="addToCart(\'' + item.id + '\', \'' + item.productVariants[0].id.toString() + '\')">'
                             + '         Thêm vào giỏ hàng   <i class="bi bi-cart"></i>'
                             + '     </button><br/>'
                             +'      <a href="/over-view-store/' + item.store.id + '" class="p-3 mb-5" ><i class="bi bi-shop"></i> ' + item.store.name + ' </a>'
@@ -242,7 +242,7 @@
         paginationDiv.empty();
 
         let totalPages = data.totalPages;
-        let currentPage = data.number; // đang dùng số trang (0-indexed) như trong JSON
+        let currentPage = data.number;
 
         // Nút "Trước"
         if (currentPage > 0) {

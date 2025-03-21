@@ -5,7 +5,6 @@
     <div class="nav-links">
         <a href="<c:url value='/home'/>" class="home">Trang chủ</a>
         <a href="<c:url value='/product/all'/>" class="product-list">Danh sách sản phẩm</a>
-        <a href="#" class="about">Thông tin</a>
     </div>
     <div class="icons">
         <span><a class="btn btn-outline-info" href="<c:url value="/user/wishlist"/> "><i class="bi bi-bag-heart"></i></a></span>

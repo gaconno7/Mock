@@ -80,33 +80,8 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">Taka</div>
-        <div class="nav-links">
-            <a href="<c:url value="/home"/> ">Trang chủ</a>
-            <a href="<c:url value="/product/all"/> ">Của hàng</a>
-            <a href="#">Thông tin</a>
-        </div>
-        <div class="icons">
-            <span><a class="btn btn-outline-info" href="<c:url value="/user/wishlist"/> "><i class="bi bi-bag-heart"></i></a></span>
-            <span><a class="btn btn-outline-info" href="<c:url value="/user/cart"/> "><i class="bi bi-cart"></i></a></span>
-            <div class="dropdown">
-            <div class="btn btn-outline-info dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle"></i>
-            </div>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <c:if test="${not empty sessionScope.user}" >
-                <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
-                <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
-                </c:if>
-                <c:if test="${empty sessionScope.user}" >
-                <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
-                <li><a class="dropdown-item" href="<c:url value="/register"/> ">Đăng ký</a></li>
-                </c:if>
-            </ul>
-            </div>
-        </div>
-    </header>
+
+<%@ include file="header/header.jsp" %>
     <div class="container-fluid px-5">
         <div class="row">
             <!-- Billing Details -->
@@ -175,13 +150,13 @@
                                 </td>
                                 <!-- Giá sản phẩm -->
                                 <td class="text-end">
-                                    <fmt:formatNumber type="number" value="${item.product.price}" pattern="#,##0"/> VNĐ
+                                    <fmt:formatNumber type="number" value="${item.product.price}" pattern="#,##0"/> đ
                                 </td>
                                 <!-- Số lượng -->
                                 <td class="text-center">${item.quantity}</td>
                                 <!-- Thành tiền -->
                                 <td class="text-end">
-                                    <fmt:formatNumber type="number" value="${item.product.price * item.quantity}" pattern="#,##0"/> VNĐ
+                                    <fmt:formatNumber type="number" value="${item.product.price * item.quantity}" pattern="#,##0"/> đ
                                 </td>
                             </tr>
                         </c:forEach>
@@ -193,8 +168,8 @@
                     <h5>Đơn hàng</h5>
                     <p>Phí giao hàng: <strong>Miễn phí</strong></p>
                     <p id="voucherMessage" class="text-danger"></p>
-                    <p class="total-price">Tổng tiền: <fmt:formatNumber type="number" value="${totalPrice}"/> VNĐ</p>
-                    <p hidden class="total-price-value">Tổng tiền: <fmt:formatNumber type="number" value="${totalPrice}"/> VNĐ</p>
+                    <p class="total-price">Tổng tiền: <fmt:formatNumber type="number" value="${totalPrice}"/> đ</p>
+                    <p hidden class="total-price-value">Tổng tiền: <fmt:formatNumber type="number" value="${totalPrice}"/> đ</p>
                 </div>
 
                 <div class="form-check mt-3">
@@ -215,7 +190,7 @@
                         <select id="voucherSelect" class="form-select">
                             <option value="">Chọn voucher...</option>
                             <c:forEach var="voucher" items="${vouchers}">
-                                <option value="${voucher.id}">${voucher.name} - Giảm <fmt:formatNumber type="number" value="${voucher.discount}" pattern="#,##0"/> VNĐ</option>
+                                <option value="${voucher.id}">${voucher.name} - Giảm <fmt:formatNumber type="number" value="${voucher.discount}" pattern="#,##0"/> đ</option>
                             </c:forEach>
                         </select>
                         <button type="button" id="applyvoucherBtn" class="btn btn-danger">Áp dụng</button>
@@ -326,8 +301,8 @@
                 var provinceText = $("#province option:selected").text().trim();
                 var districtText = $("#district option:selected").text().trim();
                 var wardText = $("#ward option:selected").text().trim();
-                // var totalPriceText = $(".total-price").text().replace("Total: ", "").replace(" VNĐ", "").replace(/,/g, "").trim();
-                var totalPriceText = $(".total-price-value").text().replace("Total: ", "").replace(" VNĐ", "").replace(/,/g, "").trim();
+                // var totalPriceText = $(".total-price").text().replace("Total: ", "").replace(" đ", "").replace(/,/g, "").trim();
+                var totalPriceText = $(".total-price-value").text().replace("Total: ", "").replace(" đ", "").replace(/,/g, "").trim();
                 var totalPrice = parseFloat(totalPriceText) || 0;
 
                 // Kiểm tra dữ liệu hợp lệ
@@ -404,8 +379,8 @@
                     },
                     success: function (response) {
                         if (response.success) {
-                            $(".total-price").text("Total: " + response.newTotalPrice.toLocaleString("en-US") + " VNĐ");
-                            $(".total-price-value").text("Total: " + response.newTotalPrice.toLocaleString("en-US") + " VNĐ");
+                            $(".total-price").text("Total: " + response.newTotalPrice.toLocaleString("en-US") + " đ");
+                            $(".total-price-value").text("Total: " + response.newTotalPrice.toLocaleString("en-US") + " đ");
                             $("#voucherMessage").text(response.message).removeClass("text-danger").addClass("text-success");
                             $("#applyvoucherBtn").prop("disabled", true);
                         } else {
@@ -422,5 +397,8 @@
 
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 </body>
 </html>

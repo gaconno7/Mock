@@ -4,6 +4,7 @@ import com.mock.taka.domain.*;
 import com.mock.taka.service.admin.AdminProductService;
 import com.mock.taka.service.client.CategoryService;
 import com.mock.taka.service.client.ProductImageService;
+import com.mock.taka.service.client.ProductVariantService;
 import com.mock.taka.service.store.StoreService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,7 @@ public class StoreProductController {
     StoreService storeService;
     CategoryService categoryService;
     ProductImageService productImageService;
-
+    ProductVariantService productVariantService;
     @GetMapping("/store/product")
     public String getProduct(Model model, HttpServletRequest active, HttpSession session) {
         active.setAttribute("activePage", "product");
@@ -56,6 +58,8 @@ public class StoreProductController {
         @RequestParam("imageFile") MultipartFile[] files,
         HttpSession session,
         @RequestParam("categoryId") String categoryId,
+        @RequestParam(value = "variant", required = false) List<String> variant
+            ,
         Model model) throws IOException {
     // validate     
     if (newProductBindingResult.hasErrors()) {
@@ -83,9 +87,16 @@ public class StoreProductController {
         model.addAttribute("category", categoryService.fetchCategory());
         return "store/product/create";
     }
-    
+
+        Product savedProduct = this.productService.createProduct(pr);
     // Lưu sản phẩm trước
-    Product savedProduct = this.productService.createProduct(pr);
+      List<ProductVariant> productVariants =  new ArrayList<>();
+        variant.forEach( item -> {
+            var vaP = productVariantService.save(item, savedProduct);
+            productVariants.add(vaP);
+        });
+
+
     
     // Xử lý upload file
     if (files != null && files.length > 0) {

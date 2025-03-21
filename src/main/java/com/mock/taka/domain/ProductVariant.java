@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductVariant {
+public class ProductVariant implements Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.UUID)

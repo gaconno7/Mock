@@ -205,6 +205,32 @@
                                                         </div>
                                                     </div>
 
+
+                                                    <div class="form-group row justify-content-md-center">
+                                                        <label class="col-md-4 col-form-label" for="quantity-variant">Nhập số lượng đặc điểm:</label>
+                                                        <div class="col-md-8">
+                                                            <input type="number" id="quantity-variant" name="quantityVariant" min="0" oninput="generateInputs()" class="form-control">
+                                                        </div>
+                                                        <div id="inputContainer-variant"></div>
+                                                    </div>
+
+                                                    <script>
+                                                        function generateInputs() {
+                                                            const quantity = document.getElementById("quantity-variant").value;
+                                                            const container = document.getElementById("inputContainer-variant");
+                                                            container.innerHTML = "";
+
+                                                            for (let i = 0; i < quantity; i++) {
+                                                                const input = document.createElement("input");
+                                                                input.type = "text";
+                                                                input.classList.add("form-control", "mt-2");
+                                                                input.name = "variant"; // Sửa từ "variant[]" thành "variant"
+                                                                container.appendChild(input);
+                                                            }
+                                                        }
+                                                    </script>
+
+
                                                     <div class="form-group row justify-content-md-center">
                                                         <label for="categoryId" class="col-md-4 col-form-label">Loại sản
                                                             phẩm:</label>
@@ -223,7 +249,6 @@
                                                             ${errorCategory}
                                                         </div>
                                                     </div>
-
 
                                                     <div class="form-group row justify-content-md-center">
                                                         <label for="content" class="col-md-4 col-form-label">Mô tả

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:url value="/api/orders" var="APIOrder"/>
 <!DOCTYPE html>
 <html lang="vi">
@@ -57,8 +58,7 @@
                         <img src="${item.product.image}" alt="placeholder" class="product-image">
                         <div class="product-details">
                             <div class="product-name">${item.product.name}</div>
-                            <div class="product-variant">Màu: Trắng / Size: L</div>
-                            <div class="product-price">${item.amount} x ${item.product.price * item.product.discountPrice}</div>
+                            <div class="product-price">${item.amount} x <fmt:formatNumber type="number" value="${(item.product.price - (item.product.price * item.product.discountPrice)/100)}"/> đ</div>
                         </div>
                     </div>
                 </c:forEach>
@@ -66,15 +66,17 @@
             </div>
             <c:set var="totalPrice" value="0"/>
             <c:forEach var="item" items="${order.orderDetails}">
-                <c:set var="price" value="${totalPrice + (item.product.price * item.product.discountPrice)/100}"/>
+                <c:set var="itemPrice" value="${(item.product.price - (item.product.price * item.product.discountPrice) / 100)}"/>
+                <c:set var="totalPrice" value="${totalPrice + itemPrice}"/>
             </c:forEach>
             <div class="return-summary">
                 <h3>Tổng kết hoàn tiền</h3>
                 <div class="summary-row">
                     <span>Giá trị sản phẩm</span>
-                    <span>${totalPrice}₫</span>
+                    <span><fmt:formatNumber type="number" value="${totalPrice}"/></span>
                 </div>
             </div>
+
 
             <c:if test="${order.status == 'cho-xu-ly'}">
                 <div class="action-buttons">
