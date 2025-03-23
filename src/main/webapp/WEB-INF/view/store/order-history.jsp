@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="<c:url value="/client/css/order-history.css" />">
+    <link rel="stylesheet" href="<c:url value="/store/css/order-history.css" />">
 
 </head>
 <body>
@@ -44,15 +44,15 @@
     <div class="returns-content">
         <div class="order-header">
             <h2 class="content-title">Danh sách đơn hàng</h2>
-            <form class="order-search-form mb-2">
+            <form class="order-search-form">
                 <input id="search-value" type="text" name="search" placeholder="Nhập từ khóa tìm kiếm...">
 
-                <select onchange="setSearchType(this.value)" id="select-filter">
-                    <option value="">Lọc</option>
-                    <option value="address">Địa chỉ</option>
-                    <option value="fullname">Tên khách hàng</option>
-                    <option value="id">Mã hoá đơn</option>
-                </select>
+                    <select onchange="setSearchType(this.value)" id="select-filter">
+                        <option value="">Lọc</option>
+                        <option value="address">Địa chỉ</option>
+                        <option value="fullname">Tên khách hàng</option>
+                        <option value="id">Mã hoá đơn</option>
+                    </select>
 
                 <input id="search-date" type="date" name="orderDate">
                 <button type="button" onclick="setSearchValue()">Tìm kiếm</button>
@@ -81,7 +81,7 @@
 </div>
 <script>
     let date = null, status = null,  searchValue = null,
-        searchType = null, userId = '${sessionScope.user.id}';
+        searchType = null, storeId = '${sessionScope.user.store.id}';
 
     function setSearchType(value) {
         searchType = value;
@@ -126,26 +126,11 @@
         loadOrders(0);
     }
 
-    function processOrder(id) {
-        $.ajax({
-            url: '/api/orders/process/' + id,
-            type: 'PUT',
-            dataType: 'json',
-            success: function (response) {
-                console.log(response);
-                loadOrders(0);
-            },
-            error: function (error) {
-                console.log(error)
-            }
-        })
-    }
-
     function loadOrders(page) {
         let data = { page: page };
         if(searchType !== null) data.searchType = searchType;
         if(searchValue !== null) data.searchValue = searchValue;
-        if(userId !== null) data.userId = userId;
+        if(storeId !== null) data.storeId = storeId;
         if(status !== null) data.status = status;
         if(date !== null) data.date = date;
 
@@ -177,11 +162,11 @@
                                                         item.status === 'chua-thanh-toan' ? 'Chưa thanh toán' : '')
                             + '</span></td> '
                             + '<td><a href="/user/order/' + item.id + '" class="action-btn mr-3">Xem chi tiết</a> '
-                            + (item.status === "cho-xu-ly" ? '<button onclick="processOrder(`' + item.id + '`)" class="action-btn">Xác nhận đã xử lý</button>' : '')
+                            + (item.status === "cho-xu-ly" ? '<button class="action-btn">Xác nhận đã xử lý</button>' : '')
                             + '</td> '
                             + '</tr>';
 
-                        container.append(productHtml);
+                       container.append(productHtml);
                     });
                 } else {
                     container.html('<p  class="text-center"> Không có hoá đơn nào. </p>');

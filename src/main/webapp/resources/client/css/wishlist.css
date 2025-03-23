@@ -50,11 +50,19 @@ body {
     align-items: center;
 }
 
+
 .ellipsis {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 19vh !important;
+}
+
+.ellipsis-60 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 60vh !important;
 }
 
 .active {
@@ -280,7 +288,8 @@ body {
 
 /* Product card styles */
 .product-card {
-    min-width: 250px;
+    width: 33vh;
+    height: 58vh;
     border: 1px solid #eee;
     border-radius: 8px;
     overflow: hidden;
@@ -315,9 +324,9 @@ body {
 }
 
 .product-image img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
+    max-width: 27vh;
+    max-height: 27vh;
+    object-fit: cover;
 }
 
 .discount-badge {
@@ -406,7 +415,7 @@ body {
 }
 
 .action-button {
-    border: none;
+    border: none !important;
 }
 /* Section Title with Line */
 .section-title {

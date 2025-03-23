@@ -36,6 +36,7 @@ public class ClientOrderController {
         }
         modelMap.addAttribute("orders", orders);
         session.removeAttribute("filteredOrders");
+        orderService.findAllByStoreId("store9");
         return "client/order-history";
     }
 

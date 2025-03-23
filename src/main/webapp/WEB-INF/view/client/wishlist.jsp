@@ -36,19 +36,18 @@
         <c:forEach var="item" items="${newProducts}">
         <div class="product-card">
             <div class="product-image">
-                <div class="new-badge">NEW</div>
-                <img src="${item.image}" alt="${item.name}">
+                <img src="${item.productImages[0].url}" alt="${item.name}">
                 <div class="quick-view"><a href="<c:url value="/product/${item.id}"/>"><i class="bi bi-eye"></i></a>️</div>
                 <div class="quick-view mt-5">
                     <c:if test="${not empty sessionScope.user}">
-                        <button class="action-button" onclick="handleClick(`${sessionScope.user.id}`,`${item.id}`)">
+                        <a class="action-button" onclick="handleClick(`${sessionScope.user.id}`,`${item.id}`)">
                             <i class="bi bi-heart"></i>
-                       </button>
+                       </a>
                     </c:if>
                 </div>
             </div>
             <div class="product-info">
-                <h3 class="product-title">${item.name}</h3>
+                <h3 class="product-title ellipsis">${item.name}</h3>
                 <div class="product-price">
                     <span class="current-price">${item.price}</span>
                     <span class="original-price">${item.discountPrice}</span>
@@ -131,11 +130,11 @@
                         let productHtml =
                             '<div class="product-card">'
                                 +'<div class="product-image">'
-                                    +'<img src= '+item.product.image + ' alt="Gucci">'
+                                    +'<img src= '+ item.product.productImages[0].url + ' alt="Gucci">'
                                     +'<button onclick="removeWishlistItem(`' + item.id + '`)" class="remove-btn quick-view"><i class="bi bi-trash3"></i></button>'
                                 +'</div>'
                             +'<div class="product-info">'
-                                +'  <h3 class="product-title">'+ item.product.name +'</h3>'
+                                +'  <h3 class="product-title ellipsis">'+ item.product.name +'</h3>'
                             +'<div class="product-price">'
                             +'    <span class="current-price"> ' + item.product.price +'</span>'
                                 +' <span class="original-price"> ' + item.product.discountPrice + '</span>'

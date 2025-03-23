@@ -21,7 +21,7 @@
                     </c:if>
                     <c:if test="${not empty sessionScope.user.store}">
                         <li><a class="dropdown-item" href="<c:url value="/store/product"/>">Quản lý sản phẩm</a></li>
-                        <li><a class="dropdown-item" href="<c:url value="/store/order"/>">Quản lý đơn hàng</a></li>
+                        <li><a class="dropdown-item" href="<c:url value="/store/product"/>">Quản lý đơn hag</a></li>
                     </c:if>
                     <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
                 </c:if>

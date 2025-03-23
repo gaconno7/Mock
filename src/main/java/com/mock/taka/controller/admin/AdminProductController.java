@@ -1,13 +1,11 @@
 package com.mock.taka.controller.admin;
 
-import com.mock.taka.domain.Category;
-import com.mock.taka.domain.Product;
-import com.mock.taka.domain.ProductImage;
-import com.mock.taka.domain.Store;
+import com.mock.taka.domain.*;
 import com.mock.taka.service.admin.AdminProductService;
 import com.mock.taka.service.admin.AdminStoreService;
 import com.mock.taka.service.client.CategoryService;
 import com.mock.taka.service.client.ProductImageService;
+import com.mock.taka.service.client.ProductVariantService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +30,7 @@ public class AdminProductController {
     AdminStoreService storeService;
     CategoryService categoryService;
     ProductImageService productImageService;
+    ProductVariantService productVariantService;
 
     @GetMapping("/admin/product")
     public String getProduct(Model model, HttpServletRequest active) {
@@ -58,6 +58,7 @@ public String handleCreateProduct(
         @RequestParam("imageFile") MultipartFile[] files,
         @RequestParam("storeId") String storeId,
         @RequestParam("categoryId") String categoryId,
+        @RequestParam(value = "variant", required = false) List<String> variant,
         Model model) throws IOException {
     // validate     
     if (newProductBindingResult.hasErrors()) {
@@ -88,8 +89,13 @@ public String handleCreateProduct(
     
     // Lưu sản phẩm trước
     Product savedProduct = this.productService.createProduct(pr);
-    
-    // Xử lý upload file
+        List<ProductVariant> productVariants =  new ArrayList<>();
+        variant.forEach( item -> {
+            var vaP = productVariantService.save(item, savedProduct);
+            productVariants.add(vaP);
+        });
+
+        // Xử lý upload file
     if (files != null && files.length > 0) {
         try {
             productImageService.uploadAndSaveProductImages(files, savedProduct);

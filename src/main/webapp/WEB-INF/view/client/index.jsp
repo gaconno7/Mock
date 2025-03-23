@@ -118,7 +118,7 @@
                 </button>
               </div>
               <div class="card-body">
-                <h5 class="card-title">${item.name}</h5>
+                <h5 class="card-title ellipsis">${item.name}</h5>
                 <div class="d-flex justify-content-between">
                   <h4 class="card-text text-warning" style="font-size :18px">${item.price - (item.discountPrice * item.price)/100} đ</h4>
                   <h5 class="card-text text-danger" style="text-decoration: line-through;; font-size :18px">${item.price} đ</h5>

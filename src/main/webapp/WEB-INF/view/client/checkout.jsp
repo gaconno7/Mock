@@ -302,7 +302,7 @@
                 var districtText = $("#district option:selected").text().trim();
                 var wardText = $("#ward option:selected").text().trim();
                 // var totalPriceText = $(".total-price").text().replace("Total: ", "").replace(" đ", "").replace(/,/g, "").trim();
-                var totalPriceText = $(".total-price-value").text().replace("Total: ", "").replace(" đ", "").replace(/,/g, "").trim();
+                var totalPriceText = $(".total-price-value").text().replace("Tổng tiền:", "").replace(" đ", "").replace(/,/g, "").trim();
                 var totalPrice = parseFloat(totalPriceText) || 0;
 
                 // Kiểm tra dữ liệu hợp lệ

@@ -86,10 +86,10 @@
                                                                 <a class="btn btn-warning"
                                                                     href="/admin/user/restore/${deletedUser.id}">Khôi
                                                                     phục</a>
-                                                                <a class="btn btn-danger"
-                                                                    href="/admin/user/perdelete/${deletedUser.id}">Khoá
-                                                                    vĩnh
-                                                                    viễn</a>
+<%--                                                                <a class="btn btn-danger"--%>
+<%--                                                                    href="/admin/user/perdelete/${deletedUser.id}">Khoá--%>
+<%--                                                                    vĩnh--%>
+<%--                                                                    viễn</a>--%>
 
                                                                 <!-- <a class="btn btn-danger" href="#" data-toggle="modal"
                                                                     data-target="#deleteModal"

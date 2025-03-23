@@ -1,5 +1,6 @@
 package com.mock.taka.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,10 +28,13 @@ public class Order implements Serializable {
     @Column(name = "id")
     String id;
 
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user")
     User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     List<OrderDetail> orderDetails;
 
@@ -48,9 +52,6 @@ public class Order implements Serializable {
     @LastModifiedDate
     Date updateDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "transport_id")
-    Transport transport;
 
     @Column(name = "total_price")
     double totalPrice;
@@ -61,6 +62,9 @@ public class Order implements Serializable {
     @Column(name = "payment_ref")
     String paymentRef;
 
+
+    @JsonIgnore
     @OneToOne(mappedBy = "order")
     ReturnOrder returnOrder;
+
 }

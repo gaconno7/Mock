@@ -86,7 +86,6 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     List<ProductVariant> productVariants;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     List<ProductImage> productImages;
 

@@ -33,5 +33,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/store/**").addResourceLocations("/resources/store/");
         registry.addResourceHandler("/admin/**").addResourceLocations("/resources/admin/");
         registry.addResourceHandler("/ckeditor/**").addResourceLocations("/resources/ckeditor/");
+        registry.addResourceHandler("/error/**").addResourceLocations("/resources/error/");
     }
 }
