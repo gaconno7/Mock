@@ -214,7 +214,7 @@
                         let productHtml =
                             '<div class="product-card">'
                             + ' <div class="product-image">'
-                            + ' <img src="' + item.image + '" alt="HAVIT HV-G92 Gamepad">'
+                            + ' <img src="' + item.productImages[0].url + '" alt="HAVIT HV-G92 Gamepad">'
                             + ' <div class="quick-view mb-3">'
                             + '  <a href="/product/' + item.id + '">'
                             + '      <i class="bi bi-eye"></i>'
@@ -231,8 +231,8 @@
                             + '  <div class="product-info">'
                             + '     <h4 class="product-name ellipsis">' + item.name + '</h4>'
                             + '     <div class="product-price">'
-                            + '           <span class="current-price">' + item.price + '</span>'
-                            + '           <span class="original-price">' + item.discountPrice + '</span>'
+                            + '           <span class="current-price">' + Math.round((item.price - (item.price * item.discountPrice) /100)).toLocaleString('vi-VN') + ' đ</span>'
+                            + '           <span class="original-price">' + Math.round(item.price).toLocaleString('vi-VN') + ' đ</span>'
                             + '     </div>'
                             + renderRating(item.evaluations)
                             + '     <button class="btn btn-primary" onclick="addToCart(\'' + item.id.toString() + '\', \'' + item.productVariants[0].id.toString() + '\')">'

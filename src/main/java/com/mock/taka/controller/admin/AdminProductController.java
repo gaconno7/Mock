@@ -52,43 +52,43 @@ public class AdminProductController {
     }
 
     @PostMapping("/admin/product/create")
-public String handleCreateProduct(
-        @ModelAttribute("newProduct") @Valid Product pr,
-        BindingResult newProductBindingResult,
-        @RequestParam("imageFile") MultipartFile[] files,
-        @RequestParam("storeId") String storeId,
-        @RequestParam("categoryId") String categoryId,
-        @RequestParam(value = "variant", required = false) List<String> variant,
-        Model model) throws IOException {
-    // validate     
-    if (newProductBindingResult.hasErrors()) {
-        model.addAttribute("stores", storeService.fetchStore());
-        model.addAttribute("category", categoryService.fetchCategory());
-        return "admin/product/create";
-    }
-    
-    Optional<Store> selectedStore = this.storeService.fetchStoreById(storeId);
-    if (selectedStore.isPresent()) {
-        pr.setStore(selectedStore.get());
-    } else {
-        newProductBindingResult.rejectValue("store", "error.product", "Cửa hàng không tồn tại");
-        model.addAttribute("stores", storeService.fetchStore());
-        model.addAttribute("category", categoryService.fetchCategory());
-        return "admin/product/create";
-    }
-    
-    Optional<Category> selectedCategory = this.categoryService.fetchCategoryById(categoryId);
-    if (selectedCategory.isPresent()) {
-        pr.setCategory(selectedCategory.get());
-    } else {
-        newProductBindingResult.rejectValue("category", "error.product", "Loại sản phẩm không tồn tại");
-        model.addAttribute("stores", storeService.fetchStore());
-        model.addAttribute("category", categoryService.fetchCategory());
-        return "admin/product/create";
-    }
-    
-    // Lưu sản phẩm trước
-    Product savedProduct = this.productService.createProduct(pr);
+    public String handleCreateProduct(
+            @ModelAttribute("newProduct") @Valid Product pr,
+            BindingResult newProductBindingResult,
+            @RequestParam("imageFile") MultipartFile[] files,
+            @RequestParam("storeId") String storeId,
+            @RequestParam("categoryId") String categoryId,
+            @RequestParam(value = "variant", required = false) List<String> variant,
+            Model model) throws IOException {
+        // validate
+        if (newProductBindingResult.hasErrors()) {
+            model.addAttribute("stores", storeService.fetchStore());
+            model.addAttribute("category", categoryService.fetchCategory());
+            return "admin/product/create";
+        }
+
+        Optional<Store> selectedStore = this.storeService.fetchStoreById(storeId);
+        if (selectedStore.isPresent()) {
+            pr.setStore(selectedStore.get());
+        } else {
+            newProductBindingResult.rejectValue("store", "error.product", "Cửa hàng không tồn tại");
+            model.addAttribute("stores", storeService.fetchStore());
+            model.addAttribute("category", categoryService.fetchCategory());
+            return "admin/product/create";
+        }
+
+        Optional<Category> selectedCategory = this.categoryService.fetchCategoryById(categoryId);
+        if (selectedCategory.isPresent()) {
+            pr.setCategory(selectedCategory.get());
+        } else {
+            newProductBindingResult.rejectValue("category", "error.product", "Loại sản phẩm không tồn tại");
+            model.addAttribute("stores", storeService.fetchStore());
+            model.addAttribute("category", categoryService.fetchCategory());
+            return "admin/product/create";
+        }
+
+        // Lưu sản phẩm trước
+        Product savedProduct = this.productService.createProduct(pr);
         List<ProductVariant> productVariants =  new ArrayList<>();
         variant.forEach( item -> {
             var vaP = productVariantService.save(item, savedProduct);
@@ -96,21 +96,21 @@ public String handleCreateProduct(
         });
 
         // Xử lý upload file
-    if (files != null && files.length > 0) {
-        try {
-            productImageService.uploadAndSaveProductImages(files, savedProduct);
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("stores", storeService.fetchStore());
-            model.addAttribute("category", categoryService.fetchCategory());
-            model.addAttribute("uploadError", "Không thể tải lên hình ảnh: " + e.getMessage());
-            return "admin/product/create";
+        if (files != null && files.length > 0) {
+            try {
+                productImageService.uploadAndSaveProductImages(files, savedProduct);
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("stores", storeService.fetchStore());
+                model.addAttribute("category", categoryService.fetchCategory());
+                model.addAttribute("uploadError", "Không thể tải lên hình ảnh: " + e.getMessage());
+                return "admin/product/create";
+            }
         }
+
+        return "redirect:/admin/product";
     }
-    
-    return "redirect:/admin/product";
-}
-    
+
     @GetMapping("/admin/product/update/{id}")
     public String getUpdateProductPage(Model model, @PathVariable String id, HttpServletRequest active) {
         active.setAttribute("activePage", "product");
@@ -139,32 +139,32 @@ public String handleCreateProduct(
             model.addAttribute("category", categoryService.fetchCategory());
             return "admin/product/update";
         }
-    
-        
+
+
         Optional<Store> selectedStore = this.storeService.fetchStoreById(storeId);
         Optional<Category> selectedCategory = this.categoryService.fetchCategoryById(categoryId);
-        
+
         if (selectedStore.isPresent() && selectedCategory.isPresent()) {
             Optional<Product> optionalProduct = this.productService.fetchProductById(pr.getId());
-            
+
             if (optionalProduct.isPresent()) {
                 Product currentProduct = optionalProduct.get();
-                
-         
+
+
                 currentProduct.setName(pr.getName());
                 currentProduct.setPrice(pr.getPrice());
                 currentProduct.setQuantity(pr.getQuantity());
                 currentProduct.setDescription(pr.getDescription());
-                
-              
+
+
                 currentProduct.setStore(selectedStore.get());
                 currentProduct.setCategory(selectedCategory.get());
-    
-             
+
+
                 Product updatedProduct = this.productService.createProduct(currentProduct);
-                
-               
-                if (files != null && files.length > 0) { 
+
+
+                if (files != null && files.length > 0) {
                     boolean hasNonEmptyFiles = false;
                     for (MultipartFile file : files) {
                         if (file != null && !file.isEmpty()) {
@@ -172,7 +172,7 @@ public String handleCreateProduct(
                             break;
                         }
                     }
-                    
+
                     if (hasNonEmptyFiles) {
                         productImageService.uploadAndSaveProductImages(files, updatedProduct);
                     }
@@ -189,27 +189,29 @@ public String handleCreateProduct(
             model.addAttribute("category", categoryService.fetchCategory());
             return "admin/product/update";
         }
-    
+
         return "redirect:/admin/product";
     }
 
     @GetMapping("/admin/product/delete/{id}")
     public String getDeleteProductPage(Model model, @PathVariable String id, HttpServletRequest active) {
-        active.setAttribute("activePage", "product");
-        model.addAttribute("id", id);
-        model.addAttribute("newProduct", new Product());
-        return "admin/product/delete";
-    }
-
-    @PostMapping("/admin/product/delete")
-    public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr) {
-        Optional<Product> optionalProduct = this.productService.fetchProductById(pr.getId());
-        if (optionalProduct.isPresent()) {
-            productImageService.deleteAllProductImages(optionalProduct.get());
-        }
-        this.productService.deleteProduct(pr.getId());
+        // active.setAttribute("activePage", "product");
+        // model.addAttribute("id", id);
+        // model.addAttribute("newProduct", new Product());
+        // return "admin/product";
+        productService.deleteProduct(id);
         return "redirect:/admin/product";
     }
+
+    // @PostMapping("/admin/product/delete")
+    // public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr) {
+    //     Optional<Product> optionalProduct = this.productService.fetchProductById(pr.getId());
+    //     if (optionalProduct.isPresent()) {
+    //         productImageService.deleteAllProductImages(optionalProduct.get());
+    //     }
+    //     this.productService.deleteProduct(pr.getId());
+    //     return "redirect:/admin/product";
+    // }
 
     @GetMapping("/admin/product/{id}")
     public String getProductDetailPage(Model model, @PathVariable String id, HttpServletRequest active) {
@@ -224,6 +226,13 @@ public String handleCreateProduct(
         model.addAttribute("id", id);
         return "admin/product/detail";
     }
+    @GetMapping("/admin/product/trash")
+    public String getTrashPage(Model model, HttpServletRequest active) {
+        active.setAttribute("activePage", "product");
+        List<Product> deletedProducted = productService.getProductDeleted();
+        model.addAttribute("deletedProduct", deletedProducted);
+        return "admin/product/trash";
+    }
 
     @PostMapping("/admin/product/delete-image/{imageId}")
     public String deleteProductImage(@PathVariable String imageId, @RequestParam("productId") String productId) {
@@ -231,28 +240,28 @@ public String handleCreateProduct(
         return "redirect:/admin/product/update/" + productId;
     }
     @GetMapping("/admin/product/filter")
-public String filterProducts(@RequestParam(required = false) String categoryId, Model model, HttpServletRequest active) {
-    active.setAttribute("activePage", "product");
-    
-    List<Product> filteredProducts;
+    public String filterProducts(@RequestParam(required = false) String categoryId, Model model, HttpServletRequest active) {
+        active.setAttribute("activePage", "product");
 
-    if (categoryId != null && !categoryId.isEmpty()) {
-    Optional<Category> category = categoryService.fetchCategoryById(categoryId);
-    if (category.isPresent()) {
-        filteredProducts = productService.findByCategoryAndDeletedFalse(category.get());
-        model.addAttribute("selectedCategoryId", categoryId);
-    } else {
-        filteredProducts = productService.fetchProducts();
+        List<Product> filteredProducts;
+
+        if (categoryId != null && !categoryId.isEmpty()) {
+            Optional<Category> category = categoryService.fetchCategoryById(categoryId);
+            if (category.isPresent()) {
+                filteredProducts = productService.findByCategoryAndDeletedFalse(category.get());
+                model.addAttribute("selectedCategoryId", categoryId);
+            } else {
+                filteredProducts = productService.fetchProducts();
+            }
+        } else {
+            filteredProducts = productService.fetchProducts();
+        }
+
+        List<Category> categories = categoryService.fetchCategory();
+
+        model.addAttribute("products", filteredProducts);
+        model.addAttribute("categories", categories);
+
+        return "admin/product/show";
     }
-    } else {
-    filteredProducts = productService.fetchProducts();
-}
-
-    List<Category> categories = categoryService.fetchCategory();
-    
-    model.addAttribute("products", filteredProducts);
-    model.addAttribute("categories", categories);
-    
-    return "admin/product/show";
-}
 }

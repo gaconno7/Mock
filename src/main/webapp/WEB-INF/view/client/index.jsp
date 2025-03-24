@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:url value="/api/wishlists" var="APIWishlist"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -120,8 +121,8 @@
               <div class="card-body">
                 <h5 class="card-title ellipsis">${item.name}</h5>
                 <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning" style="font-size :18px">${item.price - (item.discountPrice * item.price)/100} đ</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;; font-size :18px">${item.price} đ</h5>
+                  <h4 class="card-text text-warning" style="font-size :18px"><fmt:formatNumber type="number" value="${item.price - (item.discountPrice * item.price)/100}"/> đ</h4>
+                  <h5 class="card-text text-danger" style="text-decoration: line-through;; font-size :18px"><fmt:formatNumber type="number" value="${item.price}"/> đ</h5>
                 </div>
                 <div><i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-fill"></i>
@@ -152,8 +153,8 @@
         <div class="information" style="margin-top: 20px;">
           <div class="info-item" style="margin-bottom: 10px;">
             <h4 class="info-label">Giá:&nbsp;&nbsp;
-              <span class="info-value text-warning" style="color: orange; font-size :18px">${product.price - (product.discountPrice * product.price)/ 100}</span>
-              <span class="info-value text-danger" style="text-decoration: line-through; color: red;; font-size :18px">${product.price}</span>
+              <span class="info-value text-warning" style="color: orange; font-size :18px"><fmt:formatNumber type="number" value="${product.price - (product.discountPrice * product.price)/ 100}"/> đ</span>
+              <span class="info-value text-danger" style="text-decoration: line-through; color: red;; font-size :18px"><fmt:formatNumber type="number" value="${product.price}"/> đ</span>
             </h4>
             </div>
           <div class="info-item" style="margin-bottom: 10px;">
@@ -234,8 +235,8 @@
               <div class="card-body">
                 <h5 class="card-title">${item.name}</h5>
                 <div class="d-flex justify-content-between">
-                  <h4 class="card-text text-warning">${item.discountPrice}</h4>
-                  <h5 class="card-text text-danger" style="text-decoration: line-through;">${item.price}</h5>
+                  <h4 class="card-text text-warning" style="font-size :18px"><fmt:formatNumber type="number" value="${item.price - (item.discountPrice * item.price)/100}"/> đ</h4>
+                  <h5 class="card-text text-danger" style="text-decoration: line-through;; font-size :18px"><fmt:formatNumber type="number" value="${item.price}"/> đ</h5>
                 </div>
                 <div><i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-fill"></i>

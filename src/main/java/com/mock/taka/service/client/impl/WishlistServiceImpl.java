@@ -25,7 +25,7 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public Page<WishlistItem> findAllByUserId(long userId, Pageable pageable) {
-        return wishlistRepository.findAllByUserId(userId, pageable);
+        return wishlistRepository.findAllByUserIdAndProductDeleted(userId, pageable, false);
     }
 
     @Override

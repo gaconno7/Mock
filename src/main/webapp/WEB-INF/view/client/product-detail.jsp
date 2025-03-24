@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:url var="urlEvaluation" value="/api/evaluations"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,8 +43,8 @@
 
         <div class="pb-3"><a href="<c:url value="/over-view-store/${product.store.id}"/> " class="card-title"><i class="bi bi-shop"></i> ${product.store.name} </a></div>
 
-        <div class="original-price">${product.price} đ</div>
-        <div class="price">${product.price - (product.price * product.discountPrice)/100} đ</div>
+        <div class="original-price"><fmt:formatNumber type="number" value="${product.price}"/> đ</div>
+        <div class="price"><fmt:formatNumber type="number" value="${product.price - (product.price * product.discountPrice)/100}"/> đ</div>
         <div class="size-options">
             <c:set var="totalRate" value="0" />
             <c:forEach var="evaluation" items="${product.evaluations}">

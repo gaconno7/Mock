@@ -31,7 +31,6 @@
                 <a onclick="setStatus('van-chuyen')" class="sidebar-link pointer-action van-chuyen">Vận chuyển</a>
                 <a onclick="setStatus('cho-giao-hang')" class="sidebar-link pointer-action cho-giao-hang">Chờ giao hàng</a>
                 <a onclick="setStatus('hoan-thanh')"  class="sidebar-link pointer-action hoan-thanh">Hoàn thành</a>
-                <a onclick="setStatus('chua-thanh-toan')" class="sidebar-link pointer-action chua-thanh-toan">Chưa thanh toán</a>
                 <a onclick="setStatus('da-thanh-toan')"  class="sidebar-link pointer-action da-thanh-toan">Đã thanh toán</a>
                 <a onclick="setStatus('da-huy')" class="sidebar-link pointer-action da-huy">Đã huỷ</a>
                 <a onclick="setStatus('tra-hang')" class="sidebar-link pointer-action tra-hang">Trả hàng/ hoàn tiền</a>

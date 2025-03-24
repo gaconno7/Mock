@@ -11,6 +11,7 @@ public interface AdminProductService {
     Product createProduct(Product pr);
     Optional<Product> fetchProductById(String id);
     void deleteProduct(String id);
+    List<Product> getProductDeleted();
     List<Product> fetchProducts();
     List<Product> findByStoreAndIsDeletedFalse(Store store);
     List<Product> findByCategoryAndDeletedFalse(Category category);

@@ -7,7 +7,7 @@
                 <html lang="en">
 
                 <jsp:include page="../layout/head.jsp">
-                    <jsp:param name="pageTitle" value="Quản lí cửa hàng" />
+                    <jsp:param name="pageTitle" value="Quản lí người dùng" />
                 </jsp:include>
 
                 <body id="page-top">
@@ -34,10 +34,18 @@
 
                                     <!-- Page Heading -->
                                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                                        <h1 class="h3 mb-0 text-gray-800">Quản lí cửa hàng</h1>
+                                        <h1 class="h3 mb-0 text-gray-800">Quản lý sản phẩm</h1>
+                                        <div class="d-flex">
+                                            <a href="/admin/product" class="btn btn-sm btn-primary shadow-sm mx-2">
+                                                <i class="fas fa-arrow-left fa-sm text-white-50"></i> Trở về
+                                            </a>
 
-
+                                        </div>
                                     </div>
+
+
+
+
 
                                     <!-- Message Content -->
                                     <jsp:include page="../layout/message.jsp" />
@@ -46,42 +54,39 @@
                                     <!-- DataTales Example -->
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
-                                            <h6 class="m-0 font-weight-bold text-primary">Danh sách cửa hàng</h6>
+                                            <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm đã bị xoá
+                                            </h6>
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table table-bordered" id="dataTable" width="100%"
-                                                    cellspacing="0">
+                                                <table class="table table-bordered" id="" width="100%" cellspacing="0">
                                                     <thead>
                                                         <tr>
                                                             <th>STT</th>
-                                                            <th>Tên</th>
-                                                            <th>Người sở hữu</th>
-                                                            <th>Mô tả</th>
-                                                            <th>Hành động</th>
+                                                            <th>Tên sản phẩm</th>
+                                                            <th>Giá</th>
+                                                            <th>Cửa hàng</th>
+                                                            <th>Loại sản phẩm</th>
+                                                            <th>Trạng thái</th>
+
+                                                            <!-- <th>Loại</th> -->
 
                                                         </tr>
                                                     </thead>
                                                     <tbody id="productTableBody">
-                                                        <c:forEach var="store" items="${store}" varStatus="status">
+                                                        <c:forEach var="deletedProduct" items="${deletedProduct}"
+                                                            varStatus="status">
                                                             <tr class="product-item">
-                                                                <th>${status.index + 1}</th>
-                                                                <td>${store.name}</td>
-                                                                <td>${store.user.fullname}</td>
-                                                                <td>${store.description}</td>
+                                                                <td>${status.index + 1}</td>
+                                                                <td>${deletedProduct.name}</td>
                                                                 <td>
-                                                                    <a class="btn btn-success"
-                                                                        href="/admin/store/${store.id}/products">Xem
-                                                                        thêm</a>
-                                                                    <a class="btn btn-warning"
-                                                                        href="/admin/store/update/${store.id}">Cập
-                                                                        nhật</a>
-                                                                    <a class="btn btn-danger" href="#"
-                                                                        data-toggle="modal" data-target="#deleteModal"
-                                                                        data-entity-id="${store.id}"
-                                                                        data-entity-name="${store.name}"> Khoá
-                                                                    </a>
+                                                                    <fmt:formatNumber type="number"
+                                                                        value="${deletedProduct.price}" />
+                                                                    đ
                                                                 </td>
+                                                                <td><strong>${deletedProduct.store.name}</strong></td>
+                                                                <td>${deletedProduct.category.name}</td>
+                                                                <td>Đã bị xoá</td>
 
                                                             </tr>
                                                         </c:forEach>
@@ -108,6 +113,14 @@
                                             </div>
 
                                             <script>
+
+                                                function deleteProduct(id) {
+                                                    let actionConfirm = confirm("Bạn có muốn xoá?")
+                                                    if (actionConfirm) {
+                                                        window.location.href = '/admin/product/delete/' + id;
+                                                    }
+                                                }
+
                                                 document.addEventListener('DOMContentLoaded', function () {
                                                     // Pagination configuration
                                                     let currentPage = 0;
@@ -140,7 +153,6 @@
                                                         }
 
                                                         // Update pagination info
-
 
                                                         // Update pagination buttons
                                                         updatePaginationButtons();
@@ -230,7 +242,6 @@
                                 </div>
                                 <!-- /.container-fluid -->
 
-
                             </div>
                             <!-- End of Main Content -->
 
@@ -242,14 +253,15 @@
                         <!-- End of Content Wrapper -->
 
                     </div>
-                    <!-- End of Page Wrapper -->
 
                     <!-- Modal Content -->
                     <jsp:include page="../layout/deleteModal.jsp">
-                        <jsp:param name="entity" value="cửa hàng" />
-                        <jsp:param name="actionSubfolder" value="store" />
-                        <jsp:param name="modalAttribute" value="deleteStore" />
+                        <jsp:param name="entity" value="sản phẩm" />
+                        <jsp:param name="actionSubfolder" value="product" />
+                        <jsp:param name="modalAttribute" value="deleteProduct" />
                     </jsp:include>
+
+                    <!-- End of Page Wrapper -->
 
                     <jsp:include page="../layout/foot.jsp" />
 

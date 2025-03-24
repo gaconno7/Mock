@@ -143,7 +143,7 @@ public class ClientOrderController {
             // Tạo mã đơn hàng (UUID)
             final String uuid = UUID.randomUUID().toString().replace("-", "");
 
-            Order createdOrder = orderService.createOrder(address, orderItems, totalPrice, user, paymentMethod, "chua-thanh-toan", uuid);
+            Order createdOrder = orderService.createOrder(address, orderItems, totalPrice, user, paymentMethod, "cho-xu-ly", uuid);
 
             // Nếu chọn VNPAY, chuyển hướng đến trang thanh toán
             if (!paymentMethod.equalsIgnoreCase("cod")) {
@@ -184,7 +184,7 @@ public class ClientOrderController {
             // thanh toán qua VNPAY, cập nhật trạng thái order
             String paymentStatus = vnpayResponseCode.get().equals("00")
                     ? "da-thanh-toan"
-                    : "chua-thanh-toan";
+                    : "cho-xu-ly";
             orderService.updatePaymentStatus(paymentRef.get(), paymentStatus);
         }
         return "client/thanks";
@@ -223,7 +223,7 @@ public class ClientOrderController {
         // Trả về JSON
         response.put("success", true);
         response.put("newTotalPrice", newTotalPrice);
-        response.put("message", "Áp dụng thành công! Giảm: " + df.format(discountAmount) + " đ");
+        response.put("message", "Áp dung thành công! Giảm: " + df.format(discountAmount) + " đ");
         return ResponseEntity.ok(response);
     }
 }

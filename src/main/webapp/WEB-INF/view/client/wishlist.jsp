@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:url value="/api/wishlists" var="APIWishlist"/>
 <c:set var="userId" value="${sessionScope.user.id}"/>
 <!DOCTYPE html>
@@ -49,8 +50,8 @@
             <div class="product-info">
                 <h3 class="product-title ellipsis">${item.name}</h3>
                 <div class="product-price">
-                    <span class="current-price">${item.price}</span>
-                    <span class="original-price">${item.discountPrice}</span>
+                    <span class="current-price"><fmt:formatNumber type="number" value="${item.price}"/> đ</span>
+                    <span class="original-price"><fmt:formatNumber type="number" value="${item.price - (item.price * item.discountPrice)/100}"/> đ</span>
                 </div>
                 <c:set var="totalRate" value="0" />
                 <c:forEach var="evaluation" items="${item.evaluations}">
@@ -136,8 +137,8 @@
                             +'<div class="product-info">'
                                 +'  <h3 class="product-title ellipsis">'+ item.product.name +'</h3>'
                             +'<div class="product-price">'
-                            +'    <span class="current-price"> ' + item.product.price +'</span>'
-                                +' <span class="original-price"> ' + item.product.discountPrice + '</span>'
+                            +'    <span class="current-price"> ' + Math.round((item.product.price - (item.product.price * item.product.discountPrice) /100)).toLocaleString('vi-VN') +' đ</span>'
+                                +' <span class="original-price"> ' + Math.round(item.product.price).toLocaleString('vi-VN') + ' đ</span>'
                             +'</div>'
                             + renderRating(item.product.evaluations)
                                 +'<button class="add-to-cart-btn" onclick="addToCart(\'' + item.product.id.toString() + '\', \'' + item.product.productVariants[0].id.toString() + '\')">Thêm vào giỏ hàng <i class="bi bi-cart"></i></button>'

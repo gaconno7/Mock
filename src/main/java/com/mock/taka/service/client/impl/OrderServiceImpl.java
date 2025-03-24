@@ -41,23 +41,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> filterOrderWithStatus(int pageSize, int pageNum,
                                              String status, Date orderDate, String searchValue, String searchType, String storeId, String userId) {
-//        if (status != null && orderDate != null && id != null) {
-//            return orderRepository.findByIdLikeAndStatusAndOrderDateGreaterThanEqual("%%" + id + "%%", status, orderDate, pageable);
-//        } else if (status != null && orderDate != null) {
-//            return orderRepository.findByStatusAndOrderDateGreaterThanEqual(status, orderDate, pageable);
-//        } else if (id != null && orderDate != null) {
-//            return orderRepository.findByIdAndOrderDateGreaterThanEqual("%%" + id + "%%", orderDate, pageable);
-//        } else if (id != null && status != null) {
-//            return orderRepository.findByIdLikeAndStatus("%%" + id + "%%", status, pageable);
-//        } else if(id != null) {
-//            return orderRepository.findByIdLike("%%" + id + "%%", pageable);
-//        } else if(status != null) {
-//            return orderRepository.findByStatus(status, pageable);
-//        } else if(orderDate != null) {
-//            return orderRepository.findByOrderDateGreaterThanEqual(orderDate, pageable);
-//        } else {
-//            return orderRepository.findAll(pageable);
-//        }
+
         return orderDAO.findOrderByFilter(pageSize, pageNum, status, orderDate, searchValue, searchType, storeId, userId);
     }
 

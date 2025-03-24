@@ -14,6 +14,6 @@ import java.util.Optional;
 @Repository
 public interface WishlistRepository extends JpaRepository<WishlistItem, String> {
 
-    Page<WishlistItem> findAllByUserId(long userId, Pageable pageable);
+    Page<WishlistItem> findAllByUserIdAndProductDeleted(long userId, Pageable pageable, boolean isDeleted);
     boolean existsByProductIdAndUserId( String productId, long userId);
 }

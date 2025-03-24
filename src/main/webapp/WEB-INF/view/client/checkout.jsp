@@ -139,7 +139,7 @@
                                 <!-- Ảnh và tên sản phẩm trên cùng hàng -->
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="${item.product.image}" class="rounded me-2" width="50px" height="50px" alt="Ảnh sản phẩm">
+                                        <img src="${item.product.productImages[0].url}" class="rounded me-2" width="50px" height="50px" alt="Ảnh sản phẩm">
                                         <div>
                                             <strong>${item.product.name}</strong><br>
                                             <c:if test="${not empty item.productVariant}">

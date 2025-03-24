@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:url value="/api/products" var="APIProduct"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -191,8 +192,8 @@
                             + '  <div class="product-info">'
                             + '     <h4 class="product-name ellipsis">' + item.name + '</h4>'
                             + '     <div class="product-price">'
-                            + '           <span class="current-price">' + (item.price - (item.price * item.discountPrice) /100) + 'đ </span>'
-                            + '           <span class="original-price">' + item.price + 'đ </span>'
+                            + '           <span class="current-price">' + Math.round((item.price - (item.price * item.discountPrice) /100)).toLocaleString('vi-VN') +  'đ </span>'
+                            + '           <span class="original-price">' + Math.round(item.price).toLocaleString('vi-VN') + 'đ </span>'
                             + '     </div>'
                             + renderRating(item.evaluations)
                             + '     <button class="btn btn-primary mb-2" onclick="addToCart(\'' + item.id + '\', \'' + item.productVariants[0].id.toString() + '\')">'

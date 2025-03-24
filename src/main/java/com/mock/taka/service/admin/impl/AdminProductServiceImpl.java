@@ -40,6 +40,11 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
     @Override
+    public List<Product> getProductDeleted() {
+        return productRepository.findByDeletedTrue();
+    }
+
+    @Override
     public List<Product> fetchProducts() {
         return productRepository.findByDeletedFalse();
     }

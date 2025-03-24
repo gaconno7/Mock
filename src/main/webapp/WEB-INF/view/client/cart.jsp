@@ -165,10 +165,10 @@
 
         if (newQuantity < 1) return;
 
-        // 🔍 Kiểm tra ID của phần tử giá
+        //  Kiểm tra ID của phần tử giá
         let priceElement = $('#price-' + cartItemId);
     
-        // 🛠️ Lấy giá sản phẩm
+        //  Lấy giá sản phẩm
         let priceText = priceElement.text().trim();
     
         let price = parseFloat(priceText.replace(/[^\d.]/g, "")); // Loại bỏ ký tự không phải số

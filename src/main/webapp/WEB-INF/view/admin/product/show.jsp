@@ -34,11 +34,17 @@
 
                                     <!-- Page Heading -->
                                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                                        <h1 class="h3 mb-0 text-gray-800">Quản lí sản phẩm</h1>
-                                        <a href="/admin/product/create"
-                                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm sản phẩm</a>
-
+                                        <h1 class="h3 mb-0 text-gray-800">Quản lý sản phẩm</h1>
+                                        <div class="d-flex">
+                                            <a href="/admin/product/trash"
+                                                class="btn btn-sm btn-primary shadow-sm mx-2">
+                                                <i class="fas fa-trash fa-sm text-white-50"></i> Sản phẩm đã bị xoá
+                                            </a>
+                                            <a href="/admin/product/create"
+                                                class="btn btn-sm btn-primary shadow-sm mx-2">
+                                                <i class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm sản phẩm
+                                            </a>
+                                        </div>
                                     </div>
 
                                     <!-- Message Content -->
@@ -115,12 +121,11 @@
                                                             <th>Cửa hàng</th>
                                                             <th>Loại sản phẩm</th>
                                                             <th>Hành động</th>
-
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <tbody id="productTableBody">
                                                         <c:forEach var="product" items="${products}" varStatus="status">
-                                                            <tr>
+                                                            <tr class="product-item">
                                                                 <th>${status.index + 1}</th>
                                                                 <td>${product.name}</td>
                                                                 <td>
@@ -136,20 +141,176 @@
                                                                     <a class="btn btn-warning"
                                                                         href="/admin/product/update/${product.id}">Cập
                                                                         nhật</a>
-                                                                    <a class="btn btn-danger" href="#"
-                                                                        data-toggle="modal" data-target="#deleteModal"
+                                                                    <a class="btn btn-danger"
+                                                                        onclick="deleteProduct(`${product.id}`)"
                                                                         data-entity-id="${product.id}"
                                                                         data-entity-name="${product.name}"> Xoá
                                                                     </a>
                                                                 </td>
-
                                                             </tr>
                                                         </c:forEach>
                                                     </tbody>
                                                 </table>
-
-
                                             </div>
+
+                                            <!-- Pagination Controls -->
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-5">
+                                                    <div class="dataTables_info" id="paginationInfo" role="status"
+                                                        aria-live="polite">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-7">
+                                                    <div class="dataTables_paginate paging_simple_numbers">
+                                                        <ul class="pagination" id="paginationContainer">
+                                                            <!-- Pagination buttons will be added here by JavaScript -->
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Page Size Selector -->
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-5">
+                                                    <div class="dataTables_info" id="paginationInfo" role="status"
+                                                        aria-live="polite">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-7">
+                                                    <div class="dataTables_paginate paging_simple_numbers">
+                                                        <ul class="pagination" id="paginationContainer">
+                                                            <!-- Pagination buttons will be added here by JavaScript -->
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <script>
+
+                                                function deleteProduct(id) {
+                                                    let actionConfirm = confirm("Bạn có muốn xoá?")
+                                                    if (actionConfirm) {
+                                                        window.location.href = '/admin/product/delete/' + id;
+                                                    }
+                                                }
+
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    // Pagination configuration
+                                                    let currentPage = 0;
+                                                    let pageSize = 10;
+                                                    let productItems = document.querySelectorAll('.product-item');
+                                                    let totalItems = productItems.length;
+
+                                                    // Function to update the displayed items
+                                                    function displayItems() {
+                                                        // Hide all items
+                                                        productItems.forEach(item => {
+                                                            item.style.display = 'none';
+                                                        });
+
+                                                        // Calculate start and end index
+                                                        let startIndex = currentPage * pageSize;
+                                                        let endIndex = Math.min(startIndex + pageSize, totalItems);
+
+                                                        // Show items for current page
+                                                        for (let i = startIndex; i < endIndex; i++) {
+                                                            if (productItems[i]) {
+                                                                productItems[i].style.display = '';
+
+                                                                // Update row numbers to be continuous across pages
+                                                                const rowNumberCell = productItems[i].querySelector('th');
+                                                                if (rowNumberCell) {
+                                                                    rowNumberCell.textContent = i + 1;
+                                                                }
+                                                            }
+                                                        }
+
+                                                        // Update pagination info
+
+                                                        // Update pagination buttons
+                                                        updatePaginationButtons();
+                                                    }
+
+                                                    // Function to create pagination buttons
+                                                    function updatePaginationButtons() {
+                                                        const paginationContainer = document.getElementById('paginationContainer');
+                                                        paginationContainer.innerHTML = '';
+
+                                                        const totalPages = Math.ceil(totalItems / pageSize);
+                                                        if (totalPages === 0) return;
+
+                                                        // First page button
+                                                        const firstBtn = createPaginationButton('Đầu', 0, currentPage === 0);
+                                                        paginationContainer.appendChild(firstBtn);
+
+                                                        // Previous button
+                                                        const prevBtn = createPaginationButton('Trước', currentPage - 1, currentPage === 0);
+                                                        paginationContainer.appendChild(prevBtn);
+
+                                                        // Page number buttons
+                                                        const startPage = Math.max(0, currentPage - 2);
+                                                        const endPage = Math.min(totalPages - 1, currentPage + 2);
+
+                                                        for (let i = startPage; i <= endPage; i++) {
+                                                            const pageBtn = createPaginationButton(i + 1, i, false, i === currentPage);
+                                                            paginationContainer.appendChild(pageBtn);
+                                                        }
+
+                                                        // Next button
+                                                        const nextBtn = createPaginationButton('Sau', currentPage + 1, currentPage === totalPages - 1);
+                                                        paginationContainer.appendChild(nextBtn);
+
+                                                        // Last page button
+                                                        const lastBtn = createPaginationButton('Cuối', totalPages - 1, currentPage === totalPages - 1);
+                                                        paginationContainer.appendChild(lastBtn);
+                                                    }
+
+                                                    // Helper function to create pagination buttons
+                                                    function createPaginationButton(label, pageNum, isDisabled, isActive = false) {
+                                                        const li = document.createElement('li');
+                                                        li.className = `paginate_button page-item ${isDisabled ? 'disabled' : ''} ${isActive ? 'active' : ''}`;
+
+                                                        const a = document.createElement('a');
+                                                        a.href = 'javascript:void(0)';  // Prevent default behavior
+                                                        a.className = 'page-link';
+                                                        a.textContent = label;
+                                                        a.setAttribute('data-page', pageNum);
+
+                                                        if (!isDisabled) {
+                                                            a.onclick = function () {
+                                                                goToPage(pageNum);
+                                                            };
+                                                        }
+
+                                                        li.appendChild(a);
+                                                        return li;
+                                                    }
+
+                                                    // Function to navigate to a specific page
+                                                    function goToPage(pageNum) {
+                                                        const totalPages = Math.ceil(totalItems / pageSize);
+                                                        if (pageNum >= 0 && pageNum < totalPages) {
+                                                            currentPage = pageNum;
+                                                            displayItems();
+                                                        }
+                                                    }
+
+                                                    // Add event listener for page size changes
+                                                    const pageSizeSelector = document.getElementById('pageSizeSelector');
+                                                    if (pageSizeSelector) {
+                                                        pageSizeSelector.addEventListener('change', function () {
+                                                            pageSize = parseInt(this.value);
+                                                            currentPage = 0; // Reset to first page
+                                                            displayItems();
+                                                        });
+                                                    }
+
+                                                    // Initialize pagination
+                                                    displayItems();
+                                                });
+                                            </script>
                                         </div>
                                     </div>
 
@@ -171,11 +332,11 @@
                     <!-- End of Page Wrapper -->
 
                     <!-- Modal Content -->
-                    <jsp:include page="../layout/deleteModal.jsp">
+                    <!-- <jsp:include page="../layout/deleteModal.jsp">
                         <jsp:param name="entity" value="sản phẩm" />
                         <jsp:param name="actionSubfolder" value="product" />
                         <jsp:param name="modalAttribute" value="deleteProduct" />
-                    </jsp:include>
+                    </jsp:include> -->
 
                     <jsp:include page="../layout/foot.jsp" />
 
