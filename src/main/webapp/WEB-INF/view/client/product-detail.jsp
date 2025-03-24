@@ -22,7 +22,7 @@
 
 <div class="breadcrumb">
     <a href="<c:url value="/home"/>">Trang chủ</a> <span>/</span> <a href="<c:url value="/product/all"/> ">Sản phẩm</a> <span>/</span>
-    <a href="<c:url value="/product/all?category-id=${product.category.id}"/>">${product.category.name}</a>
+    <p >${product.category.name}</p>
 </div>
 
 <!-- Product Section -->
@@ -442,7 +442,6 @@
             $("#main-product-image").attr("src", url);
         }
 
-
         function createPagination(data) {
             let paginationDiv = $('#pagination');
             paginationDiv.empty();
@@ -478,16 +477,6 @@
             let page = $(this).data('page');
             loadEvaluation(page);
         });
-
-    </script>
-    <script>
-        $(document).ready(function () {
-
-        });
-
-
-
-
 
     </script>
     <script src="<c:url value="/client/js/addWishlist.js"/> " type="text/javascript"></script>

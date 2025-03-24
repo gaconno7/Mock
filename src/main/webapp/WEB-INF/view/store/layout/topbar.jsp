@@ -76,7 +76,7 @@
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Đăng xuất
                         </a>
-                        <a class="dropdown-item" href="<c:url value="/user/profile"/> " data-toggle="modal" data-target="#logoutModal">
+                        <a class="dropdown-item" href="<c:url value="/user/profile"/> " >
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Hồ sơ
                         </a>

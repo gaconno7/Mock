@@ -65,59 +65,63 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
-    {
-        http.csrf(csrf->csrf.disable()).cors(cors->cors.disable())
-                .authorizeHttpRequests(req-> {
-                        req.requestMatchers("/admin/**").hasRole("ADMIN");
-                        req.requestMatchers("/user/**").hasAnyAuthority("OIDC_USER", "SCOPE_openid", "ROLE_USER", "ROLE_ADMIN", "ROLE_SUPPLIER");
-                        req.requestMatchers("/store/**").hasAnyAuthority("ROLE_SUPPLIER", "ROLE_ADMIN");
-                        req.requestMatchers("/**", "/api/**").permitAll();
-                        req.anyRequest().authenticated();})
-                .formLogin(form->form.loginPage("/login")
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.disable())
+                .authorizeHttpRequests(req -> {
+                    req.requestMatchers("/admin/**").hasRole("ADMIN");
+                    req.requestMatchers("/user/**").hasAnyAuthority("OIDC_USER", "SCOPE_openid", "ROLE_USER", "ROLE_ADMIN", "ROLE_SUPPLIER");
+                    req.requestMatchers("/store/**").hasAnyAuthority("ROLE_SUPPLIER", "ROLE_ADMIN");
+                    req.requestMatchers("/**", "/api/**").permitAll();
+                    req.anyRequest().authenticated();
+                })
+                .formLogin(form -> form
+                        .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .failureHandler(customAuthenticationFailureHandler())
-                                .successHandler(new AuthenticationSuccessHandler() {
-                                    @Override
-                                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                        Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-                                        CustomUser u = (CustomUser) authentication.getPrincipal();
-                                        User user = getUserService().findByEmail(u.getUsername());
-                                        user.setPassword("");
-                                        HttpSession session = request.getSession(false);
-                                        session.setAttribute("user", user);
+                        .successHandler(new AuthenticationSuccessHandler() {
+                            @Override
+                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                                Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+                                CustomUser u = (CustomUser) authentication.getPrincipal();
+                                User user = getUserService().findByEmail(u.getUsername());
+                                user.setPassword("");
 
-                                        if (roles.contains("ADMIN")) {
-                                            response.sendRedirect("/admin/");
-                                        } else if (roles.contains("SUPPLIER")) {
-                                            response.sendRedirect("/store/");
-                                        } else {
-                                            response.sendRedirect("/home");
-                                        }
-                                    }
-                                })
+                                HttpSession session = request.getSession(true);
+                                session.setAttribute("user", user);
+
+                                if (roles.contains("ADMIN")) {
+                                    response.sendRedirect("/admin/");
+                                } else if (roles.contains("SUPPLIER")) {
+                                    response.sendRedirect("/store/");
+                                } else {
+                                    response.sendRedirect("/home");
+                                }
+                            }
+                        })
                 )
-
                 .oauth2Login(oauth2login -> oauth2login
                         .loginPage("/login")
                         .successHandler(new AuthenticationSuccessHandler() {
                             @Override
                             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                                                 Authentication authentication) throws IOException, ServletException {
+                                // 🛠 Sửa lỗi: Tạo session trước khi commit response
+                                HttpSession session = request.getSession(true);
+
                                 OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
                                 CustomOAuth2User customOAuth2User = new CustomOAuth2User(oauth2User);
-                                log.info(customOAuth2User.getAttribute("email"));
-                                log.info(customOAuth2User.getAttribute("picture"));
 
                                 getUserService().processOAuthPostLogin(customOAuth2User.getAttribute("email"),
                                         customOAuth2User.getAttribute("name"),
                                         customOAuth2User.getAttribute("picture"), request);
+
                                 log.info("Authorities: {}", authentication.getAuthorities());
 
                                 response.sendRedirect("/home");
                             }
-                        }))
-
+                        })
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
@@ -125,5 +129,6 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
 }

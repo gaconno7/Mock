@@ -88,7 +88,7 @@
                                         <input type="checkbox" class="cart-checkbox" name="cartItemCheckbox" value="${item.id}" onchange="updateTotalCart()">
                                     </td>
                                     <td class="d-flex align-items-center">
-                                        <img src="${item.product.image}" class="rounded" style="width: 60px; height: 60px; object-fit: cover; margin-right: 10px;">
+                                        <img src="${item.product.productImages[0].url}" class="rounded" style="width: 60px; height: 60px; object-fit: cover; margin-right: 10px;">
                                         <div>
                                             <span>${item.product.name}</span>
                                             <c:if test="${not empty item.productVariant}">

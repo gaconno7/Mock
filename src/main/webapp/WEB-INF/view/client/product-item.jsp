@@ -174,7 +174,7 @@
                         let productHtml =
                             '<div class="product-card">'
                             + ' <div class="product-image">'
-                            + ' <img src="' + item.image + '" alt="HAVIT HV-G92 Gamepad">'
+                            + ' <img src="' + item.productImages[0].url + '" alt=" '+ item.productImages[0].url + '">'
                             + ' <div class="quick-view mb-3">'
                             + '  <a href="/product/' + item.id + '">'
                             + '      <i class="bi bi-eye"></i>'

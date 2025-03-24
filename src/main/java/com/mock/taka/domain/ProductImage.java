@@ -27,8 +27,6 @@ public class ProductImage implements Serializable {
     @Column(name = "image_id")
     String imageId; 
 
-    @Column(name = "image_url")
-    String imageName;
 
     @Column(name = "url")
     String url;
@@ -57,7 +55,6 @@ public class ProductImage implements Serializable {
     public String toString() {
         return "ProductImage{" +
                 "imageId='" + imageId + '\'' +
-                ", imageName='" + imageName + '\'' +
                 ", url='" + url + '\'' +
                 '}';
     }

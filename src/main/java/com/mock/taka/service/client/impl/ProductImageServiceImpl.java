@@ -34,7 +34,6 @@ public class ProductImageServiceImpl implements ProductImageService {
         for (String url : imageUrls) {
             ProductImage productImage = ProductImage.builder()
                 .product(product)
-                .imageName(getImageNameFromUrl(url))
                 .url(url)
                 .status(true)
                 .build();

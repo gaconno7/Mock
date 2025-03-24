@@ -165,7 +165,7 @@
         <a href="<c:url value="/product/${product.id}"/>" class="detail-btn">Xem chi tiết</a>
       </div>
       <div class="product-image">
-        <img class="rounded" src="${product.image}" alt="JBL Speaker">
+        <img class="rounded" src="${product.productImages[0].url}" alt="JBL Speaker">
       </div>
     </div>
     <div class="featured mt-5">

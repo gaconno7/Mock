@@ -43,9 +43,6 @@ public class Product implements Serializable {
     @Column(name = "quantity")
     int quantity;
 
-    @Column(name = "image")
-    String image;
-
     @Column(name = "description", columnDefinition = "TEXT")
     String description;
     
@@ -103,7 +100,6 @@ public class Product implements Serializable {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
-                ", image='" + image + '\'' +
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +
                 ", category=" + category +

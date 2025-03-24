@@ -11,10 +11,10 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @Slf4j
 @ControllerAdvice
 public class AdviceController {
-    @ExceptionHandler(Exception.class)
-    public void handleAllExceptions(Exception ex) {
-        log.error("Lỗi ứng dụng: {}", ex.getMessage());
-    }
+//    @ExceptionHandler(Exception.class)
+//    public void handleAllExceptions(Exception ex) {
+//        log.error("Lỗi ứng dụng: {}", ex.getMessage());
+//    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public String handleNotFound() {
