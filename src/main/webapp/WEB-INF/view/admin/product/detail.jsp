@@ -73,6 +73,10 @@
                                                             <th class="col-md-3">Mô tả</th>
                                                             <td>${product.description}</td>
                                                         </tr>
+                                                        <tr>
+                                                            <th class="col-md-3">Cửa hàng</th>
+                                                            <td>${product.store.name}</td>
+                                                        </tr>
 
                                                         <tr>
                                                             <th>Ảnh sản phẩm</th>

@@ -195,21 +195,23 @@ public String handleCreateProduct(
 
     @GetMapping("/admin/product/delete/{id}")
     public String getDeleteProductPage(Model model, @PathVariable String id, HttpServletRequest active) {
-        active.setAttribute("activePage", "product");
-        model.addAttribute("id", id);
-        model.addAttribute("newProduct", new Product());
-        return "admin/product/delete";
-    }
-
-    @PostMapping("/admin/product/delete")
-    public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr) {
-        Optional<Product> optionalProduct = this.productService.fetchProductById(pr.getId());
-        if (optionalProduct.isPresent()) {
-            productImageService.deleteAllProductImages(optionalProduct.get());
-        }
-        this.productService.deleteProduct(pr.getId());
+        // active.setAttribute("activePage", "product");
+        // model.addAttribute("id", id);
+        // model.addAttribute("newProduct", new Product());
+        // return "admin/product";
+        productService.deleteProduct(id);
         return "redirect:/admin/product";
     }
+
+    // @PostMapping("/admin/product/delete")
+    // public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr) {
+    //     Optional<Product> optionalProduct = this.productService.fetchProductById(pr.getId());
+    //     if (optionalProduct.isPresent()) {
+    //         productImageService.deleteAllProductImages(optionalProduct.get());
+    //     }
+    //     this.productService.deleteProduct(pr.getId());
+    //     return "redirect:/admin/product";
+    // }
 
     @GetMapping("/admin/product/{id}")
     public String getProductDetailPage(Model model, @PathVariable String id, HttpServletRequest active) {
@@ -223,6 +225,13 @@ public String handleCreateProduct(
         }
         model.addAttribute("id", id);
         return "admin/product/detail";
+    }
+    @GetMapping("/admin/product/trash")
+    public String getTrashPage(Model model, HttpServletRequest active) {
+        active.setAttribute("activePage", "product");
+        List<Product> deletedProducted = productService.getProductDeleted();
+        model.addAttribute("deletedProduct", deletedProducted);
+        return "admin/product/trash";
     }
 
     @PostMapping("/admin/product/delete-image/{imageId}")

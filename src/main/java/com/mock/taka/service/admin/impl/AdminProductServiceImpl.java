@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.mock.taka.domain.Category;
 import com.mock.taka.domain.Product;
 import com.mock.taka.domain.Store;
+import com.mock.taka.domain.User;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
@@ -48,6 +49,10 @@ public class AdminProductServiceImpl implements AdminProductService {
     public List<Product> findByStoreAndIsDeletedFalse(Store store) {
         return productRepository.findByStoreAndDeletedFalse(store);
     }
+    @Override
+    public List<Product> getProductDeleted() {
+        return productRepository.findByDeletedTrue();
+    }
 
     @Override
     public List<Product> findByStoreId(String storeId) {
@@ -75,4 +80,5 @@ public class AdminProductServiceImpl implements AdminProductService {
     public long getCountProduct() {
         return this.productRepository.countProductByDeletedIsFalse();
     }
+    
 }

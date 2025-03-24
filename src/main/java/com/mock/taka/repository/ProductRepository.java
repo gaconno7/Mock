@@ -52,6 +52,7 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
     Page<Product> findByStoreIdAndNameLike(String storeId ,String name, Pageable pageable);
 
     List<Product> findByDeletedFalse();
+    List<Product> findByDeletedTrue();
     List<Product> findByStoreId(String id);
     List<Product> findByStoreAndDeletedFalse(Store store);
     List<Product> findByCategoryAndDeletedFalse(Category category);
