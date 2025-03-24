@@ -62,79 +62,77 @@
 <body>
 <%@ include file="header/header.jsp" %>
 
-<div class="cart-container">
-        <h2 class="mb-4">Giỏ hàng</h2>
-
-        <!-- Bảng sản phẩm -->
-        <table class="table cart-table">
-            <thead class="table-light">
-                <tr>
-                    <th>Chọn</th>
-                    <th>Sản phẩm</th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
-                    <th>Số tiền</th>
-                    <th>Xóa</th>
-                </tr>
-            </thead>
-            
-
-            <tbody>
-                <c:choose>
-                    <c:when test="${not empty cartItems}">
-                        <c:forEach var="item" items="${cartItems}">
-                            <tr id="cart-item-${item.id}">
-                                <td>
-                                    <input type="checkbox" class="cart-checkbox" name="cartItemCheckbox" value="${item.id}" onchange="updateTotalCart()">
-                                </td>
-
-                                <td>
-                                    <img src="${item.product.image}" alt="Ảnh sản phẩm">
-                                    <div>
-                                        <span>${item.product.name}</span>
-                                        <c:if test="${not empty item.productVariant}">
-                                            <br>
-                                            <small class="text-muted">
-                                                ${item.productVariant.attribute}: ${item.productVariant.value}
-                                            </small>
-                                        </c:if>
-                                    </div>
-                                </td>
-
-                                <td><span id="price-${item.id}" class="price"><fmt:formatNumber type="number" value="${item.product.price}"/> VNĐ</span></td>
-                                
-                                <td>
-                                    <div class="quantity-control">
-                                        <button onclick="updateCart('${item.id}', -1)">-</button>
-                                        <input type="text" id="quantity-${item.id}" value="${item.quantity}" readonly> 
-                                        <button onclick="updateCart('${item.id}', 1)">+</button>
-                                    </div>
-                                </td>
-                                <td><span class="subtotal" id="subtotal-${item.id}"><fmt:formatNumber type="number" value="${item.product.price * item.quantity}"/></span><span> VNĐ</span></td>
-                                <td><span class="btn-remove" onclick="removeFromCart('${item.id}')">&times;</span></td>
-                            </tr>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
+<div class="container mt-5">
+    <div class="row">
+        <!-- Cột giỏ hàng -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm p-4">
+                <h2 class="mb-4">🛒 Giỏ hàng</h2>
+                <table class="table cart-table">
+                    <thead class="table-light">
                         <tr>
-                            <td colspan="5" class="text-center">Giỏ hàng trống!</td>
+                            <th>Chọn</th>
+                            <th>Sản phẩm</th>
+                            <th>Đơn giá</th>
+                            <th>Số lượng</th>
+                            <th>Số tiền</th>
+                            <th>Xóa</th>
                         </tr>
-                    </c:otherwise>
-                </c:choose>
-            </tbody>        
-        </table>
+                    </thead>
+                    <tbody>
+                        <c:choose>
+                            <c:when test="${not empty cartItems}">
+                                <c:forEach var="item" items="${cartItems}">
+                                    <tr id="cart-item-${item.id}">
+                                        <td>
+                                            <input type="checkbox" class="cart-checkbox" name="cartItemCheckbox" value="${item.id}" onchange="updateTotalCart()">
+                                        </td>
+                                        <td class="d-flex align-items-center">
+                                            <img src="${item.product.image}" class="rounded" style="width: 60px; height: 60px; object-fit: cover; margin-right: 10px;">
+                                            <div>
+                                                <span>${item.product.name}</span>
+                                                <c:if test="${not empty item.productVariant}">
+                                                    <br>
+                                                    <small class="text-muted">${item.productVariant.attribute}: ${item.productVariant.value}</small>
+                                                </c:if>
+                                            </div>
+                                        </td>
+                                        <td><span id="price-${item.id}" class="price"><fmt:formatNumber type="number" value="${item.product.price}"/> VNĐ</span></td>
+                                        <td>
+                                            <div class="quantity-control d-flex">
+                                                <button class="btn btn-outline-secondary btn-sm" onclick="updateCart('${item.id}', -1)">-</button>
+                                                <input type="text" class="form-control text-center mx-2" id="quantity-${item.id}" value="${item.quantity}" readonly style="width: 50px;">
+                                                <button class="btn btn-outline-secondary btn-sm" onclick="updateCart('${item.id}', 1)">+</button>
+                                            </div>
+                                        </td>
+                                        <td><span class="subtotal" id="subtotal-${item.id}"><fmt:formatNumber type="number" value="${item.product.price * item.quantity}"/></span> VNĐ</td>
+                                        <td><span class="btn-remove text-danger" onclick="removeFromCart('${item.id}')" style="cursor:pointer;">&times;</span></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">Giỏ hàng trống!</td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        <!-- Tổng tiền -->
-        <div class="cart-total mt-4">
-            <h5>Hóa đơn</h5>
-            <!-- <p>Subtotal: <strong><span id="subtotal-price">${totalCartPrice}</span> VNĐ</strong></p> -->
-            <p>Phí giao hàng: <strong>Miễn phí</strong></p>
-            <p>Tổng tiền: <strong><span id="selectedTotalPrice">0</span> VNĐ</strong></p>
-            <button type="button" class="btn btn-danger w-100" onclick="proceedToCheckout();">
-                Đặt hàng
-            </button>
+        <!-- Cột hóa đơn -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm p-4">
+                <h4 class="mb-3">📜 Hóa đơn</h4>
+                <p class="d-flex justify-content-between">Phí giao hàng: <strong>Miễn phí</strong></p>
+                <p class="d-flex justify-content-between">Tổng tiền: <strong><span id="selectedTotalPrice">0</span> VNĐ</strong></p>
+                <button type="button" class="btn btn-danger w-100 mt-3" onclick="proceedToCheckout();">Đặt hàng</button>
+            </div>
         </div>
     </div>
+</div>
+
 
 <script>
     function updateTotalCart() {

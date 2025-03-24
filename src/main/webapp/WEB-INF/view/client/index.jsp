@@ -80,7 +80,7 @@
         <c:forEach items="${categories}" var="item">
         <div class="ml-3">
           <div class="card" style="overflow: hidden; width: 20vh;">
-            <img src="${item.image}" class="rounded" alt="..." style="object-fit: cover">
+            <img src="${item.image}" class="rounded" alt="..." style="object-fit: cover; height: 80px">
 
               <a href="<c:url value="/product/all"/> " onclick="saveDataToLocalStorage(`${item.id}`)" class="card-title text-center ellipsis p-2 mt-2">${item.name}</a>
 

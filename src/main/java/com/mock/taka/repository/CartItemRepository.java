@@ -15,10 +15,12 @@ import com.mock.taka.domain.User;
 
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, String> {
-    List<CartItem> findByUserId(long id);
+    List<CartItem> findByUserIdAndProductDeleted(long id, boolean status);
 
     @Query(value = "SELECT * FROM cart_items WHERE user_id = :userId AND product_variant_id = :productVariantId", nativeQuery = true)
     Optional<CartItem> findByUserIdAndProductVariantId(@Param("userId") long userId, @Param("productVariantId") String productVariantId);
 
     Optional<CartItem> findByUserAndProductAndProductVariant(User user, Product product, ProductVariant productVariant);
+
+    List<CartItem> findAllByIdInAndProductDeleted(List<String> cartItemIds, boolean status);
 }

@@ -29,7 +29,7 @@ public class CartService {
     ProductRepository productRepository;
 
     public List<CartItem> getCartItems(long userId) {
-        return cartItemRepository.findByUserId(userId);
+        return cartItemRepository.findByUserIdAndProductDeleted(userId, false);
     }
 
     // public void updateCartItem(String cartItemId, int quantity) {
@@ -90,12 +90,12 @@ public class CartService {
     }
 
     public double calculateTotalCartPrice(Long userId) {
-        List<CartItem> cartItems = cartItemRepository.findByUserId(userId);
+        List<CartItem> cartItems = cartItemRepository.findByUserIdAndProductDeleted(userId, false);
         return cartItems.stream().mapToDouble(CartItem::getTotalPrice).sum();
     }
 
     public List<CartItem> getCartItemsByIds(List<String> cartItemIds) {
-        return cartItemRepository.findAllById(cartItemIds);
+        return cartItemRepository.findAllByIdInAndProductDeleted(cartItemIds, false);
     }
 }
 
