@@ -45,8 +45,23 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
     @Override
+    public List<Product> getProductDeletedByStoreId(String storeId) {
+        return productRepository.findByStoreIdAndDeletedTrue(storeId);
+    }
+
+    @Override
+    public List<Product> fetchProductsByStoreIdAndCategoryId(String storeId, String categoryId) {
+        return productRepository.findByCategoryIdAndStoreIdAndDeletedFalse(storeId, categoryId);
+    }
+
+    @Override
     public List<Product> fetchProducts() {
         return productRepository.findByDeletedFalse();
+    }
+
+    @Override
+    public List<Product> fetchProductsByStoreId(String storeId) {
+        return productRepository.findByStoreIdAndDeletedFalse(storeId);
     }
 
     @Override

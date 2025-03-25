@@ -88,17 +88,19 @@
                 newPassword: $("#new-password").val(),
                 reNewPassword: $("#re-new-password").val()
             };
-            console.log(JSON.stringify(formData))
+
             $.ajax({
                 url: `${APIUser}/password/${userId}`,
                 type: 'PUT',
                 data: JSON.stringify(formData),
                 contentType: 'application/json',
                 success: function (response) {
-                    if(response.includes("thành công")){
-                        $("#success-message-pass").text(response);
+                    if(response.message.includes("thành công")){
+                        $("#success-message-pass").text(response.message);
+                        $("#error-message-pass").text('');
                     } else {
-                        $("#error-message-pass").text(response)
+                        $("#error-message-pass").text(response.message);
+                        $("#success-message-pass").text('');
                     }
                 },
                 error: function (error) {

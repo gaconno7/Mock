@@ -253,7 +253,7 @@
                                                         <label for="categoryId" class="col-md-4 col-form-label">Loại sản
                                                             phẩm:</label>
                                                         <div class="col-md-8">
-                                                            <select name="categoryId" id="categoryId"
+                                                            <select name="voucherTypeId" id="categoryId"
                                                                 class="form-control ${not empty errorCategory ? 'is-invalid' : ''}">
                                                                 <option value="">Chọn loại sản phẩm</option>
                                                                 <c:forEach items="${category}" var="category">

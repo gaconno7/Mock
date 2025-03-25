@@ -91,19 +91,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String updatePassword(long id, UserUpdatePasswordRequest request) {
-        var user = userRepository.findById(id).orElse(null);
-        assert user != null;
-        if(!request.getNewPassword().equals(request.getReNewPassword())) {
-            return "Mật khẩu nhập lại và mật khẩu mới không trùng khớp";
-        } else if(!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
-            return "Mật khẩu cũ không đúng";
-        } else if(passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
-            return "Mật khẩu nhập mới và mật khẩu cũ không được trùng nhau";
-        } else {
+        return userRepository.findById(id).map(user -> {
+            if (!request.getNewPassword().equals(request.getReNewPassword())) {
+                return "Mật khẩu nhập lại và mật khẩu mới không trùng khớp";
+            }
+            if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+                return "Mật khẩu cũ không đúng";
+            }
+            if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
+                return "Mật khẩu nhập mới và mật khẩu cũ không được trùng nhau";
+            }
+
             user.setPassword(passwordEncoder.encode(request.getNewPassword()));
             userRepository.save(user);
             return "Cập nhật thành công";
-        }
+        }).orElse("Người dùng không tồn tại");
     }
 
     @Override

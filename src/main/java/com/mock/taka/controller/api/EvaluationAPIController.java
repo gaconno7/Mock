@@ -30,10 +30,11 @@ public class EvaluationAPIController {
             @RequestParam(name = "review-title") String title,
             @RequestParam(name = "review-content") String content,
             @RequestParam(name = "rate", defaultValue = "5") int rate,
-            @RequestParam(name = "product-id") String productId
+            @RequestParam(name = "product-id") String productId,
+            @RequestParam(name = "user-id") long userId
 
     ) throws IOException {
-        Evaluation evaluation = evaluationService.save(file, title, rate, content, productId, User.builder().id(1L).build());
+        Evaluation evaluation = evaluationService.save(file, title, rate, content, productId, userId);
         return ResponseEntity.ok("Success");
     }
 

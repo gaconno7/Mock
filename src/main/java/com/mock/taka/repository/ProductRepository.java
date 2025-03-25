@@ -52,9 +52,12 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
     Page<Product> findByStoreIdAndNameLike(String storeId ,String name, Pageable pageable);
 
     List<Product> findByDeletedFalse();
+    List<Product> findByStoreIdAndDeletedTrue(String storeId);
     List<Product> findByStoreId(String id);
+    List<Product> findByStoreIdAndDeletedFalse(String id);
     List<Product> findByStoreAndDeletedFalse(Store store);
     List<Product> findByCategoryAndDeletedFalse(Category category);
+    List<Product> findByCategoryIdAndStoreIdAndDeletedFalse(String categoryId, String storeId);
     List<Product> findByStoreAndCategoryAndDeletedFalse(Store store, Category category);
     Long countProductByDeletedIsFalse();
 

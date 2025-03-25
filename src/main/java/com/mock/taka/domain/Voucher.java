@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,6 +22,7 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class Voucher implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     String id;
 
@@ -33,9 +35,11 @@ public class Voucher implements Serializable {
     @Column(name = "description")
     String description;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "expiration_date")
     Date expirationDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "effectvice_date")
     Date effectiveDate;
 

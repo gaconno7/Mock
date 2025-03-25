@@ -9,6 +9,7 @@ import com.mock.taka.service.admin.AdminUserService;
 import com.mock.taka.service.client.CategoryService;
 import com.mock.taka.service.client.StoreService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class StoreController {
     AdminUserService userService;
 
 
-    @GetMapping("/store/{userId}/create")
+    @GetMapping("/user/store/{userId}/create")
     public String getCreateStoreForUserPage(@PathVariable Long userId, Model model, HttpServletRequest active) {
         active.setAttribute("activePage", "store");
 
@@ -47,11 +48,12 @@ public class StoreController {
         return "store/create";
     }
 
-    @PostMapping("/store/create")
+    @PostMapping("/user/store/create")
     public String handleCreateStore(
             @ModelAttribute("newStore") @Valid Store str,
             @RequestParam(value = "userId", required = false) Long userId,
             BindingResult newStoreBindingResult,
+            HttpSession session,
             Model model) {
         if (newStoreBindingResult.hasErrors()) {
             if (userId != null) {
@@ -85,8 +87,12 @@ public class StoreController {
             model.addAttribute("users", userService.getUserByRole("ROLE_USER"));
             return "store/create";
         }
-
+        str.setImage("https://clipart-library.com/2023/grocery-store-clipart-xl.png");
         var store = storeService.createStore(str);
+        var user = userService.findUserById(userId).orElse(null);
+
+        session.removeAttribute("user");
+        session.setAttribute("user", user);
 
         return "redirect:/over-view-store/" + store.getId();
     }

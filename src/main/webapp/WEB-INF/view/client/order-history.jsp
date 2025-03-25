@@ -23,7 +23,12 @@
 <div class="account-container pt-5">
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-section">
+        <div class="sidebar-section"><div class="sidebar-title">Quản lý tài khoản</div>
+            <div class="sidebar-links">
+                <a href="<c:url value="/user/update-address"/>" class="sidebar-link">Cập nhật địa chỉ</a>
+                <a href="<c:url value="/user/update-password"/>" class="sidebar-link">Cập nhật mật khẩu</a>
+                <a href="<c:url value="/user/profile"/> " class="sidebar-link">Cập nhật thông tin</a>
+            </div>
             <div class="sidebar-title mt-3">Quản lý đơn hàng</div>
             <div class="sidebar-links">
                 <a onclick="clearAll() "  class="sidebar-link pointer-action tat-ca">Tất cả</a>
@@ -176,7 +181,7 @@
                                                         item.status === 'chua-thanh-toan' ? 'Chưa thanh toán' : '')
                             + '</span></td> '
                             + '<td><a href="/user/order/' + item.id + '" class="action-btn mr-3">Xem chi tiết</a> '
-                            + (item.status === "cho-xu-ly" ? '<button onclick="processOrder(`' + item.id + '`)" class="action-btn">Xác nhận đã xử lý</button>' : '')
+                            + (item.status === "hoan-thanh" ? '<a href="/user/order/return-order/' + item.id + '"  class="action-btn">Hoàn hàng</a>' : '')
                             + '</td> '
                             + '</tr>';
 

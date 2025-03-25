@@ -55,7 +55,7 @@
                 <h3>Thông tin sản phẩm (${order.orderDetails.size()})</h3>
                 <c:forEach var="item" items="${order.orderDetails}">
                     <div class="product-item">
-                        <img src="${item.product.image}" alt="placeholder" class="product-image">
+                        <img src="${item.product.productImages[0].url}" alt="placeholder" class="product-image">
                         <div class="product-details">
                             <div class="product-name">${item.product.name}</div>
                             <div class="product-price">${item.amount} x <fmt:formatNumber type="number" value="${(item.product.price - (item.product.price * item.product.discountPrice)/100)}"/> đ</div>
@@ -73,7 +73,7 @@
                 <h3>Tổng kết hoàn tiền</h3>
                 <div class="summary-row">
                     <span>Giá trị sản phẩm</span>
-                    <span><fmt:formatNumber type="number" value="${totalPrice}"/></span>
+                    <span><fmt:formatNumber type="number" value="${totalPrice}"/> đ</span>
                 </div>
             </div>
 

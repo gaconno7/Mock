@@ -30,8 +30,8 @@ public class ClientProductController {
     EvaluationService evaluationService;
     OrderDetailService orderDetailService;
 
-    @GetMapping("/{id}")
-    public String getDetail(ModelMap modelMap, @PathVariable(name = "id") String id, HttpSession session) {
+    @GetMapping("/{id-product}")
+    public String getDetail(ModelMap modelMap, @PathVariable(name = "id-product") String id, HttpSession session) {
         Product product = productService.findById(id);
         List<Evaluation> evaluations = evaluationService.findAllByProductId(id);
         var user = (User) session.getAttribute("user");

@@ -57,7 +57,6 @@ public class Product implements Serializable {
     @Column(name = "deleted_date")
     Date deletedDate;
 
-
     @Column(name = "is_deleted")
     boolean deleted = false;
 

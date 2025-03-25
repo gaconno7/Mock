@@ -121,6 +121,10 @@
         loadProducts(0);
     }
 
+    function viewDetail(id) {
+        window.location.href = '/product/' + id;
+    }
+
     function renderRating(evaluations) {
         let totalRate = 0;
 
@@ -174,10 +178,11 @@
                     $.each(data.content, function(index, item) {
                         let productHtml =
                             '<div class="product-card">'
-                            + ' <div class="product-image">'
-                            + ' <img src="' + item.productImages[0].url + '" alt=" '+ item.productImages[0].url + '">'
+                             + ' <div class="product-image">'
+                            + ' <img src="' + item.productImages[0].url + '"  alt=" '+ item.name + '" />'
                             + ' <div class="quick-view mb-3">'
-                            + '  <a href="/product/' + item.id + '">'
+
+                            + '  <a onclick="viewDetail(`' + item.id+ '`)">'
                             + '      <i class="bi bi-eye"></i>'
                             + '    </a>'
                             + '  </div>'

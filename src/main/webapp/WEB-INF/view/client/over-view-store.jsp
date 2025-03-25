@@ -17,58 +17,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/client/css/over-view-store.css"/>">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
-<header>
-    <div class="logo"><a href="<c:url value="/"/> ">Taka</a> </div>
-    <div class="nav-links">
-        <a href="<c:url value='/home'/>" class="home">Trang chủ</a>
-        <a href="<c:url value='/product/all'/>" class="product-list">Danh sách sản phẩm</a>
-        <a href="#" class="about">Thông tin</a>
-    </div>
-    <div class="icons">
-        <span><a class="btn btn-outline-info" href="<c:url value="/user/wishlist"/> "><i class="bi bi-bag-heart"></i></a></span>
-        <span><a class="btn btn-outline-info" href="<c:url value="/user/cart"/> "><i class="bi bi-cart"></i></a></span>
-        <div class="dropdown">
-            <div class="btn btn-outline-info dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle"></i>
-            </div>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <c:if test="${not empty sessionScope.user}" >
-                    <li><a class="dropdown-item" href="<c:url value="/user/profile"/>">Hồ sơ</a></li>
-                    <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
-                </c:if>
-                <c:if test="${empty sessionScope.user}" >
-                    <li><a class="dropdown-item" href="<c:url value="/login"/> ">Đăng nhập</a></li>
-                    <li><a class="dropdown-item" href="<c:url value="/register"/> ">Đăng ký</a></li>
-                </c:if>
-            </ul>
-        </div>
-    </div>
-    <script>
-        $(document).ready(function () {
-            let url = window.location.href;
-
-            $(".home, .product-list, .about").removeClass("active");
-
-            if (url.includes('product')) {
-                $(".product-list").addClass("active");
-            } else if (url.includes('about')) {
-                $(".about").addClass("active");
-            } else {
-                $(".home").addClass("active");
-            }
-
-        });
-
-    </script>
-
-</header>
+<%@ include file="header/header.jsp" %>
 
 <div class="store-profile">
     <div class="store-info">
@@ -77,9 +33,6 @@
         </div>
         <div>
             <h2 class="store-name">${store.name}</h2>
-<%--            <div class="store-actions"> --%>
-<%--                <button class="btn btn-chat">Chat</button>--%>
-<%--            </div>--%>
         </div>
     </div>
     <div class="store-stats">
@@ -88,8 +41,9 @@
             <span>Số lượng sản phẩm: ${store.products.size()}</span>
         </div>
     </div>
-</div>
 
+</div>
+<div class="" style="padding: 0 20vh"><p>${store.description}</p></div>
 <div class="section-header">
     <h2>Tất cả sản phẩm</h2>
     <div class="search-container">

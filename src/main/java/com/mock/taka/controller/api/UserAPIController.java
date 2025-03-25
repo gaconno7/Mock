@@ -6,16 +6,20 @@ import com.mock.taka.service.client.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserAPIController {
 
     UserService userService;
@@ -29,10 +33,14 @@ public class UserAPIController {
         return ResponseEntity.ok(userService.updateInformation(id, file, fullname, phone));
     }
     @PutMapping("/password/{id}")
-    public ResponseEntity<?> updatePassword(
+    public ResponseEntity<Map<String, String>> updatePassword(
             @PathVariable(name = "id") long id,
             @RequestBody UserUpdatePasswordRequest request
     ) {
-        return ResponseEntity.ok(userService.updatePassword(id,request));
+        Map<String, String> res = new HashMap<>();
+        res.put("message", userService.updatePassword(id,request));
+
+        return ResponseEntity.ok(res);
     }
+
 }

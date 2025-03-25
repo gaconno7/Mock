@@ -58,8 +58,7 @@ public class StoreProductController {
         @RequestParam("imageFile") MultipartFile[] files,
         HttpSession session,
         @RequestParam("categoryId") String categoryId,
-        @RequestParam(value = "variant", required = false) List<String> variant
-            ,
+        @RequestParam(value = "variant", required = false) List<String> variant,
         Model model) throws IOException {
     // validate     
     if (newProductBindingResult.hasErrors()) {
@@ -228,34 +227,43 @@ public class StoreProductController {
         return "store/product/detail";
     }
 
+    @GetMapping("/store/product/trash")
+    public String getTrashPage(Model model, HttpServletRequest active, HttpSession session) {
+        active.setAttribute("activePage", "product");
+        List<Product> deletedProducted = productService.getProductDeletedByStoreId(((User) session.getAttribute("user")).getStore().getId());
+        model.addAttribute("deletedProduct", deletedProducted);
+        return "store/product/trash";
+    }
+
     @PostMapping("/store/product/delete-image/{imageId}")
     public String deleteProductImage(@PathVariable String imageId, @RequestParam("productId") String productId) {
         productImageService.deleteProductImage(imageId);
         return "redirect:/store/product/update/" + productId;
     }
     @GetMapping("/store/product/filter")
-public String filterProducts(@RequestParam(required = false) String categoryId, Model model, HttpServletRequest active) {
-    active.setAttribute("activePage", "product");
-    
-    List<Product> filteredProducts;
+    public String filterProducts(@RequestParam(required = false) String categoryId, Model model, HttpServletRequest active, HttpSession session) {
+        active.setAttribute("activePage", "product");
 
-    if (categoryId != null && !categoryId.isEmpty()) {
-    Optional<Category> category = categoryService.fetchCategoryById(categoryId);
-    if (category.isPresent()) {
-        filteredProducts = productService.findByCategoryAndDeletedFalse(category.get());
-        model.addAttribute("selectedCategoryId", categoryId);
-    } else {
-        filteredProducts = productService.fetchProducts();
+        var user = (User) session.getAttribute("user");
+        List<Product> filteredProducts;
+
+        if (categoryId != null && !categoryId.isEmpty()) {
+            Optional<Category> category = categoryService.fetchCategoryById(categoryId);
+            if (category.isPresent()) {
+                filteredProducts = productService.fetchProductsByStoreIdAndCategoryId(categoryId, user.getStore().getId());
+                model.addAttribute("selectedCategoryId", categoryId);
+            } else {
+                filteredProducts = productService.fetchProductsByStoreId(user.getStore().getId());
+            }
+        } else {
+            filteredProducts = productService.fetchProductsByStoreId(user.getStore().getId());
+        }
+
+        List<Category> categories = categoryService.fetchCategory();
+
+        model.addAttribute("products", filteredProducts);
+        model.addAttribute("categories", categories);
+
+        return "store/product/show";
     }
-    } else {
-    filteredProducts = productService.fetchProducts();
-}
-
-    List<Category> categories = categoryService.fetchCategory();
-    
-    model.addAttribute("products", filteredProducts);
-    model.addAttribute("categories", categories);
-    
-    return "store/product/show";
-}
 }

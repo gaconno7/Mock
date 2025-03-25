@@ -56,6 +56,17 @@
                     <span>Quản lí đơn hàng</span></a>
             </li>
 
+            <li class="nav-item ${activePage == 'voucher-type' ? 'active' : ''}">
+                <a class="nav-link" href="/admin/voucher-type">
+                    <i class="fas fa-fw fa-laptop"></i>
+                    <span>Quản lí danh mục mã giảm giá</span></a>
+            </li>
+            <li class="nav-item ${activePage == 'voucher' ? 'active' : ''}">
+                <a class="nav-link" href="/admin/voucher">
+                    <i class="fas fa-fw fa-laptop"></i>
+                    <span>Quản lí mã giảm giá</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 

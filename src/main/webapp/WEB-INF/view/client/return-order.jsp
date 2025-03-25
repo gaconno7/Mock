@@ -20,7 +20,14 @@
             </svg>
             <span onclick="returnBack()">Quay lại</span>
         </a>
-        <div class="return-status status-pending">${order.status}</div>
+        <div class="return-status status-pending">${order.status == 'cho-giao-hang' ? 'Chờ giao hàng' :
+                order.status == 'cho-xu-ly' ? 'Chờ xử lý' :
+                        order.status == 'da-huy' ? 'Đã huỷ' :
+                                order.status == 'tra-hang' ? 'Trả hàng' :
+                                        order.status == 'hoan-thanh' ? 'Hoàn thành' :
+                                                order.status == 'van-chuyen' ? 'Vận chuyển' :
+                                                        order.status == 'da-thanh-toan' ? 'Đã thanh toán' :
+                                                                order.status == 'chua-thanh-toan' ? 'Chưa thanh toán' : ''}</div>
     </header>
 
     <div class="return-card">

@@ -12,7 +12,10 @@ public interface AdminProductService {
     Optional<Product> fetchProductById(String id);
     void deleteProduct(String id);
     List<Product> getProductDeleted();
+    List<Product> getProductDeletedByStoreId(String storeId);
     List<Product> fetchProducts();
+    List<Product> fetchProductsByStoreId( String storeId);
+    List<Product> fetchProductsByStoreIdAndCategoryId(String storeId, String categoryId);
     List<Product> findByStoreAndIsDeletedFalse(Store store);
     List<Product> findByCategoryAndDeletedFalse(Category category);
     List<Product> findByStoreId(String storeId);

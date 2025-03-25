@@ -16,12 +16,15 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <c:if test="${not empty sessionScope.user}" >
                     <li><a class="dropdown-item" href="<c:url value="/user/profile"/>">Hồ sơ</a></li>
-                    <c:if test="${empty sessionScope.user.store}">
-                        <li><a class="dropdown-item" href="<c:url value="/store/create"/>">Đăng ký cửa hàng</a></li>
+                    <c:if test="${empty sessionScope.user.store && sessionScope.user.role.name != 'ROLE_ADMIN' && sessionScope.user.role.name != 'ROLE_SUPPLIER'}">
+                        <li><a class="dropdown-item" href="<c:url value="/user/store/${sessionScope.user.id}/create"/>">Đăng ký cửa hàng</a></li>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.user && sessionScope.user.role.name == 'ROLE_ADMIN'}">
+                        <li><a class="dropdown-item" href="<c:url value="/admin"/>">Quản lý hệ thống</a></li>
                     </c:if>
                     <c:if test="${not empty sessionScope.user.store}">
                         <li><a class="dropdown-item" href="<c:url value="/store/product"/>">Quản lý sản phẩm</a></li>
-                        <li><a class="dropdown-item" href="<c:url value="/store/order"/>">Quản lý đơn hàng</a></li>
+                        <li><a class="dropdown-item" href="<c:url value="/store/order/history"/>">Quản lý đơn hàng</a></li>
                     </c:if>
                     <li><a class="dropdown-item" href="<c:url value="/logout"/>">Đăng xuất</a></li>
                 </c:if>

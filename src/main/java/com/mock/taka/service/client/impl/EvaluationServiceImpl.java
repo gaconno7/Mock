@@ -5,6 +5,7 @@ import com.mock.taka.domain.Product;
 import com.mock.taka.domain.User;
 import com.mock.taka.repository.EvaluationRepository;
 import com.mock.taka.repository.ProductRepository;
+import com.mock.taka.repository.UserRepository;
 import com.mock.taka.service.client.EvaluationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,16 @@ public class EvaluationServiceImpl implements EvaluationService {
     EvaluationRepository evaluationRepository;
     ProductRepository productRepository;
     CloudinaryService cloudinaryService;
+    UserRepository userRepository;
     @Override
     public List<Evaluation> findAllByProductId(String id) {
         return evaluationRepository.findAllByProductId(id);
     }
 
     @Override
-    public Evaluation save(MultipartFile file, String title, int rate, String review, String productId, User user) throws IOException {
+    public Evaluation save(MultipartFile file, String title, int rate, String review, String productId, long userId) throws IOException {
         String image = "";
+        var user = userRepository.findById(userId).orElse(null);
         if(!file.isEmpty()){
             image = cloudinaryService.uploadFile(file, "evaluations");
         }

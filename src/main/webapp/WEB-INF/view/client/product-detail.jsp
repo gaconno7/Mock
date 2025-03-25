@@ -144,7 +144,7 @@
         </div>
     </div>
 
-    <c:if test="${isOrder}">
+    <c:if test="${isOrder && not empty sessionScope.user}">
         <div class="review-form-container">
             <h3 class="review-form-title">Đánh giá</h3>
             <form id="evaluation-form" enctype="multipart/form-data" >
@@ -162,6 +162,9 @@
 
                 <div class="form-group">
                     <input type="hidden" name="product-id" class="form-control" value="${product.id}">
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="user-id" class="form-control" value="${sessionScope.user.id}">
                 </div>
 
                 <div class="form-group">
